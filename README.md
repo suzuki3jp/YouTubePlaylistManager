@@ -6,11 +6,11 @@
 
 ## Roadmap
 
-- [] Shuffle playlist items
-- [] Copy playlist
-- [] Merge playlists
-- [] Multi platforms support (Youtube, Spotify, Amazon music ...)
-- [] GUI
+- [ ] Shuffle playlist items
+- [ ] Copy playlist
+- [ ] Merge playlists
+- [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
+- [ ] GUI
 
 ## License
 
