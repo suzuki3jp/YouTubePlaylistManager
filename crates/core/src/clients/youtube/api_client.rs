@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use reqwest::{Client, Method, StatusCode, Url};
 use serde::Deserialize;
 use thiserror::Error;
@@ -91,24 +93,19 @@ impl YoutubeApiClient {
         let mut items: Vec<PlaylistItem> = vec![];
 
         loop {
-            let mut params: Vec<(&str, &str)> = vec![
-                ("key", &self.key),
-                ("part", "id,snippet,contentDetails,status"),
-                ("playlistId", playlist_id),
-                ("maxResults", "50"),
-            ];
+            let mut builder = YoutubeApiRequestBuilder::new(Method::GET, "playlistItems")
+                .set_param("key", &self.key)
+                .set_param("part", "id,snippet,contentDetails,status")
+                .set_param("playlistId", playlist_id)
+                .set_param("maxResults", "50");
 
             if let Some(token) = &next_page_token {
-                params.push(("pageToken", token));
+                builder = builder.set_param("pageToken", token);
             }
 
-            let options = YoutubeApiRequestOptions {
-                method: Method::GET,
-                path: "playlistItems",
-                params,
-            };
-
-            let res = self.request::<GetPlaylistItemsResponse>(options).await?;
+            let res = self
+                .request::<GetPlaylistItemsResponse>(builder.to_options())
+                .await?;
 
             items.extend(res.items);
 
@@ -119,5 +116,40 @@ impl YoutubeApiClient {
             }
         }
         Ok(items)
+    }
+}
+
+pub struct YoutubeApiRequestBuilder<'a> {
+    pub method: Method,
+    pub path: &'a str,
+    pub params: HashMap<&'a str, &'a str>,
+}
+
+impl<'a> YoutubeApiRequestBuilder<'a> {
+    pub fn new(method: Method, path: &'a str) -> Self {
+        Self {
+            method,
+            path,
+            params: HashMap::new(),
+        }
+    }
+
+    pub fn set_param(mut self, k: &'a str, v: &'a str) -> Self {
+        self.params.insert(k, v);
+        self
+    }
+
+    pub fn to_options(&self) -> YoutubeApiRequestOptions<'a> {
+        let YoutubeApiRequestBuilder {
+            method,
+            path,
+            params,
+        } = self;
+
+        YoutubeApiRequestOptions {
+            method: method.clone(),
+            path,
+            params: params.clone().into_iter().collect(),
+        }
     }
 }
