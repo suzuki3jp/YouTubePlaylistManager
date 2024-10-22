@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use reqwest::{Client, Method, StatusCode, Url};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
 use super::typings::playlist_items::{GetPlaylistItemsResponse, PlaylistItem};
@@ -19,10 +19,11 @@ pub enum YoutubeApiError {
 }
 
 #[derive(Debug)]
-pub struct YoutubeApiRequestOptions<'a> {
+pub struct YoutubeApiRequestOptions<'a, T: Serialize = ()> {
     pub method: Method,
     pub path: &'a str,
     pub params: Vec<(&'a str, &'a str)>,
+    pub body: Option<T>,
 }
 
 pub struct YoutubeApiClient {
@@ -52,6 +53,7 @@ impl YoutubeApiClient {
             method,
             path,
             params,
+            body,
         } = options;
 
         let mut url = self.base_url.join(path).expect("path must be a valid URL.");
@@ -59,9 +61,15 @@ impl YoutubeApiClient {
         url = Url::parse_with_params(url.as_ref(), params)
             .map_err(|e| YoutubeApiError::InvalidUrl(e.to_string()))?;
 
-        let res = self
-            .client
-            .request(method, url)
+        let mut req = self.client.request(method, url);
+
+        if let Some(b) = body {
+            let json_body = serde_json::to_string(&b)
+                .map_err(|e| YoutubeApiError::JsonParseError(e.to_string()))?;
+            req = req.body(json_body);
+        }
+
+        let res = req
             .send()
             .await
             .map_err(|e| YoutubeApiError::RequestFailed(e.to_string()))?;
@@ -117,20 +125,44 @@ impl YoutubeApiClient {
         }
         Ok(items)
     }
+
+    /// PUT /playlistitems [docs](https://developers.google.com/youtube/v3/docs/playlistItems/update)
+    pub async fn update_playlist_item(
+        &self,
+        mut item: PlaylistItem,
+        new_position: Option<&u32>,
+        new_note: Option<&str>,
+    ) {
+        if let Some(p) = new_position {
+            item.snippet.position = *p;
+        }
+
+        if let Some(n) = new_note {
+            item.content_details.note = Some(n.to_owned());
+        }
+
+        let builder = YoutubeApiRequestBuilder::new(Method::PUT, "playlistItems")
+            .set_param("key", &self.key)
+            .set_body(item);
+
+        // TODO: PUT /playlistitems をやろうと思ったけど、API KEY ではできなくて、OAuth2 認証が必要らしく、断念
+    }
 }
 
-pub struct YoutubeApiRequestBuilder<'a> {
+pub struct YoutubeApiRequestBuilder<'a, T: Serialize + Clone = ()> {
     pub method: Method,
     pub path: &'a str,
     pub params: HashMap<&'a str, &'a str>,
+    pub body: Option<T>,
 }
 
-impl<'a> YoutubeApiRequestBuilder<'a> {
+impl<'a, T: Serialize + Clone> YoutubeApiRequestBuilder<'a, T> {
     pub fn new(method: Method, path: &'a str) -> Self {
         Self {
             method,
             path,
             params: HashMap::new(),
+            body: None,
         }
     }
 
@@ -139,17 +171,24 @@ impl<'a> YoutubeApiRequestBuilder<'a> {
         self
     }
 
-    pub fn to_options(&self) -> YoutubeApiRequestOptions<'a> {
+    pub fn set_body(mut self, body: T) -> Self {
+        self.body = Some(body);
+        self
+    }
+
+    pub fn to_options(&self) -> YoutubeApiRequestOptions<'a, T> {
         let YoutubeApiRequestBuilder {
             method,
             path,
             params,
+            body,
         } = self;
 
         YoutubeApiRequestOptions {
             method: method.clone(),
             path,
             params: params.clone().into_iter().collect(),
+            body: body.clone(),
         }
     }
 }

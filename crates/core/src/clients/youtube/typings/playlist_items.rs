@@ -1,10 +1,10 @@
 #![allow(dead_code)]
 
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// GET /playlistitems [docs](https://developers.google.com/youtube/v3/docs/playlistItems/list)
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct GetPlaylistItemsResponse {
     pub kind: String,
 
@@ -23,7 +23,7 @@ pub struct GetPlaylistItemsResponse {
 }
 
 /// Playlist item resource [docs](https://developers.google.com/youtube/v3/docs/playlistItems#resource)
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItem {
     pub kind: String,
 
@@ -31,15 +31,15 @@ pub struct PlaylistItem {
 
     pub id: String,
 
-    pub snippet: Option<PlaylistItemSnippet>,
+    pub snippet: PlaylistItemSnippet,
 
     #[serde(rename = "contentDetails")]
-    pub content_details: Option<PlaylistItemContentDetails>,
+    pub content_details: PlaylistItemContentDetails,
 
-    pub status: Option<PlaylistItemStatus>,
+    pub status: PlaylistItemStatus,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemsPageInfo {
     #[serde(rename = "totalResults")]
     pub total_results: u32,
@@ -48,7 +48,7 @@ pub struct PlaylistItemsPageInfo {
     pub results_per_page: u32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemSnippet {
     #[serde(rename = "publishedAt")]
     pub published_at: String,
@@ -80,7 +80,7 @@ pub struct PlaylistItemSnippet {
     pub resource_id: PlaylistItemResourceId,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemThumbnail {
     pub url: String,
 
@@ -89,7 +89,7 @@ pub struct PlaylistItemThumbnail {
     pub height: u32,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemResourceId {
     kind: String,
 
@@ -97,7 +97,7 @@ pub struct PlaylistItemResourceId {
     video_id: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemContentDetails {
     #[serde(rename = "videoId")]
     pub video_id: String,
@@ -108,7 +108,7 @@ pub struct PlaylistItemContentDetails {
     pub note: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct PlaylistItemStatus {
     #[serde(rename = "privacyStatus")]
     pub privacy_status: String,
