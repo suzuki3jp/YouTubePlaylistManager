@@ -1,0 +1,20 @@
+{
+	"name": "@playlistmanager/root",
+	"version": "0.0.1",
+	"description": "Multi platform playlist manager",
+	"private": "true",
+	"author": "suzuki3jp <suzuki3.info@gmail.com>",
+	"license": "MIT",
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev",
+		"lint": "turbo run lint",
+		"clean": "turbo run clean"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.9.4",
+		"turbo": "latest",
+		"typescript": "^5.0.0"
+	},
+	"packageManager": "pnpm@9.5.0"
+}
