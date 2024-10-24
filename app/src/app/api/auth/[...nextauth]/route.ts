@@ -18,7 +18,7 @@ declare module "next-auth/jwt" {
 	}
 }
 
-export const options: NextAuthOptions = {
+export const OPTIONS: NextAuthOptions = {
 	session: {
 		strategy: "jwt",
 	},
@@ -51,5 +51,5 @@ export const options: NextAuthOptions = {
 	},
 };
 
-const handler = NextAuth(options);
+const handler = NextAuth(OPTIONS);
 export { handler as GET, handler as POST };
