@@ -7,6 +7,9 @@
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch"
   },
+  "dependencies": {
+    "@playlistmanager/result": "workspace:*"
+  },
   "devDependencies": {
     "tsup": "^8.3.0"
   }
