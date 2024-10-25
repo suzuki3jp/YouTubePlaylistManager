@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { AppBar, ThemeProvider } from "@/components";
+
 export const metadata: Metadata = {
 	title: "PlaylistManager",
 	description: "Managing playlists",
@@ -11,8 +13,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body>{children}</body>
+		<html lang="ja">
+			<body>
+				<ThemeProvider>
+					<AppBar />
+					{children}
+				</ThemeProvider>
+			</body>
 		</html>
 	);
 }
