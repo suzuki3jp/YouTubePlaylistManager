@@ -1,12 +1,5 @@
 "use client";
-import {
-	Card,
-	CardContent,
-	CardHeader,
-	CardMedia,
-	Paper,
-	Typography,
-} from "@mui/material";
+import { Card, CardHeader, CardMedia } from "@mui/material";
 
 export const PlaylistCard = ({
 	playlist,
