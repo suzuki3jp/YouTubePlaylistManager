@@ -34,7 +34,21 @@ export const PlaylistCard = ({
 					marginBottom: "2%",
 				}}
 			/>
-			<CardMedia image={playlist.thumbnailUrl} component={"img"} />
+			<div style={{ position: "relative", paddingTop: "56.25%" }}>
+				<CardMedia
+					image={playlist.thumbnailUrl}
+					component={"img"}
+					sx={{
+						position: "absolute",
+						top: 0,
+						left: 0,
+						width: "100%",
+						height: "100%",
+						objectFit: "cover",
+						borderRadius: 2,
+					}}
+				/>
+			</div>
 			<CardActions disableSpacing sx={{ justifyContent: "flex-end" }}>
 				<ButtonWithDesc title="プレイリストをコピーする">
 					<CopyIcon />
