@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 export default function Home() {
 	const { data } = useSession();
 	const [playlists, setPlaylists] = useState<PlaylistData[]>([]);
-	console.log(data);
 
 	useEffect(() => {
 		const fetch = async () => {
