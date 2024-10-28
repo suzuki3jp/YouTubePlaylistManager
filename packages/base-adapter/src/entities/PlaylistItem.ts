@@ -3,13 +3,15 @@ export class PlaylistItem {
 	private title: string;
 	private thumbnailUrl: string;
 	private position: number;
+	private author: string;
 
 	constructor(data: PlaylistItemData) {
-		const { id, title, thumbnailUrl, position } = data;
+		const { id, title, thumbnailUrl, position, author } = data;
 		this.id = id;
 		this.title = title;
 		this.thumbnailUrl = thumbnailUrl;
 		this.position = position;
+		this.author = author;
 	}
 
 	get getId(): string {
@@ -27,6 +29,10 @@ export class PlaylistItem {
 	get getPosition(): number {
 		return this.position;
 	}
+
+	get getAuthor(): string {
+		return this.author;
+	}
 }
 
 export interface PlaylistItemData {
@@ -34,4 +40,5 @@ export interface PlaylistItemData {
 	title: string;
 	thumbnailUrl: string;
 	position: number;
+	author: string;
 }
