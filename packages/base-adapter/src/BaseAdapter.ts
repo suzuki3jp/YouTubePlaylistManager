@@ -17,4 +17,10 @@ export abstract class BaseAdapter {
 		playlistId: string,
 		accessToken: string,
 	): Promise<Result<FullPlaylist, BaseAdapterError>>;
+
+	abstract addPlaylist(
+		title: string,
+		status: "public" | "private" | "unlisted",
+		accessToken: string,
+	): Promise<Result<Playlist, BaseAdapterError>>;
 }

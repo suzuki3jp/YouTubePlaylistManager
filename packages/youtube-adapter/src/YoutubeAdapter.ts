@@ -30,7 +30,8 @@ export class YoutubeAdapter extends BaseAdapter {
 
 			do {
 				const res = await this.client.getPlaylists(accessToken, nextPageToken);
-				const items = this.convertToPlaylist(res);
+				if (!res.items) throw this.makeError("UNKNOWN_ERROR");
+				const items = this.convertToPlaylist(res.items);
 				playlists = playlists.concat(items);
 				nextPageToken = res.nextPageToken;
 			} while (nextPageToken);
@@ -87,7 +88,8 @@ export class YoutubeAdapter extends BaseAdapter {
 				accessToken,
 			);
 
-			const items = this.convertToPlaylist(res);
+			if (!res.items) throw this.makeError("UNKNOWN_ERROR");
+			const items = this.convertToPlaylist(res.items);
 
 			return new Success(items[0]);
 		} catch (error) {
@@ -95,15 +97,24 @@ export class YoutubeAdapter extends BaseAdapter {
 		}
 	}
 
-	private convertToPlaylist(
-		res: youtube_v3.Schema$PlaylistListResponse,
-	): Playlist[] {
+	async addPlaylist(
+		title: string,
+		status: "public" | "private" | "unlisted",
+		accessToken: string,
+	): Promise<Result<Playlist, YoutubeAdapterError>> {
+		try {
+			const res = await this.client.addPlaylist(title, status, accessToken);
+			const playlist = this.convertToPlaylist([res])[0];
+			return new Success(playlist);
+		} catch (error) {
+			return new Failure(this.handleError(error));
+		}
+	}
+
+	private convertToPlaylist(res: youtube_v3.Schema$Playlist[]): Playlist[] {
 		const convertedItems: Playlist[] = [];
 
-		if (!res.items) throw this.makeError("UNKNOWN_ERROR");
-
-		const items = res.items;
-		for (const i of items) {
+		for (const i of res) {
 			if (!i.id || !i.snippet || !i.snippet.title || !i.snippet.thumbnails)
 				throw this.makeError("UNKNOWN_ERROR");
 
