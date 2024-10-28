@@ -1,3 +1,4 @@
+import { getEnv } from "@/utils";
 import type { NextAuthOptions } from "next-auth";
 import type { DefaultSession } from "next-auth";
 import NextAuth from "next-auth/next";
@@ -18,14 +19,19 @@ declare module "next-auth/jwt" {
 	}
 }
 
+const r = getEnv(["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"]);
+
+if (r.isFailure()) throw r.data;
+const [clientId, clientSecret] = r.data;
+
 export const OPTIONS: NextAuthOptions = {
 	session: {
 		strategy: "jwt",
 	},
 	providers: [
 		GoogleProvider({
-			clientId: process.env.GOOGLE_CLIENT_ID as string,
-			clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+			clientId,
+			clientSecret,
 			authorization: {
 				params: {
 					scope: [
