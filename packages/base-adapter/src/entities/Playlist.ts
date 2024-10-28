@@ -43,3 +43,5 @@ export interface PlaylistData {
 	thumbnailUrl: string;
 	items: PlaylistItem[];
 }
+
+export type PlaylistPrivacy = "public" | "private" | "unlisted";

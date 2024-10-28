@@ -1,3 +1,4 @@
+import type { PlaylistPrivacy } from "@playlistmanager/base-adapter";
 import { google, type youtube_v3 } from "googleapis";
 
 export class YoutubeApiClient {
@@ -64,7 +65,7 @@ export class YoutubeApiClient {
 
 	async addPlaylist(
 		title: string,
-		status: "private" | "public" | "unlisted",
+		status: PlaylistPrivacy,
 		accessToken: string,
 	) {
 		const client = this.getClient(accessToken);
