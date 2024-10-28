@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@mui/material";
+import { NonUpperButton } from "@/components";
 import { signOut } from "next-auth/react";
 
 export const GoogleSignOutButton = () => {
@@ -8,8 +8,8 @@ export const GoogleSignOutButton = () => {
 	};
 
 	return (
-		<Button variant="contained" onClick={handleClick}>
+		<NonUpperButton variant="contained" onClick={handleClick}>
 			Sign out
-		</Button>
+		</NonUpperButton>
 	);
 };
