@@ -1,6 +1,30 @@
 import { google, type youtube_v3 } from "googleapis";
 
 export class YoutubeApiClient {
+	/**
+	 * プレイリストID からプレイリストのアイテムを取得する
+	 * 最大50個を取得し、nextPageToken が渡された場合はそこから最大50個を取得する
+	 * @param playlistId
+	 * @param accessToken
+	 * @param nextPageToken
+	 * @returns
+	 */
+	async getPlaylistItemsByPlaylistId(
+		playlistId: string,
+		accessToken: string,
+		nextPageToken?: string,
+	) {
+		const client = this.getClient(accessToken);
+
+		const res = await client.playlistItems.list({
+			part: ["id", "contentDetails", "snippet", "status"],
+			playlistId,
+			maxResults: 50,
+			pageToken: nextPageToken,
+		});
+		return res.data;
+	}
+
 	async getPlaylistByPlaylistId(playlistId: string, accessToken: string) {
 		const client = this.getClient(accessToken);
 		const res = await client.playlists.list({

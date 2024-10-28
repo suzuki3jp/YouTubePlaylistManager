@@ -1,7 +1,8 @@
 import {
 	BaseAdapter,
-	type FullPlaylist,
+	FullPlaylist,
 	Playlist,
+	PlaylistItem,
 } from "@playlistmanager/base-adapter";
 import { Failure, type Result, Success } from "@playlistmanager/result";
 import type { GaxiosError } from "gaxios";
@@ -40,11 +41,40 @@ export class YoutubeAdapter extends BaseAdapter {
 		}
 	}
 
-	getFullPlaylist(
+	async getFullPlaylist(
 		playlistId: string,
 		accessToken: string,
 	): Promise<Result<FullPlaylist, YoutubeAdapterError>> {
-		throw new Error("Method not implemented.");
+		const items: PlaylistItem[] = [];
+		let nextPageToken: string | undefined = undefined;
+
+		try {
+			const result = await this.getPlaylist(playlistId, accessToken);
+			if (result.isFailure()) throw result.data;
+			const playlist = result.data;
+
+			do {
+				const res = await this.client.getPlaylistItemsByPlaylistId(
+					playlistId,
+					accessToken,
+					nextPageToken,
+				);
+				const gotItems = this.convertToPlaylistItem(res);
+				items.push(...gotItems);
+
+				nextPageToken = res.nextPageToken ?? undefined;
+			} while (nextPageToken);
+
+			const obj = new FullPlaylist({
+				id: playlist.getId,
+				title: playlist.getTitle,
+				thumbnailUrl: playlist.getThumbnailUrl,
+				items,
+			});
+			return new Success(obj);
+		} catch (error) {
+			return new Failure(this.handleError(error));
+		}
 	}
 
 	async getPlaylist(
@@ -74,30 +104,13 @@ export class YoutubeAdapter extends BaseAdapter {
 
 		const items = res.items;
 		for (const i of items) {
-			if (
-				!i.id ||
-				!i.snippet ||
-				!i.snippet.title ||
-				!i.snippet.thumbnails ||
-				!i.snippet.thumbnails.default ||
-				!i.snippet.thumbnails.default.url
-			)
+			if (!i.id || !i.snippet || !i.snippet.title || !i.snippet.thumbnails)
 				throw this.makeError("UNKNOWN_ERROR");
 
-			let thumbnailUrl = i.snippet.thumbnails.default.url;
-
-			if (i.snippet.thumbnails.medium?.url) {
-				thumbnailUrl = i.snippet.thumbnails.medium?.url;
-			}
-			if (i.snippet.thumbnails.high?.url) {
-				thumbnailUrl = i.snippet.thumbnails.high?.url;
-			}
-			if (i.snippet.thumbnails.standard?.url) {
-				thumbnailUrl = i.snippet.thumbnails.standard?.url;
-			}
-			if (i.snippet.thumbnails.maxres?.url) {
-				thumbnailUrl = i.snippet.thumbnails.maxres?.url;
-			}
+			const thumbnailUrl = this.getThumbnailUrlFromAPIData(
+				i.snippet.thumbnails,
+			);
+			if (!thumbnailUrl) throw this.makeError("UNKNOWN_ERROR");
 
 			const obj = new Playlist({
 				id: i.id,
@@ -107,6 +120,65 @@ export class YoutubeAdapter extends BaseAdapter {
 			convertedItems.push(obj);
 		}
 		return convertedItems;
+	}
+
+	private convertToPlaylistItem(
+		res: youtube_v3.Schema$PlaylistItemListResponse,
+	): PlaylistItem[] {
+		const convertedItems: PlaylistItem[] = [];
+
+		if (!res.items) throw this.makeError("UNKNOWN_ERROR");
+		const items = res.items;
+		for (const i of items) {
+			if (
+				!i.id ||
+				!i.snippet ||
+				!i.snippet.title ||
+				typeof i.snippet.position !== "number" ||
+				!i.snippet.videoOwnerChannelTitle ||
+				!i.snippet.thumbnails
+			)
+				throw this.makeError("UNKNOWN_ERROR");
+
+			const thumbnailUrl = this.getThumbnailUrlFromAPIData(
+				i.snippet.thumbnails,
+			);
+			if (!thumbnailUrl) throw this.makeError("UNKNOWN_ERROR");
+
+			const obj = new PlaylistItem({
+				id: i.id,
+				title: i.snippet.title,
+				thumbnailUrl,
+				position: i.snippet.position,
+				// Youtube Music の曲などのアイテムでは "OwnerName - Topic" という形式で返されるため " - Topic" をトリミングする
+				author: i.snippet.videoOwnerChannelTitle
+					.replace(/\s*-\s*Topic$/, "")
+					.trim(),
+			});
+			convertedItems.push(obj);
+		}
+		return convertedItems;
+	}
+
+	private getThumbnailUrlFromAPIData(
+		data: youtube_v3.Schema$ThumbnailDetails,
+	): string | undefined {
+		let url = data.default?.url;
+
+		if (data.medium?.url) {
+			url = data.medium?.url;
+		}
+		if (data.high?.url) {
+			url = data.high?.url;
+		}
+		if (data.standard?.url) {
+			url = data.standard?.url;
+		}
+		if (data.maxres?.url) {
+			url = data.maxres?.url;
+		}
+
+		return url ?? undefined;
 	}
 
 	private handleError(err: unknown): YoutubeAdapterError {
