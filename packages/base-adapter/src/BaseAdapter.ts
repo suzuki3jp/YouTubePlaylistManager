@@ -1,6 +1,11 @@
 import type { Result } from "@playlistmanager/result";
 import type { BaseAdapterError } from "./BaseAdapterError";
-import type { FullPlaylist, Playlist, PlaylistPrivacy } from "./entities";
+import type {
+	FullPlaylist,
+	Playlist,
+	PlaylistItem,
+	PlaylistPrivacy,
+} from "./entities";
 
 export abstract class BaseAdapter {
 	abstract getPlaylists(
@@ -23,4 +28,10 @@ export abstract class BaseAdapter {
 		status: PlaylistPrivacy,
 		accessToken: string,
 	): Promise<Result<Playlist, BaseAdapterError>>;
+
+	abstract addPlaylistItem(
+		playlistId: string,
+		resourceId: string,
+		accessToken: string,
+	): Promise<Result<PlaylistItem, BaseAdapterError>>;
 }

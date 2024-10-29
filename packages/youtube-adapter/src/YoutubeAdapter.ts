@@ -60,7 +60,10 @@ export class YoutubeAdapter extends BaseAdapter {
 					accessToken,
 					nextPageToken,
 				);
-				const gotItems = this.convertToPlaylistItem(res);
+
+				if (!res.items) throw this.makeError("UNKNOWN_ERROR");
+
+				const gotItems = this.convertToPlaylistItem(res.items);
 				items.push(...gotItems);
 
 				nextPageToken = res.nextPageToken ?? undefined;
@@ -111,6 +114,24 @@ export class YoutubeAdapter extends BaseAdapter {
 		}
 	}
 
+	async addPlaylistItem(
+		playlistId: string,
+		resourceId: string,
+		accessToken: string,
+	): Promise<Result<PlaylistItem, YoutubeAdapterError>> {
+		try {
+			const res = await this.client.addPlaylistItem(
+				playlistId,
+				resourceId,
+				accessToken,
+			);
+			const item = this.convertToPlaylistItem([res]);
+			return new Success(item[0]);
+		} catch (error) {
+			return new Failure(this.handleError(error));
+		}
+	}
+
 	private convertToPlaylist(res: youtube_v3.Schema$Playlist[]): Playlist[] {
 		const convertedItems: Playlist[] = [];
 
@@ -134,12 +155,10 @@ export class YoutubeAdapter extends BaseAdapter {
 	}
 
 	private convertToPlaylistItem(
-		res: youtube_v3.Schema$PlaylistItemListResponse,
+		items: youtube_v3.Schema$PlaylistItem[],
 	): PlaylistItem[] {
 		const convertedItems: PlaylistItem[] = [];
 
-		if (!res.items) throw this.makeError("UNKNOWN_ERROR");
-		const items = res.items;
 		for (const i of items) {
 			if (
 				!i.id ||
