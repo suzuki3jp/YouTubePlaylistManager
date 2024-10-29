@@ -164,6 +164,8 @@ export class YoutubeAdapter extends BaseAdapter {
 				!i.id ||
 				!i.snippet ||
 				!i.snippet.title ||
+				!i.snippet.resourceId ||
+				!i.snippet.resourceId.videoId ||
 				typeof i.snippet.position !== "number" ||
 				!i.snippet.videoOwnerChannelTitle ||
 				!i.snippet.thumbnails
@@ -184,6 +186,7 @@ export class YoutubeAdapter extends BaseAdapter {
 				author: i.snippet.videoOwnerChannelTitle
 					.replace(/\s*-\s*Topic$/, "")
 					.trim(),
+				videoId: i.snippet.resourceId.videoId,
 			});
 			convertedItems.push(obj);
 		}
