@@ -7,6 +7,8 @@ import {
 } from "@mui/icons-material";
 import { Card, CardActions, CardHeader, CardMedia } from "@mui/material";
 
+import { copyPlaylist } from "@/actions";
+import { useSession } from "next-auth/react";
 import { ButtonWithDesc } from "../button-with-desc";
 
 export const PlaylistCard = ({
@@ -14,6 +16,18 @@ export const PlaylistCard = ({
 }: Readonly<{
 	playlist: PlaylistData;
 }>) => {
+	const id = playlist.id;
+	const { data } = useSession();
+	const onCopyButtonClick = async () => {
+		if (!data?.accessToken) return;
+		const copyResult = await copyPlaylist({
+			id,
+			token: data.accessToken,
+			privacy: "unlisted",
+		});
+		alert(copyResult.status);
+	};
+
 	return (
 		<Card
 			sx={{
@@ -50,7 +64,10 @@ export const PlaylistCard = ({
 				/>
 			</div>
 			<CardActions disableSpacing sx={{ justifyContent: "flex-end" }}>
-				<ButtonWithDesc title="プレイリストをコピーする">
+				<ButtonWithDesc
+					title="プレイリストをコピーする"
+					onClick={onCopyButtonClick}
+				>
 					<CopyIcon />
 				</ButtonWithDesc>
 				<ButtonWithDesc title="プレイリストの動画順をシャッフルする">

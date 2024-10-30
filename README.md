@@ -6,8 +6,8 @@
 
 ## Roadmap
 
+- [x] Copy a playlist
 - [ ] Shuffle playlist items
-- [ ] Copy a playlist
 - [ ] Merge playlists
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
 - [ ] Extract specific artist's song from a playlist
