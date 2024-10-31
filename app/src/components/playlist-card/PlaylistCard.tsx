@@ -18,6 +18,7 @@ export const PlaylistCard = ({
 }>) => {
 	const id = playlist.id;
 	const { data } = useSession();
+	// TODO: 結果の出力、確認画面を整備する
 	const onCopyButtonClick = async () => {
 		if (!data?.accessToken) return;
 		const copyResult = await copyPlaylist({
@@ -33,6 +34,7 @@ export const PlaylistCard = ({
 	const onMergeButtonClick = async () =>
 		alert("プレイリストの結合はまだ実装されていません。");
 
+	// TODO: 結果の出力、確認画面を整備する
 	const onDeleteButtonClick = async () => {
 		if (!data?.accessToken) return alert("TOKEN が無効です");
 		const deleteResult = await deletePlaylist(id, data.accessToken);
