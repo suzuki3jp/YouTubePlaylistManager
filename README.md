@@ -7,6 +7,7 @@
 ## Roadmap
 
 - [x] Copy a playlist
+- [x] Delete a playlist
 - [ ] Shuffle playlist items
 - [ ] Merge playlists
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
