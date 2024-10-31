@@ -18,6 +18,9 @@ export const YoutubeAdapterErrorCodes = {
 		code: 401,
 		message: "Unauthorized: invalid access_token",
 	},
+	/**
+	 * クォータ制限の時はこのコードが返されるかも
+	 */
 	FORBIDDEN: {
 		code: 403,
 		message: "Forbidden: permission denied",
