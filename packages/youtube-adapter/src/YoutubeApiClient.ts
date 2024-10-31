@@ -83,6 +83,12 @@ export class YoutubeApiClient {
 		return res.data;
 	}
 
+	async deletePlaylist(playlistId: string, accessToken: string) {
+		const client = this.getClient(accessToken);
+		const res = await client.playlists.delete({ id: playlistId });
+		return res.status;
+	}
+
 	async addPlaylistItem(
 		playlistId: string,
 		resourceId: string,

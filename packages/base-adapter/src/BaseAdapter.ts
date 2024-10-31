@@ -34,4 +34,9 @@ export abstract class BaseAdapter {
 		resourceId: string,
 		accessToken: string,
 	): Promise<Result<PlaylistItem, BaseAdapterError>>;
+
+	abstract deletePlaylist(
+		playlistId: string,
+		accessToken: string,
+	): Promise<Result<Playlist, BaseAdapterError>>;
 }

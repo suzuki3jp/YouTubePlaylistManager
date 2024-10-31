@@ -7,7 +7,7 @@ import {
 } from "@mui/icons-material";
 import { Card, CardActions, CardHeader, CardMedia } from "@mui/material";
 
-import { copyPlaylist } from "@/actions";
+import { copyPlaylist, deletePlaylist } from "@/actions";
 import { useSession } from "next-auth/react";
 import { ButtonWithDesc } from "../button-with-desc";
 
@@ -32,8 +32,12 @@ export const PlaylistCard = ({
 		alert("プレイリストのシャッフルはまだ実装されていません。");
 	const onMergeButtonClick = async () =>
 		alert("プレイリストの結合はまだ実装されていません。");
-	const onDeleteButtonClick = async () =>
-		alert("プレイリストの削除はまだ実装されていません。");
+
+	const onDeleteButtonClick = async () => {
+		if (!data?.accessToken) return alert("TOKEN が無効です");
+		const deleteResult = await deletePlaylist(id, data.accessToken);
+		alert(deleteResult.status);
+	};
 
 	return (
 		<Card
