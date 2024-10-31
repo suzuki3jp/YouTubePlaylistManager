@@ -77,13 +77,22 @@ export const PlaylistCard = ({
 				>
 					<CopyIcon />
 				</ButtonWithDesc>
-				<ButtonWithDesc title="プレイリストの動画順をシャッフルする">
+				<ButtonWithDesc
+					title="プレイリストの動画順をシャッフルする"
+					onClick={onShuffleButtonClick}
+				>
 					<ShuffleIcon />
 				</ButtonWithDesc>
-				<ButtonWithDesc title="プレイリスト同士を結合する">
+				<ButtonWithDesc
+					title="プレイリスト同士を結合する"
+					onClick={onMergeButtonClick}
+				>
 					<MergeIcon />
 				</ButtonWithDesc>
-				<ButtonWithDesc title="プレイリストを削除する">
+				<ButtonWithDesc
+					title="プレイリストを削除する"
+					onClick={onDeleteButtonClick}
+				>
 					<DeleteIcon />
 				</ButtonWithDesc>
 			</CardActions>
