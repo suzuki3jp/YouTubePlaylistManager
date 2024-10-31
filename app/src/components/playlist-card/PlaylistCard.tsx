@@ -28,6 +28,13 @@ export const PlaylistCard = ({
 		alert(copyResult.status);
 	};
 
+	const onShuffleButtonClick = async () =>
+		alert("プレイリストのシャッフルはまだ実装されていません。");
+	const onMergeButtonClick = async () =>
+		alert("プレイリストの結合はまだ実装されていません。");
+	const onDeleteButtonClick = async () =>
+		alert("プレイリストの削除はまだ実装されていません。");
+
 	return (
 		<Card
 			sx={{
