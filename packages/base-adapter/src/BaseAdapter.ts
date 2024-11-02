@@ -35,6 +35,14 @@ export abstract class BaseAdapter {
 		accessToken: string,
 	): Promise<Result<PlaylistItem, BaseAdapterError>>;
 
+	abstract updatePlaylistItemPosition(
+		itemId: string,
+		playlistId: string,
+		resourceId: string,
+		position: number,
+		accessToken: string,
+	): Promise<Result<PlaylistItem, BaseAdapterError>>;
+
 	abstract deletePlaylist(
 		playlistId: string,
 		accessToken: string,

@@ -114,6 +114,28 @@ export class YoutubeAdapter extends BaseAdapter {
 		}
 	}
 
+	async updatePlaylistItemPosition(
+		itemId: string,
+		playlistId: string,
+		resourceId: string,
+		position: number,
+		accessToken: string,
+	): Promise<Result<PlaylistItem, YoutubeAdapterError>> {
+		try {
+			const res = await this.client.updatePlaylistItem(
+				itemId,
+				playlistId,
+				resourceId,
+				position,
+				accessToken,
+			);
+			const playlistItem = this.convertToPlaylistItem([res])[0];
+			return new Success(playlistItem);
+		} catch (error) {
+			return new Failure(this.handleError(error));
+		}
+	}
+
 	async deletePlaylist(
 		playlistId: string,
 		accessToken: string,

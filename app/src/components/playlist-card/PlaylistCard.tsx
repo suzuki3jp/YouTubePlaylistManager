@@ -8,6 +8,7 @@ import {
 import { Card, CardActions, CardHeader, CardMedia } from "@mui/material";
 
 import { copyPlaylist, deletePlaylist } from "@/actions";
+import { shufflePlaylist } from "@/actions/shuffle-playlist";
 import { useSession } from "next-auth/react";
 import { ButtonWithDesc } from "../button-with-desc";
 
@@ -29,8 +30,17 @@ export const PlaylistCard = ({
 		alert(copyResult.status);
 	};
 
-	const onShuffleButtonClick = async () =>
-		alert("プレイリストのシャッフルはまだ実装されていません。");
+	// TODO: 結果の出力、確認画面を整備する
+	const onShuffleButtonClick = async () => {
+		if (!data?.accessToken) return;
+		const shuffleResult = await shufflePlaylist({
+			playlistId: id,
+			accessToken: data.accessToken,
+			ratio: 0.4,
+		});
+		alert(shuffleResult.status);
+	};
+
 	const onMergeButtonClick = async () =>
 		alert("プレイリストの結合はまだ実装されていません。");
 

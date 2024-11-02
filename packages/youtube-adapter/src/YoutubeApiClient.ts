@@ -110,6 +110,31 @@ export class YoutubeApiClient {
 		return res.data;
 	}
 
+	async updatePlaylistItem(
+		itemId: string,
+		playlistId: string,
+		resourceId: string,
+		position: number,
+		accessToken: string,
+	) {
+		const client = this.getClient(accessToken);
+		const res = await client.playlistItems.update({
+			part: ["id", "snippet", "contentDetails", "status"],
+			requestBody: {
+				id: itemId,
+				snippet: {
+					playlistId,
+					position,
+					resourceId: {
+						kind: "youtube#video",
+						videoId: resourceId,
+					},
+				},
+			},
+		});
+		return res.data;
+	}
+
 	private getClient(accessToken: string): youtube_v3.Youtube {
 		const oauth = new google.auth.OAuth2();
 		oauth.setCredentials({
