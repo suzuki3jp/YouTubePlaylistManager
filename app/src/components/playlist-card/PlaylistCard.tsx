@@ -1,118 +1,66 @@
 "use client";
-import {
-	ContentCopy as CopyIcon,
-	Delete as DeleteIcon,
-	CallMerge as MergeIcon,
-	Shuffle as ShuffleIcon,
-} from "@mui/icons-material";
-import { Card, CardActions, CardHeader, CardMedia } from "@mui/material";
-
-import { copyPlaylist, deletePlaylist } from "@/actions";
-import { shufflePlaylist } from "@/actions/shuffle-playlist";
-import { useSession } from "next-auth/react";
-import { ButtonWithDesc } from "../button-with-desc";
+import { CheckCircle as CheckIcon } from "@mui/icons-material";
+import { ButtonBase, Card, CardHeader, CardMedia } from "@mui/material";
 
 export const PlaylistCard = ({
 	playlist,
-}: Readonly<{
-	playlist: PlaylistData;
-}>) => {
-	const id = playlist.id;
-	const { data } = useSession();
-	// TODO: 結果の出力、確認画面を整備する
-	const onCopyButtonClick = async () => {
-		if (!data?.accessToken) return;
-		const copyResult = await copyPlaylist({
-			id,
-			token: data.accessToken,
-			privacy: "unlisted",
-		});
-		alert(copyResult.status);
-	};
-
-	// TODO: 結果の出力、確認画面を整備する
-	const onShuffleButtonClick = async () => {
-		if (!data?.accessToken) return;
-		const shuffleResult = await shufflePlaylist({
-			playlistId: id,
-			accessToken: data.accessToken,
-			ratio: 0.4,
-		});
-		alert(shuffleResult.status);
-	};
-
-	const onMergeButtonClick = async () =>
-		alert("プレイリストの結合はまだ実装されていません。");
-
-	// TODO: 結果の出力、確認画面を整備する
-	const onDeleteButtonClick = async () => {
-		if (!data?.accessToken) return alert("TOKEN が無効です");
-		const deleteResult = await deletePlaylist(id, data.accessToken);
-		alert(deleteResult.status);
-	};
-
+	isSelected,
+	toggleSelected,
+}: Readonly<PlaylistCardProps>) => {
 	return (
-		<Card
+		<ButtonBase
 			sx={{
-				bgcolor: "grey.900",
-				borderRadius: 4,
-				p: 2,
-				"& .MuiCardHeader-root": {
-					p: 0,
-				},
-				"& .MuiCardActions-root": {
-					p: 0,
-				},
+				width: "100%",
+				display: "block",
 			}}
+			onClick={() => toggleSelected(playlist)}
 		>
-			<CardHeader
-				title={playlist.title}
+			<Card
 				sx={{
-					marginBottom: "2%",
+					bgcolor: isSelected ? "rgba(45, 128, 255, 0.15)" : "grey.900",
+					border: isSelected ? "2px solid #2d80ff" : "2px solid transparent",
+					borderRadius: 4,
+					p: 2,
+					"& .MuiCardHeader-root": {
+						p: 0,
+					},
+					"& .MuiCardActions-root": {
+						p: 0,
+					},
+					"&:hover": {
+						bgcolor: isSelected
+							? "rgba(45, 128, 255, 0.2)"
+							: "rgba(45, 45, 45, 0.9)",
+					},
 				}}
-			/>
-			<div style={{ position: "relative", paddingTop: "56.25%" }}>
-				<CardMedia
-					image={playlist.thumbnailUrl}
-					component={"img"}
-					sx={{
-						position: "absolute",
-						top: 0,
-						left: 0,
-						width: "100%",
-						height: "100%",
-						objectFit: "cover",
-						borderRadius: 2,
+			>
+				<div
+					style={{
+						display: "flex",
+						alignItems: "center",
+						marginBottom: "2%",
 					}}
-				/>
-			</div>
-			<CardActions disableSpacing sx={{ justifyContent: "flex-end" }}>
-				<ButtonWithDesc
-					title="プレイリストをコピーする"
-					onClick={onCopyButtonClick}
 				>
-					<CopyIcon />
-				</ButtonWithDesc>
-				<ButtonWithDesc
-					title="プレイリストの動画順をシャッフルする"
-					onClick={onShuffleButtonClick}
-				>
-					<ShuffleIcon />
-				</ButtonWithDesc>
-				<ButtonWithDesc
-					title="プレイリスト同士を結合する"
-					onClick={onMergeButtonClick}
-				>
-					<MergeIcon />
-				</ButtonWithDesc>
-				<ButtonWithDesc
-					title="プレイリストを削除する"
-					onClick={onDeleteButtonClick}
-				>
-					<DeleteIcon />
-				</ButtonWithDesc>
-			</CardActions>
-		</Card>
+					{isSelected && <CheckIcon sx={{ marginRight: "2%" }} />}
+					<CardHeader title={playlist.title} />
+				</div>
+				<div style={{ position: "relative", paddingTop: "56.25%" }}>
+					<CardMedia
+						image={playlist.thumbnailUrl}
+						component={"img"}
+						sx={{
+							position: "absolute",
+							top: 0,
+							left: 0,
+							width: "100%",
+							height: "100%",
+							objectFit: "cover",
+							borderRadius: 2,
+						}}
+					/>
+				</div>
+			</Card>
+		</ButtonBase>
 	);
 };
 
@@ -120,4 +68,10 @@ export interface PlaylistData {
 	id: string;
 	title: string;
 	thumbnailUrl: string;
+}
+
+export interface PlaylistCardProps {
+	playlist: PlaylistData;
+	isSelected: boolean;
+	toggleSelected: (playlist: PlaylistData) => void;
 }
