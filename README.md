@@ -9,7 +9,7 @@
 - [x] Copy a playlist
 - [x] Delete a playlist
 - [x] Shuffle playlist items
-- [ ] Merge playlists
+- [x] Merge playlists
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
 - [ ] Extract specific artist's song from a playlist
 - [ ] Sort playlist items by artist name or song title

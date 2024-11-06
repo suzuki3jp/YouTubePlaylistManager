@@ -29,6 +29,14 @@ export const YoutubeAdapterErrorCodes = {
 		code: 404,
 		message: "NotFound: could not find the resource",
 	},
+	/**
+	 * playlistItems.insert とかでたまにこのエラーが発生する。
+	 * 同じ条件でも安定して発生するわけではないので、おそらくリクエストの間隔が短すぎることが原因？
+	 */
+	CONFLICT: {
+		code: 409,
+		message: "Conflict: resource already exist",
+	},
 	TOO_MANY_REQUESTS: {
 		code: 429,
 		message: "TooManyRequests: Youtube API daily quota exceeded",

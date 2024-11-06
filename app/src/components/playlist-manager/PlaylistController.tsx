@@ -1,5 +1,10 @@
 "use client";
-import { copyPlaylist, deletePlaylist, shufflePlaylist } from "@/actions";
+import {
+	copyPlaylist,
+	deletePlaylist,
+	mergePlaylist,
+	shufflePlaylist,
+} from "@/actions";
 import { NonUpperButton, type PlaylistData } from "@/components";
 import {
 	ContentCopy as CopyIcon,
@@ -43,8 +48,15 @@ export const PlaylistController = ({
 		alert(200);
 	};
 
-	const onMergeButtonClick = async () =>
-		alert("プレイリストの結合はまだ実装されていません。");
+	// TODO: 結果の出力、確認画面を整備する
+	const onMergeButtonClick = async () => {
+		if (!data?.accessToken) return alert("TOKEN が無効です");
+		const result = await mergePlaylist(
+			selectedItems.map((p) => p.id),
+			data.accessToken,
+		);
+		alert(result.status);
+	};
 
 	// TODO: 結果の出力、確認画面を整備する
 	const onDeleteButtonClick = async () => {
