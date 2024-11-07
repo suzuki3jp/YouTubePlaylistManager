@@ -5,7 +5,7 @@ import {
 	mergePlaylist,
 	shufflePlaylist,
 } from "@/actions";
-import { NonUpperButton, type PlaylistData } from "@/components";
+import { NonUpperButton, type PlaylistData, WrappedDialog } from "@/components";
 import {
 	ContentCopy as CopyIcon,
 	Delete as DeleteIcon,
@@ -14,11 +14,14 @@ import {
 } from "@mui/icons-material";
 import { Grid2 as Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export const PlaylistController = ({
 	selectedItems,
 }: Readonly<PlaylistControllerProps>) => {
 	const { data } = useSession();
+	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
 	// TODO: 結果の出力、確認画面を整備する
 	const onCopyButtonClick = async () => {
 		if (!data?.accessToken) return alert("TOKEN が無効です");
@@ -58,15 +61,8 @@ export const PlaylistController = ({
 		alert(result.status);
 	};
 
-	// TODO: 結果の出力、確認画面を整備する
-	const onDeleteButtonClick = async () => {
-		if (!data?.accessToken) return alert("TOKEN が無効です");
-		for (const playlist of selectedItems) {
-			const result = await deletePlaylist(playlist.id, data.accessToken);
-			if (result.status !== 200) alert(result.status);
-		}
-		alert(200);
-	};
+	// TODO: 結果の出力を整備する
+	const onDeleteButtonClick = async () => setIsDeleteOpen(true);
 
 	return selectedItems.length === 0 ? (
 		<></>
@@ -108,6 +104,26 @@ export const PlaylistController = ({
 					Delete
 				</NonUpperButton>
 			</Grid>
+
+			{/**
+			 * DeleteDialog
+			 */}
+			<WrappedDialog
+				open={isDeleteOpen}
+				onClose={() => setIsDeleteOpen(false)}
+				onConfirm={async () => {
+					setIsDeleteOpen(false);
+					if (!data?.accessToken) return alert("TOKEN が無効です");
+					for (const playlist of selectedItems) {
+						const result = await deletePlaylist(playlist.id, data.accessToken);
+						if (result.status !== 200) alert(result.status);
+					}
+					alert(200);
+				}}
+				title="削除の確認"
+				content={selectedItems.map((p) => p.title).join("\n")}
+				isWarning
+			/>
 		</Grid>
 	);
 };
