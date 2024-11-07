@@ -6,11 +6,7 @@ export const PlaylistDisplay = ({
 	playlists,
 	selectedPlaylist,
 	toggleSelected,
-}: {
-	playlists: PlaylistData[];
-	selectedPlaylist: PlaylistData[];
-	toggleSelected: (playlist: PlaylistData) => void;
-}) => {
+}: Readonly<PlaylistDisplayProps>) => {
 	return (
 		<Grid container spacing={2} marginTop={"1%"}>
 			{playlists.map((v) => (
@@ -26,3 +22,9 @@ export const PlaylistDisplay = ({
 		</Grid>
 	);
 };
+
+export interface PlaylistDisplayProps {
+	playlists: PlaylistData[];
+	selectedPlaylist: PlaylistData[];
+	toggleSelected: (playlist: PlaylistData) => void;
+}

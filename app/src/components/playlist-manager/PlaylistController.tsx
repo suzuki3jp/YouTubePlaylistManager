@@ -17,7 +17,7 @@ import { useSession } from "next-auth/react";
 
 export const PlaylistController = ({
 	selectedItems,
-}: PlaylistControllerProps) => {
+}: Readonly<PlaylistControllerProps>) => {
 	const { data } = useSession();
 	// TODO: 結果の出力、確認画面を整備する
 	const onCopyButtonClick = async () => {

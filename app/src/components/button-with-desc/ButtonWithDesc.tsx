@@ -13,14 +13,7 @@ export const ButtonWithDesc = ({
 	enterDelay,
 	leaveDelay,
 	onClick,
-}: {
-	children: ReactNode;
-	title?: TooltipProps["title"];
-	arrow?: boolean;
-	enterDelay?: TooltipProps["enterDelay"];
-	leaveDelay?: TooltipProps["leaveDelay"];
-	onClick?: IconButtonProps["onClick"];
-}) => {
+}: Readonly<ButtonWithDescProps>) => {
 	return (
 		<Tooltip
 			title={title}
@@ -32,3 +25,12 @@ export const ButtonWithDesc = ({
 		</Tooltip>
 	);
 };
+
+export interface ButtonWithDescProps {
+	children: ReactNode;
+	title?: TooltipProps["title"];
+	arrow?: boolean;
+	enterDelay?: TooltipProps["enterDelay"];
+	leaveDelay?: TooltipProps["leaveDelay"];
+	onClick?: IconButtonProps["onClick"];
+}
