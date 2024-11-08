@@ -1,6 +1,6 @@
 > [!IMPORTANT]
-> The current UI of this application is available only in Japanese.
-> Since there are no complex operations at this time, we believe it can still be used even without understanding Japanese.
+> The current UI of this application is available only in Japanese.  
+> Since there are no complex operations at this time, we believe it can still be used even without understanding Japanese.  
 > We welcome PRs for localization support!
 
 <h2 align="center">PlaylistManager</h2>
