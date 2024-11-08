@@ -15,6 +15,24 @@
 - [ ] Sort playlist items by artist name or song title
 - [ ] GUI
 
+## How To Use
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/), [pnpm](https://pnpm.io/) installed on your computer.  
+From your command line:
+```bash
+# Clone this repository
+$ git clone https://github.com/suzuki3jp/PlaylistManager.git
+
+# Go into the repository
+$ cd PlaylistManager
+
+# Rename `app/sample.env` to `app/.env` and set the appropriate values
+
+# Install dependencies
+$ pnpm install
+
+# Run the app
+$ pnpm dev
+```
 ## License
 
 [MIT](./LICENSE)
