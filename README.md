@@ -4,6 +4,8 @@
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
 
+![PlaylistManagerDemo](./assets/PlaylistManagerDemo.gif)
+
 ## Features
 - Manage youtube playlists from Web GUI
 - Copy playlists
