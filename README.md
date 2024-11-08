@@ -4,16 +4,21 @@
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
 
-## Roadmap
+## Features
+- Manage youtube playlists from Web GUI
+- Copy playlists
+- Shuffle playlist items
+- Merge playlists
+- Delete playlists
 
-- [x] Copy a playlist
-- [x] Delete a playlist
+## Roadmap
+- [x] Copy playlists
+- [x] Delete playlists
 - [x] Shuffle playlist items
 - [x] Merge playlists
-- [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
-- [ ] Extract specific artist's song from a playlist
+- [ ] Extract specific artist's song from playlists
 - [ ] Sort playlist items by artist name or song title
-- [ ] GUI
+- [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
 
 ## How To Use
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/), [pnpm](https://pnpm.io/) installed on your computer.  
