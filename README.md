@@ -1,5 +1,7 @@
 > [!IMPORTANT]
-> This application is currently in the early stages of development. There may be breaking changes in the future, and it may contain critical bugs or defects.
+> The current UI of this application is available only in Japanese.
+> Since there are no complex operations at this time, we believe it can still be used even without understanding Japanese.
+> We welcome PRs for localization support!
 
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
