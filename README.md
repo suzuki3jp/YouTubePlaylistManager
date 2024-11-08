@@ -20,6 +20,7 @@
 - [x] Delete playlists
 - [x] Shuffle playlist items
 - [x] Merge playlists
+- [ ] Localization
 - [ ] Extract specific artist's song from playlists
 - [ ] Sort playlist items by artist name or song title
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)
