@@ -45,4 +45,14 @@ $ pnpm dev
 ```
 ## License
 
-[MIT](./LICENSE)
+[MIT License](./LICENSE)
+
+## Disclaimer
+
+PlaylistManager is an independently developed application that utilizes the YouTube Data API to streamline playlist management through features such as copying, shuffling, merging, and deleting playlists.
+
+This application is not affiliated with, endorsed by, or in any way officially connected to YouTube or Google. All product and company names are trademarks™ or registered® trademarks of their respective holders.
+
+Users must comply with YouTube's Terms of Service, and it is the user's responsibility to ensure compliance with all applicable terms and conditions when using this application.
+
+The developer accepts no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk.
