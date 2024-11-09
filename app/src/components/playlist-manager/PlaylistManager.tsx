@@ -3,7 +3,7 @@ import { getPlaylists } from "@/actions";
 import type { PlaylistData } from "@/components";
 import { Grid2 as Grid } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PlaylistController } from "./PlaylistController";
 import { PlaylistDisplay } from "./PlaylistDisplay";
 
@@ -23,25 +23,30 @@ export const PlaylistManager = () => {
 		return setSelectedPlaylists([...selectedPlaylists, playlist]);
 	};
 
-	useEffect(() => {
-		const fetch = async () => {
-			if (!data || !data.accessToken) return;
-			const p = await getPlaylists(data.accessToken);
-			if (p.status === 200) {
-				setPlaylists(p.data);
-			} else if (p.status === 401) {
-				signOut();
-			}
-		};
-		fetch();
+	const refreshPlaylists = useCallback(async () => {
+		if (!data || !data.accessToken) return;
+		const p = await getPlaylists(data.accessToken);
+		if (p.status === 200) {
+			setPlaylists(p.data);
+			setSelectedPlaylists([]);
+		} else {
+			signOut();
+		}
 	}, [data]);
+
+	useEffect(() => {
+		refreshPlaylists();
+	}, [refreshPlaylists]);
 
 	return (
 		<>
 			<Grid container marginTop="1%">
 				<Grid size={2} />
 				<Grid size={8}>
-					<PlaylistController selectedItems={selectedPlaylists} />
+					<PlaylistController
+						selectedItems={selectedPlaylists}
+						refreshPlaylists={refreshPlaylists}
+					/>
 					<PlaylistDisplay
 						playlists={playlists}
 						selectedPlaylist={selectedPlaylists}

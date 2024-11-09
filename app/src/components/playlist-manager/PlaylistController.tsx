@@ -19,6 +19,7 @@ import { useState } from "react";
 
 export const PlaylistController = ({
 	selectedItems,
+	refreshPlaylists,
 }: Readonly<PlaylistControllerProps>) => {
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -38,6 +39,7 @@ export const PlaylistController = ({
 				status: result.status,
 			});
 		}
+		refreshPlaylists();
 	};
 
 	// TODO: 結果の出力を整備する
@@ -55,6 +57,7 @@ export const PlaylistController = ({
 				status: result.status,
 			});
 		}
+		refreshPlaylists();
 	};
 
 	// TODO: 結果の出力を整備する
@@ -69,6 +72,7 @@ export const PlaylistController = ({
 			title: selectedItems.map((p) => p.title),
 			status: result.status,
 		});
+		refreshPlaylists();
 	};
 
 	// TODO: 結果の出力を整備する
@@ -132,6 +136,7 @@ export const PlaylistController = ({
 							status: result.status,
 						});
 					}
+					refreshPlaylists();
 				}}
 				title="削除の確認"
 				content={selectedItems.map((p) => p.title).join("\n")}
@@ -143,6 +148,7 @@ export const PlaylistController = ({
 
 export interface PlaylistControllerProps {
 	selectedItems: PlaylistData[];
+	refreshPlaylists: () => void;
 }
 
 const resultSnackbar = {
