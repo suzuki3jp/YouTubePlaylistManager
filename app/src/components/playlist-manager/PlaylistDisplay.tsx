@@ -10,7 +10,7 @@ export const PlaylistDisplay = ({
 	return (
 		<Grid container spacing={2} marginTop={"1%"}>
 			{playlists.map((v) => (
-				<Grid key={v.id} size={3}>
+				<Grid key={v.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
 					<PlaylistCard
 						key={v.id}
 						playlist={v}
