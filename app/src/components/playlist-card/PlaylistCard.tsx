@@ -48,6 +48,7 @@ export const PlaylistCard = ({
 					<CardMedia
 						image={playlist.thumbnailUrl}
 						component={"img"}
+						draggable={false}
 						sx={{
 							position: "absolute",
 							top: 0,
