@@ -1,6 +1,5 @@
+import { AppBar, SnackbarProvider, ThemeProvider } from "@/components";
 import type { Metadata } from "next";
-
-import { AppBar, ThemeProvider } from "@/components";
 
 export const metadata: Metadata = {
 	title: "PlaylistManager",
@@ -15,10 +14,12 @@ export default function RootLayout({
 	return (
 		<html lang="ja">
 			<body>
-				<ThemeProvider>
-					<AppBar />
-					{children}
-				</ThemeProvider>
+				<SnackbarProvider>
+					<ThemeProvider>
+						<AppBar />
+						{children}
+					</ThemeProvider>
+				</SnackbarProvider>
 			</body>
 		</html>
 	);

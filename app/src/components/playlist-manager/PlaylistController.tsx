@@ -14,6 +14,7 @@ import {
 } from "@mui/icons-material";
 import { Grid2 as Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 
 export const PlaylistController = ({
@@ -22,7 +23,7 @@ export const PlaylistController = ({
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
-	// TODO: 結果の出力、確認画面を整備する
+	// TODO: 結果の出力を整備する
 	const onCopyButtonClick = async () => {
 		if (!data?.accessToken) return alert("TOKEN が無効です");
 		for (const playlist of selectedItems) {
@@ -31,13 +32,15 @@ export const PlaylistController = ({
 				token: data.accessToken,
 				privacy: "unlisted",
 			});
-			if (result.status !== 200) alert(result.status);
+			resultSnackbar.copy({
+				isSuccess: result.status === 200,
+				title: playlist.title,
+				status: result.status,
+			});
 		}
-
-		alert(200);
 	};
 
-	// TODO: 結果の出力、確認画面を整備する
+	// TODO: 結果の出力を整備する
 	const onShuffleButtonClick = async () => {
 		if (!data?.accessToken) return alert("TOKEN が無効です");
 		for (const playlist of selectedItems) {
@@ -46,19 +49,26 @@ export const PlaylistController = ({
 				accessToken: data.accessToken,
 				ratio: 0.4,
 			});
-			if (result.status !== 200) alert(result.status);
+			resultSnackbar.shuffle({
+				isSuccess: result.status === 200,
+				title: playlist.title,
+				status: result.status,
+			});
 		}
-		alert(200);
 	};
 
-	// TODO: 結果の出力、確認画面を整備する
+	// TODO: 結果の出力を整備する
 	const onMergeButtonClick = async () => {
 		if (!data?.accessToken) return alert("TOKEN が無効です");
 		const result = await mergePlaylist(
 			selectedItems.map((p) => p.id),
 			data.accessToken,
 		);
-		alert(result.status);
+		resultSnackbar.merge({
+			isSuccess: result.status === 200,
+			title: selectedItems.map((p) => p.title),
+			status: result.status,
+		});
 	};
 
 	// TODO: 結果の出力を整備する
@@ -116,9 +126,12 @@ export const PlaylistController = ({
 					if (!data?.accessToken) return alert("TOKEN が無効です");
 					for (const playlist of selectedItems) {
 						const result = await deletePlaylist(playlist.id, data.accessToken);
-						if (result.status !== 200) alert(result.status);
+						resultSnackbar.delete({
+							isSuccess: result.status === 200,
+							title: playlist.title,
+							status: result.status,
+						});
 					}
-					alert(200);
 				}}
 				title="削除の確認"
 				content={selectedItems.map((p) => p.title).join("\n")}
@@ -130,4 +143,64 @@ export const PlaylistController = ({
 
 export interface PlaylistControllerProps {
 	selectedItems: PlaylistData[];
+}
+
+const resultSnackbar = {
+	copy: ({
+		isSuccess = false,
+		title,
+		status,
+	}: ResultSnackbarOptions<false>) => {
+		if (isSuccess) {
+			enqueueSnackbar(`${title} のコピーに成功しました。`, {
+				variant: "success",
+			});
+		} else {
+			enqueueSnackbar(
+				`${title} のコピーに失敗しました。エラーコード: ${status}`,
+			);
+		}
+	},
+
+	shuffle: ({ isSuccess, title, status }: ResultSnackbarOptions<false>) => {
+		if (isSuccess) {
+			enqueueSnackbar(`${title} のシャッフルに成功しました。`, {
+				variant: "success",
+			});
+		} else {
+			enqueueSnackbar(
+				`${title} のシャッフルに失敗しました。エラーコード: ${status}`,
+			);
+		}
+	},
+
+	merge: ({ isSuccess, title, status }: ResultSnackbarOptions<true>) => {
+		if (isSuccess) {
+			enqueueSnackbar(`${title.join(", ")} の結合に成功しました。`, {
+				variant: "success",
+			});
+		} else {
+			enqueueSnackbar(
+				`${title.join(", ")} の結合に失敗しました。エラーコード: ${status}`,
+			);
+		}
+	},
+
+	delete: ({
+		isSuccess = false,
+		title,
+		status,
+	}: ResultSnackbarOptions<false>) => {
+		if (isSuccess) {
+			enqueueSnackbar(`${title} を削除しました。`, { variant: "success" });
+		} else {
+			enqueueSnackbar(`${title} の削除に失敗しました。エラーコード: ${status}`);
+		}
+	},
+};
+
+interface ResultSnackbarOptions<isMerge extends boolean> {
+	isSuccess?: boolean;
+	title: isMerge extends true ? string[] : string;
+	status: number;
 }
