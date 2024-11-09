@@ -34,7 +34,6 @@ export const PlaylistController = ({
 				privacy: "unlisted",
 			});
 			resultSnackbar.copy({
-				isSuccess: result.status === 200,
 				title: playlist.title,
 				status: result.status,
 			});
@@ -52,7 +51,6 @@ export const PlaylistController = ({
 				ratio: 0.4,
 			});
 			resultSnackbar.shuffle({
-				isSuccess: result.status === 200,
 				title: playlist.title,
 				status: result.status,
 			});
@@ -68,7 +66,6 @@ export const PlaylistController = ({
 			data.accessToken,
 		);
 		resultSnackbar.merge({
-			isSuccess: result.status === 200,
 			title: selectedItems.map((p) => p.title),
 			status: result.status,
 		});
@@ -131,7 +128,6 @@ export const PlaylistController = ({
 					for (const playlist of selectedItems) {
 						const result = await deletePlaylist(playlist.id, data.accessToken);
 						resultSnackbar.delete({
-							isSuccess: result.status === 200,
 							title: playlist.title,
 							status: result.status,
 						});
@@ -152,61 +148,50 @@ export interface PlaylistControllerProps {
 }
 
 const resultSnackbar = {
-	copy: ({
-		isSuccess = false,
-		title,
-		status,
-	}: ResultSnackbarOptions<false>) => {
-		if (isSuccess) {
-			enqueueSnackbar(`${title} のコピーに成功しました。`, {
-				variant: "success",
-			});
-		} else {
-			enqueueSnackbar(
-				`${title} のコピーに失敗しました。エラーコード: ${status}`,
-			);
-		}
+	copy: ({ title, status }: ResultSnackbarOptions<false>) => {
+		status === 200
+			? resultSnackbar.showSnackbar(`${title} のコピーに成功しました。`)
+			: resultSnackbar.showSnackbar(
+					`${title} のコピーに失敗しました。エラーコード: ${status}`,
+					false,
+				);
 	},
 
-	shuffle: ({ isSuccess, title, status }: ResultSnackbarOptions<false>) => {
-		if (isSuccess) {
-			enqueueSnackbar(`${title} のシャッフルに成功しました。`, {
-				variant: "success",
-			});
-		} else {
-			enqueueSnackbar(
-				`${title} のシャッフルに失敗しました。エラーコード: ${status}`,
-			);
-		}
+	shuffle: ({ title, status }: ResultSnackbarOptions<false>) => {
+		status === 200
+			? resultSnackbar.showSnackbar(`${title} のシャッフルに成功しました。`)
+			: resultSnackbar.showSnackbar(
+					`${title} のシャッフルに失敗しました。エラーコード: ${status}`,
+					false,
+				);
 	},
 
-	merge: ({ isSuccess, title, status }: ResultSnackbarOptions<true>) => {
-		if (isSuccess) {
-			enqueueSnackbar(`${title.join(", ")} の結合に成功しました。`, {
-				variant: "success",
-			});
-		} else {
-			enqueueSnackbar(
-				`${title.join(", ")} の結合に失敗しました。エラーコード: ${status}`,
-			);
-		}
+	merge: ({ title, status }: ResultSnackbarOptions<true>) => {
+		status === 200
+			? resultSnackbar.showSnackbar(
+					`${title.join(", ")} の結合に成功しました。`,
+				)
+			: resultSnackbar.showSnackbar(
+					`${title.join(", ")} の結合に失敗しました。エラーコード: ${status}`,
+					false,
+				);
 	},
 
-	delete: ({
-		isSuccess = false,
-		title,
-		status,
-	}: ResultSnackbarOptions<false>) => {
-		if (isSuccess) {
-			enqueueSnackbar(`${title} を削除しました。`, { variant: "success" });
-		} else {
-			enqueueSnackbar(`${title} の削除に失敗しました。エラーコード: ${status}`);
-		}
+	delete: ({ title, status }: ResultSnackbarOptions<false>) => {
+		status === 200
+			? resultSnackbar.showSnackbar(`${title} を削除しました。`)
+			: resultSnackbar.showSnackbar(
+					`${title} の削除に失敗しました。エラーコード: ${status}`,
+					false,
+				);
+	},
+
+	showSnackbar: (message: string, isSuccess = true) => {
+		enqueueSnackbar(message, { variant: isSuccess ? "success" : "error" });
 	},
 };
 
 interface ResultSnackbarOptions<isMerge extends boolean> {
-	isSuccess?: boolean;
 	title: isMerge extends true ? string[] : string;
 	status: number;
 }
