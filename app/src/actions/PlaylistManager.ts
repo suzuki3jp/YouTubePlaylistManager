@@ -148,6 +148,8 @@ export class PlaylistManager {
 				updatedItem.data,
 				targetItemIndex,
 				targetItemNewIndex,
+				i,
+				itemMoveCount,
 			);
 		}
 
@@ -248,4 +250,6 @@ export type OnUpdatedPlaylistItemPositionHandler = (
 	playlistItem: PlaylistItem,
 	oldIndex: number,
 	newIndex: number,
+	completed: number,
+	total: number,
 ) => void;

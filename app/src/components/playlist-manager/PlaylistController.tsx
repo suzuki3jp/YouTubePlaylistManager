@@ -1,5 +1,11 @@
 "use client";
-import { type FullPlaylist, type Playlist, PlaylistManager } from "@/actions";
+import {
+	type FullPlaylist,
+	type Playlist,
+	PlaylistManager,
+	type UUID,
+	generateUUID,
+} from "@/actions";
 import type { Failure } from "@/actions/result";
 import { NonUpperButton, WrappedDialog } from "@/components";
 import {
@@ -13,9 +19,11 @@ import type { Result } from "@playlistmanager/result";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
+import type { SetTaskFunc } from "./PlaylistManager";
 
 export const PlaylistController = ({
 	selectedItems,
+	setTask,
 	refreshPlaylists,
 }: Readonly<PlaylistControllerProps>) => {
 	const { data } = useSession();
@@ -23,13 +31,68 @@ export const PlaylistController = ({
 	if (!data?.accessToken) return <></>;
 	const manager = new PlaylistManager(data.accessToken);
 
-	// TODO: 結果の出力を整備する
+	const updateTask = ({
+		taskId,
+		message,
+		completed,
+		total,
+	}: {
+		taskId: UUID;
+		message?: string;
+		completed?: number;
+		total?: number;
+	}) => {
+		if (message || completed || total) {
+			setTask(taskId, (prev) => {
+				if (prev) {
+					return {
+						message: message ?? prev.message,
+						completed: completed ?? prev.completed,
+						total: total ?? prev.total,
+					};
+				}
+
+				return {
+					message: message ?? "DEFAULT MESSAGE",
+					completed: completed ?? 0,
+					total: total ?? 0,
+				};
+			});
+		} else {
+			setTask(taskId, () => null);
+		}
+	};
+
 	const onCopyButtonClick = async () => {
 		for (const playlist of selectedItems) {
+			const taskId = await generateUUID();
+			updateTask({
+				taskId,
+				message: `${playlist.title} をコピーしています...`,
+			});
+
 			const result = await manager.copy({
 				id: playlist.id,
 				privacy: "unlisted",
+				onAddedPlaylist: (p) => {
+					updateTask({ taskId, message: `${p.title} を作成しました` });
+				},
+				onAddingPlaylistItem: (i) => {
+					updateTask({
+						taskId,
+						message: `${i.title} をコピー中...`,
+					});
+				},
+				onAddedPlaylistItem: (i, c, t) => {
+					updateTask({
+						taskId,
+						message: `${i.title} をコピーしました`,
+						completed: c,
+						total: t,
+					});
+				},
 			});
+			updateTask({ taskId });
 			resultSnackbar.copy(result, playlist.title);
 		}
 		refreshPlaylists();
@@ -38,10 +101,28 @@ export const PlaylistController = ({
 	// TODO: 結果の出力を整備する
 	const onShuffleButtonClick = async () => {
 		for (const playlist of selectedItems) {
+			const taskId = await generateUUID();
+			updateTask({ taskId, message: `${playlist.title} をシャッフル中...` });
+
 			const result = await manager.shuffle({
 				playlistId: playlist.id,
 				ratio: 0.4,
+				onUpdatingPlaylistItemPosition: (i, oldI, newI) => {
+					updateTask({
+						taskId,
+						message: `${i.title} を ${oldI} から ${newI} に移動中...`,
+					});
+				},
+				onUpdatedPlaylistItemPosition: (i, oldI, newI, c, t) => {
+					updateTask({
+						taskId,
+						message: `${i.title} を ${oldI} から ${newI} に移動しました`,
+						completed: c,
+						total: t,
+					});
+				},
 			});
+			updateTask({ taskId });
 			resultSnackbar.shuffle(result, playlist.title);
 		}
 		refreshPlaylists();
@@ -49,7 +130,33 @@ export const PlaylistController = ({
 
 	// TODO: 結果の出力を整備する
 	const onMergeButtonClick = async () => {
-		const result = await manager.merge({ ids: selectedItems.map((p) => p.id) });
+		const taskId = await generateUUID();
+		updateTask({
+			taskId,
+			message: "新しいプレイリストを作成中...",
+		});
+
+		const result = await manager.merge({
+			ids: selectedItems.map((p) => p.id),
+			onAddedPlaylist: (p) => {
+				updateTask({ taskId, message: `${p.title} を作成しました` });
+			},
+			onAddingPlaylistItem: (i) => {
+				updateTask({
+					taskId,
+					message: `${i.title} をコピー中...`,
+				});
+			},
+			onAddedPlaylistItem: (i, c, t) => {
+				updateTask({
+					taskId,
+					message: `${i.title} をコピーしました`,
+					completed: c,
+					total: t,
+				});
+			},
+		});
+		updateTask({ taskId });
 		resultSnackbar.merge(
 			result,
 			selectedItems.map((p) => p.title),
@@ -125,6 +232,7 @@ export const PlaylistController = ({
 
 export interface PlaylistControllerProps {
 	selectedItems: Playlist[];
+	setTask: SetTaskFunc;
 	refreshPlaylists: () => void;
 }
 
