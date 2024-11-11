@@ -1,4 +1,5 @@
 "use client";
+import type { Playlist } from "@/actions";
 import { CheckCircle as CheckIcon } from "@mui/icons-material";
 import { ButtonBase, Card, CardHeader, CardMedia } from "@mui/material";
 
@@ -46,7 +47,7 @@ export const PlaylistCard = ({
 				</div>
 				<div style={{ position: "relative", paddingTop: "56.25%" }}>
 					<CardMedia
-						image={playlist.thumbnailUrl}
+						image={playlist.thumbnail}
 						component={"img"}
 						draggable={false}
 						sx={{
@@ -65,14 +66,8 @@ export const PlaylistCard = ({
 	);
 };
 
-export interface PlaylistData {
-	id: string;
-	title: string;
-	thumbnailUrl: string;
-}
-
 export interface PlaylistCardProps {
-	playlist: PlaylistData;
+	playlist: Playlist;
 	isSelected: boolean;
-	toggleSelected: (playlist: PlaylistData) => void;
+	toggleSelected: (playlist: Playlist) => void;
 }

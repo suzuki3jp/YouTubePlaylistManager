@@ -1,5 +1,6 @@
 "use client";
-import { PlaylistCard, type PlaylistData } from "@/components";
+import type { Playlist } from "@/actions";
+import { PlaylistCard } from "@/components";
 import { Grid2 as Grid } from "@mui/material";
 
 export const PlaylistDisplay = ({
@@ -24,7 +25,7 @@ export const PlaylistDisplay = ({
 };
 
 export interface PlaylistDisplayProps {
-	playlists: PlaylistData[];
-	selectedPlaylist: PlaylistData[];
-	toggleSelected: (playlist: PlaylistData) => void;
+	playlists: Playlist[];
+	selectedPlaylist: Playlist[];
+	toggleSelected: (playlist: Playlist) => void;
 }

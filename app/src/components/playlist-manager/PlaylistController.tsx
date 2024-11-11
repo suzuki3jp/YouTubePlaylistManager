@@ -1,11 +1,7 @@
 "use client";
-import {
-	copyPlaylist,
-	deletePlaylist,
-	mergePlaylist,
-	shufflePlaylist,
-} from "@/actions";
-import { NonUpperButton, type PlaylistData, WrappedDialog } from "@/components";
+import { type FullPlaylist, type Playlist, PlaylistManager } from "@/actions";
+import type { Failure } from "@/actions/result";
+import { NonUpperButton, WrappedDialog } from "@/components";
 import {
 	ContentCopy as CopyIcon,
 	Delete as DeleteIcon,
@@ -13,6 +9,7 @@ import {
 	Shuffle as ShuffleIcon,
 } from "@mui/icons-material";
 import { Grid2 as Grid } from "@mui/material";
+import type { Result } from "@playlistmanager/result";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
@@ -23,52 +20,40 @@ export const PlaylistController = ({
 }: Readonly<PlaylistControllerProps>) => {
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+	if (!data?.accessToken) return <></>;
+	const manager = new PlaylistManager(data.accessToken);
 
 	// TODO: 結果の出力を整備する
 	const onCopyButtonClick = async () => {
-		if (!data?.accessToken) return alert("TOKEN が無効です");
 		for (const playlist of selectedItems) {
-			const result = await copyPlaylist({
+			const result = await manager.copy({
 				id: playlist.id,
-				token: data.accessToken,
 				privacy: "unlisted",
 			});
-			resultSnackbar.copy({
-				title: playlist.title,
-				status: result.status,
-			});
+			resultSnackbar.copy(result, playlist.title);
 		}
 		refreshPlaylists();
 	};
 
 	// TODO: 結果の出力を整備する
 	const onShuffleButtonClick = async () => {
-		if (!data?.accessToken) return alert("TOKEN が無効です");
 		for (const playlist of selectedItems) {
-			const result = await shufflePlaylist({
+			const result = await manager.shuffle({
 				playlistId: playlist.id,
-				accessToken: data.accessToken,
 				ratio: 0.4,
 			});
-			resultSnackbar.shuffle({
-				title: playlist.title,
-				status: result.status,
-			});
+			resultSnackbar.shuffle(result, playlist.title);
 		}
 		refreshPlaylists();
 	};
 
 	// TODO: 結果の出力を整備する
 	const onMergeButtonClick = async () => {
-		if (!data?.accessToken) return alert("TOKEN が無効です");
-		const result = await mergePlaylist(
-			selectedItems.map((p) => p.id),
-			data.accessToken,
+		const result = await manager.merge({ ids: selectedItems.map((p) => p.id) });
+		resultSnackbar.merge(
+			result,
+			selectedItems.map((p) => p.title),
 		);
-		resultSnackbar.merge({
-			title: selectedItems.map((p) => p.title),
-			status: result.status,
-		});
 		refreshPlaylists();
 	};
 
@@ -124,13 +109,9 @@ export const PlaylistController = ({
 				onClose={() => setIsDeleteOpen(false)}
 				onConfirm={async () => {
 					setIsDeleteOpen(false);
-					if (!data?.accessToken) return alert("TOKEN が無効です");
 					for (const playlist of selectedItems) {
-						const result = await deletePlaylist(playlist.id, data.accessToken);
-						resultSnackbar.delete({
-							title: playlist.title,
-							status: result.status,
-						});
+						const result = await manager.delete(playlist.id);
+						resultSnackbar.delete(result, playlist.title);
 					}
 					refreshPlaylists();
 				}}
@@ -143,45 +124,45 @@ export const PlaylistController = ({
 };
 
 export interface PlaylistControllerProps {
-	selectedItems: PlaylistData[];
+	selectedItems: Playlist[];
 	refreshPlaylists: () => void;
 }
 
 const resultSnackbar = {
-	copy: ({ title, status }: ResultSnackbarOptions<false>) => {
-		status === 200
+	copy: (result: Result<FullPlaylist, Failure>, title: string) => {
+		result.isSuccess()
 			? resultSnackbar.showSnackbar(`${title} のコピーに成功しました。`)
 			: resultSnackbar.showSnackbar(
-					`${title} のコピーに失敗しました。エラーコード: ${status}`,
+					`${title} のコピーに失敗しました。エラーコード: ${result.data.status}`,
 					false,
 				);
 	},
 
-	shuffle: ({ title, status }: ResultSnackbarOptions<false>) => {
-		status === 200
+	shuffle: (result: Result<Playlist, Failure>, title: string) => {
+		result.isSuccess()
 			? resultSnackbar.showSnackbar(`${title} のシャッフルに成功しました。`)
 			: resultSnackbar.showSnackbar(
-					`${title} のシャッフルに失敗しました。エラーコード: ${status}`,
+					`${title} のシャッフルに失敗しました。エラーコード: ${result.data.status}`,
 					false,
 				);
 	},
 
-	merge: ({ title, status }: ResultSnackbarOptions<true>) => {
-		status === 200
+	merge: (result: Result<FullPlaylist, Failure>, titles: string[]) => {
+		result.isSuccess()
 			? resultSnackbar.showSnackbar(
-					`${title.join(", ")} の結合に成功しました。`,
+					`${titles.join(", ")} の結合に成功しました。`,
 				)
 			: resultSnackbar.showSnackbar(
-					`${title.join(", ")} の結合に失敗しました。エラーコード: ${status}`,
+					`${titles.join(", ")} の結合に失敗しました。エラーコード: ${result.data.status}`,
 					false,
 				);
 	},
 
-	delete: ({ title, status }: ResultSnackbarOptions<false>) => {
-		status === 200
+	delete: (result: Result<Playlist, Failure>, title: string) => {
+		result.isSuccess()
 			? resultSnackbar.showSnackbar(`${title} を削除しました。`)
 			: resultSnackbar.showSnackbar(
-					`${title} の削除に失敗しました。エラーコード: ${status}`,
+					`${title} の削除に失敗しました。エラーコード: ${result.data.status}`,
 					false,
 				);
 	},

@@ -1,20 +1,26 @@
 "use server";
+import { type Result, fail, ok } from "@/actions/result";
+import { type Playlist, convertToPlaylistFromClass } from "@/actions/typings";
 import { YoutubeAdapter } from "@playlistmanager/youtube-adapter";
-import type { DeletePlaylistResult } from "./typings";
 
-export const deletePlaylist = async (
-	playlistId: string,
-	accessToken: string,
-): Promise<DeletePlaylistResult> => {
+/**
+ * プレイリストを削除する
+ * @param param0
+ * @returns
+ */
+export const deletePlaylist = async ({
+	id,
+	token,
+}: DeletePlaylistOptions): Promise<Result<Playlist>> => {
 	const adapter = new YoutubeAdapter();
-	const result = await adapter.deletePlaylist(playlistId, accessToken);
-	if (result.isFailure()) return { status: result.data.code };
-	return {
-		status: 200,
-		data: {
-			id: result.data.getId,
-			title: result.data.getTitle,
-			thumbnailUrl: result.data.getThumbnailUrl,
-		},
-	};
+	const deletedPlaylist = await adapter.deletePlaylist(id, token);
+	if (deletedPlaylist.isFailure()) return fail(deletedPlaylist.data.code);
+
+	const deletedPlaylistData = convertToPlaylistFromClass(deletedPlaylist.data);
+	return ok(deletedPlaylistData);
 };
+
+export interface DeletePlaylistOptions {
+	id: string;
+	token: string;
+}
