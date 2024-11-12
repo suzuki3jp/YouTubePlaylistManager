@@ -64,7 +64,7 @@ export const PlaylistController = ({
 	};
 
 	const onCopyButtonClick = async () => {
-		for (const playlist of selectedItems) {
+		const copyTasks = selectedItems.map(async (playlist) => {
 			const taskId = await generateUUID();
 			updateTask({
 				taskId,
@@ -94,13 +94,14 @@ export const PlaylistController = ({
 			});
 			updateTask({ taskId });
 			resultSnackbar.copy(result, playlist.title);
-		}
+		});
+
+		await Promise.all(copyTasks);
 		refreshPlaylists();
 	};
 
-	// TODO: 結果の出力を整備する
 	const onShuffleButtonClick = async () => {
-		for (const playlist of selectedItems) {
+		const shuffleTasks = selectedItems.map(async (playlist) => {
 			const taskId = await generateUUID();
 			updateTask({ taskId, message: `${playlist.title} をシャッフル中...` });
 
@@ -124,11 +125,12 @@ export const PlaylistController = ({
 			});
 			updateTask({ taskId });
 			resultSnackbar.shuffle(result, playlist.title);
-		}
+		});
+
+		await Promise.all(shuffleTasks);
 		refreshPlaylists();
 	};
 
-	// TODO: 結果の出力を整備する
 	const onMergeButtonClick = async () => {
 		const taskId = await generateUUID();
 		updateTask({
@@ -164,7 +166,6 @@ export const PlaylistController = ({
 		refreshPlaylists();
 	};
 
-	// TODO: 結果の出力を整備する
 	const onDeleteButtonClick = async () => setIsDeleteOpen(true);
 
 	return selectedItems.length === 0 ? (
@@ -216,10 +217,12 @@ export const PlaylistController = ({
 				onClose={() => setIsDeleteOpen(false)}
 				onConfirm={async () => {
 					setIsDeleteOpen(false);
-					for (const playlist of selectedItems) {
+					const deleteTasks = selectedItems.map(async (playlist) => {
 						const result = await manager.delete(playlist.id);
 						resultSnackbar.delete(result, playlist.title);
-					}
+					});
+
+					await Promise.all(deleteTasks);
 					refreshPlaylists();
 				}}
 				title="削除の確認"
