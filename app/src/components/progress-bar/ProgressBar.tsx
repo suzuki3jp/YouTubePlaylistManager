@@ -13,7 +13,7 @@ export const ProgressBar = ({
 	total,
 }: ProgressBarProps) => {
 	return (
-		<Grid container>
+		<Grid container size={12}>
 			<Grid size={12}>
 				<Card
 					sx={{

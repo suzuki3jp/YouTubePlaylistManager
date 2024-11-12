@@ -9,7 +9,7 @@ export const PlaylistDisplay = ({
 	toggleSelected,
 }: Readonly<PlaylistDisplayProps>) => {
 	return (
-		<Grid container spacing={2} marginTop={"1%"}>
+		<Grid container spacing={2} size={12}>
 			{playlists.map((v) => (
 				<Grid key={v.id} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
 					<PlaylistCard

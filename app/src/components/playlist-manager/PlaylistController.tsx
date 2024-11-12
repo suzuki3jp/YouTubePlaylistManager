@@ -171,7 +171,7 @@ export const PlaylistController = ({
 	return selectedItems.length === 0 ? (
 		<></>
 	) : (
-		<Grid container spacing={1}>
+		<Grid container spacing={1} size={12}>
 			<Grid>
 				<NonUpperButton
 					variant="contained"
