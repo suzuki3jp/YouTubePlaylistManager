@@ -1,6 +1,10 @@
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
 
+This document is also available in:
+
+- [**Japanese / 日本語**](README_ja.md)
+
 ![PlaylistManagerDemo](./assets/PlaylistManagerDemo.gif)
 
 ## Features
