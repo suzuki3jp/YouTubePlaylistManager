@@ -1,8 +1,14 @@
 "use client";
-import { AppBar as MuiAppBar, Toolbar, Typography } from "@mui/material";
+import {
+	Grid2 as Grid,
+	AppBar as MuiAppBar,
+	Toolbar,
+	Typography,
+} from "@mui/material";
 import { useSession } from "next-auth/react";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import { GoogleSignOutButton } from "./GoogleSignOutButton";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export const AppBar = () => {
 	const { data } = useSession();
@@ -18,7 +24,10 @@ export const AppBar = () => {
 				<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
 					PlaylistManager
 				</Typography>
-				{data ? <GoogleSignOutButton /> : <GoogleSignInButton />}
+				<Grid container spacing={2}>
+					<LanguageSwitcher />
+					{data ? <GoogleSignOutButton /> : <GoogleSignInButton />}
+				</Grid>
 			</Toolbar>
 		</MuiAppBar>
 	);
