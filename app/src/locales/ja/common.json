@@ -35,6 +35,6 @@
         "merge": "結合",
         "delete": "削除",
         "cancel": "キャンセル",
-        "submit": "決定"
+        "confirm": "決定"
     }
 }

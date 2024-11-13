@@ -67,11 +67,11 @@ export const WrappedDialog = ({
 						startIcon={<WarningIcon />}
 						variant="contained"
 					>
-						{t("button.submit")}
+						{t("button.confirm")}
 					</Button>
 				) : (
 					<Button onClick={onConfirm} variant="contained">
-						{t("button.submit")}
+						{t("button.confirm")}
 					</Button>
 				)}
 			</DialogActions>

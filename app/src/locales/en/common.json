@@ -35,6 +35,6 @@
         "merge": "Merge",
         "delete": "Delete",
         "cancel": "Cancel",
-        "submit": "Submit"
+        "confirm": "Confirm"
     }
 }
