@@ -7,9 +7,9 @@
         "en": "English / English"
     },
     "task-progress": {
-        "coping-playlist": "Coping {{title}} ...",
+        "copying-playlist": "Copying {{title}} ...",
         "created-playlist": "Created {{title}} !",
-        "coping-playlist-item": "Coping {{title}} ...",
+        "copying-playlist-item": "Copying {{title}} ...",
         "copied-playlist-item": "Copied {{title}} !",
         "failed-to-copy-playlist": "Failed to copy {{title}}. ErrorCode: {{code}}",
         "succeed-to-copy-playlist": "Succeed to copy {{title}} !",

@@ -67,7 +67,7 @@ export const PlaylistController = ({
 			const taskId = await generateUUID();
 			updateTask({
 				taskId,
-				message: t("task-progress.coping-playlist", { title: playlist.title }),
+				message: t("task-progress.copying-playlist", { title: playlist.title }),
 			});
 
 			const result = await manager.copy({
@@ -84,7 +84,7 @@ export const PlaylistController = ({
 				onAddingPlaylistItem: (i) => {
 					updateTask({
 						taskId,
-						message: t("task-progress.coping-playlist-item", {
+						message: t("task-progress.copying-playlist-item", {
 							title: i.title,
 						}),
 					});
@@ -186,7 +186,7 @@ export const PlaylistController = ({
 			onAddingPlaylistItem: (i) => {
 				updateTask({
 					taskId,
-					message: t("task-progress.coping-playlist-item", { title: i.title }),
+					message: t("task-progress.copying-playlist-item", { title: i.title }),
 				});
 			},
 			onAddedPlaylistItem: (i, c, total) => {
