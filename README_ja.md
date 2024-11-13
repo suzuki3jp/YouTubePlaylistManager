@@ -1,7 +1,7 @@
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) プレイリストマネージャー</div>
 
-![PlaylistManagerDemo](./assets/PlaylistManagerDemo.gif)
+![PlaylistManagerDemo](./assets/demo2.gif)
 
 ## 機能
 - WebGUI から Youtube プレイリストを管理する

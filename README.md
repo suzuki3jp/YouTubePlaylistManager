@@ -5,7 +5,7 @@ This document is also available in:
 
 - [**Japanese / 日本語**](README_ja.md)
 
-![PlaylistManagerDemo](./assets/PlaylistManagerDemo.gif)
+![PlaylistManagerDemo](./assets/demo2.gif)
 
 ## Features
 - Manage youtube playlists from Web GUI
