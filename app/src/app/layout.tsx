@@ -1,4 +1,5 @@
 import { AppBar, SnackbarProvider, ThemeProvider } from "@/components";
+import { DEFAULT_LANGUAGE } from "@/locales/settings";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="ja">
+		<html lang={DEFAULT_LANGUAGE}>
 			<body>
 				<SnackbarProvider>
 					<ThemeProvider>

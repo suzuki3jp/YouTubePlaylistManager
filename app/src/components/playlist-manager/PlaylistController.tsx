@@ -1,13 +1,12 @@
 "use client";
 import {
-	type FullPlaylist,
 	type Playlist,
 	PlaylistManager,
 	type UUID,
 	generateUUID,
 } from "@/actions";
-import type { Failure } from "@/actions/result";
 import { NonUpperButton, WrappedDialog } from "@/components";
+import { useT } from "@/hooks";
 import {
 	ContentCopy as CopyIcon,
 	Delete as DeleteIcon,
@@ -15,7 +14,6 @@ import {
 	Shuffle as ShuffleIcon,
 } from "@mui/icons-material";
 import { Grid2 as Grid } from "@mui/material";
-import type { Result } from "@playlistmanager/result";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
@@ -26,6 +24,7 @@ export const PlaylistController = ({
 	setTask,
 	refreshPlaylists,
 }: Readonly<PlaylistControllerProps>) => {
+	const { t } = useT();
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 	if (!data?.accessToken) return <></>;
@@ -68,32 +67,48 @@ export const PlaylistController = ({
 			const taskId = await generateUUID();
 			updateTask({
 				taskId,
-				message: `${playlist.title} をコピーしています...`,
+				message: t("task-progress.coping-playlist", { title: playlist.title }),
 			});
 
 			const result = await manager.copy({
 				id: playlist.id,
 				privacy: "unlisted",
 				onAddedPlaylist: (p) => {
-					updateTask({ taskId, message: `${p.title} を作成しました` });
+					updateTask({
+						taskId,
+						message: t("task-progress.created-playlist", {
+							title: p.title,
+						}),
+					});
 				},
 				onAddingPlaylistItem: (i) => {
 					updateTask({
 						taskId,
-						message: `${i.title} をコピー中...`,
+						message: t("task-progress.coping-playlist-item", {
+							title: i.title,
+						}),
 					});
 				},
-				onAddedPlaylistItem: (i, c, t) => {
+				onAddedPlaylistItem: (i, c, total) => {
 					updateTask({
 						taskId,
-						message: `${i.title} をコピーしました`,
+						message: t("task-progress.copied-playlist-item", {
+							title: i.title,
+						}),
 						completed: c,
-						total: t,
+						total,
 					});
 				},
 			});
+
 			updateTask({ taskId });
-			resultSnackbar.copy(result, playlist.title);
+			const message = result.isSuccess()
+				? t("task-progress.succeed-to-copy-playlist", { title: playlist.title })
+				: t("task-progress.failed-to-copy-playlist", {
+						title: playlist.title,
+						code: result.data.status,
+					});
+			showSnackbar(message, result.isSuccess());
 		});
 
 		await Promise.all(copyTasks);
@@ -103,7 +118,12 @@ export const PlaylistController = ({
 	const onShuffleButtonClick = async () => {
 		const shuffleTasks = selectedItems.map(async (playlist) => {
 			const taskId = await generateUUID();
-			updateTask({ taskId, message: `${playlist.title} をシャッフル中...` });
+			updateTask({
+				taskId,
+				message: t("task-progress.shuffling-playlist", {
+					title: playlist.title,
+				}),
+			});
 
 			const result = await manager.shuffle({
 				playlistId: playlist.id,
@@ -111,20 +131,37 @@ export const PlaylistController = ({
 				onUpdatingPlaylistItemPosition: (i, oldI, newI) => {
 					updateTask({
 						taskId,
-						message: `${i.title} を ${oldI} から ${newI} に移動中...`,
+						message: t("task-progress.moving-playlist-item", {
+							title: i.title,
+							old: oldI,
+							new: newI,
+						}),
 					});
 				},
-				onUpdatedPlaylistItemPosition: (i, oldI, newI, c, t) => {
+				onUpdatedPlaylistItemPosition: (i, oldI, newI, c, total) => {
 					updateTask({
 						taskId,
-						message: `${i.title} を ${oldI} から ${newI} に移動しました`,
+						message: t("task-progress.moved-playlist-item", {
+							title: i.title,
+							old: oldI,
+							new: newI,
+						}),
 						completed: c,
-						total: t,
+						total,
 					});
 				},
 			});
+
 			updateTask({ taskId });
-			resultSnackbar.shuffle(result, playlist.title);
+			const message = result.isSuccess()
+				? t("task-progress.succeed-to-shuffle-playlist", {
+						title: playlist.title,
+					})
+				: t("task-progress.failed-to-shuffle-playlist", {
+						title: playlist.title,
+						code: result.data.status,
+					});
+			showSnackbar(message, result.isSuccess());
 		});
 
 		await Promise.all(shuffleTasks);
@@ -135,34 +172,43 @@ export const PlaylistController = ({
 		const taskId = await generateUUID();
 		updateTask({
 			taskId,
-			message: "新しいプレイリストを作成中...",
+			message: t("task-progress.creating-new-playlist"),
 		});
 
 		const result = await manager.merge({
 			ids: selectedItems.map((p) => p.id),
 			onAddedPlaylist: (p) => {
-				updateTask({ taskId, message: `${p.title} を作成しました` });
+				updateTask({
+					taskId,
+					message: t("task-progress.created-playlist", { title: p.title }),
+				});
 			},
 			onAddingPlaylistItem: (i) => {
 				updateTask({
 					taskId,
-					message: `${i.title} をコピー中...`,
+					message: t("task-progress.coping-playlist-item", { title: i.title }),
 				});
 			},
-			onAddedPlaylistItem: (i, c, t) => {
+			onAddedPlaylistItem: (i, c, total) => {
 				updateTask({
 					taskId,
-					message: `${i.title} をコピーしました`,
+					message: t("task-progress.copied-playlist-item", { title: i.title }),
 					completed: c,
-					total: t,
+					total,
 				});
 			},
 		});
+
 		updateTask({ taskId });
-		resultSnackbar.merge(
-			result,
-			selectedItems.map((p) => p.title),
-		);
+		const message = result.isSuccess()
+			? t("task-progress.succeed-to-merge-playlist", {
+					title: selectedItems.map((p) => p.title).join(", "),
+				})
+			: t("task-progress.failed-to-merge-playlist", {
+					title: selectedItems.map((p) => p.title).join(", "),
+					code: result.data.status,
+				});
+		showSnackbar(message, result.isSuccess());
 		refreshPlaylists();
 	};
 
@@ -178,7 +224,7 @@ export const PlaylistController = ({
 					startIcon={<CopyIcon />}
 					onClick={onCopyButtonClick}
 				>
-					Copy
+					{t("button.copy")}
 				</NonUpperButton>
 			</Grid>
 			<Grid>
@@ -187,7 +233,7 @@ export const PlaylistController = ({
 					startIcon={<ShuffleIcon />}
 					onClick={onShuffleButtonClick}
 				>
-					Shuffle
+					{t("button.shuffle")}
 				</NonUpperButton>
 			</Grid>
 			<Grid>
@@ -196,7 +242,7 @@ export const PlaylistController = ({
 					startIcon={<MergeIcon />}
 					onClick={onMergeButtonClick}
 				>
-					Merge
+					{t("button.merge")}
 				</NonUpperButton>
 			</Grid>
 			<Grid>
@@ -205,7 +251,7 @@ export const PlaylistController = ({
 					startIcon={<DeleteIcon />}
 					onClick={onDeleteButtonClick}
 				>
-					Delete
+					{t("button.delete")}
 				</NonUpperButton>
 			</Grid>
 
@@ -219,13 +265,21 @@ export const PlaylistController = ({
 					setIsDeleteOpen(false);
 					const deleteTasks = selectedItems.map(async (playlist) => {
 						const result = await manager.delete(playlist.id);
-						resultSnackbar.delete(result, playlist.title);
+						const message = result.isSuccess()
+							? t("task-progress.succeed-to-delete-playlist", {
+									title: playlist.title,
+								})
+							: t("task-progress.failed-to-delete-playlist", {
+									title: playlist.title,
+									code: result.data.status,
+								});
+						showSnackbar(message);
 					});
 
 					await Promise.all(deleteTasks);
 					refreshPlaylists();
 				}}
-				title="削除の確認"
+				title={t("dialog.delete-title")}
 				content={selectedItems.map((p) => p.title).join("\n")}
 				isWarning
 			/>
@@ -238,52 +292,6 @@ export interface PlaylistControllerProps {
 	setTask: SetTaskFunc;
 	refreshPlaylists: () => void;
 }
-
-const resultSnackbar = {
-	copy: (result: Result<FullPlaylist, Failure>, title: string) => {
-		result.isSuccess()
-			? resultSnackbar.showSnackbar(`${title} のコピーに成功しました。`)
-			: resultSnackbar.showSnackbar(
-					`${title} のコピーに失敗しました。エラーコード: ${result.data.status}`,
-					false,
-				);
-	},
-
-	shuffle: (result: Result<Playlist, Failure>, title: string) => {
-		result.isSuccess()
-			? resultSnackbar.showSnackbar(`${title} のシャッフルに成功しました。`)
-			: resultSnackbar.showSnackbar(
-					`${title} のシャッフルに失敗しました。エラーコード: ${result.data.status}`,
-					false,
-				);
-	},
-
-	merge: (result: Result<FullPlaylist, Failure>, titles: string[]) => {
-		result.isSuccess()
-			? resultSnackbar.showSnackbar(
-					`${titles.join(", ")} の結合に成功しました。`,
-				)
-			: resultSnackbar.showSnackbar(
-					`${titles.join(", ")} の結合に失敗しました。エラーコード: ${result.data.status}`,
-					false,
-				);
-	},
-
-	delete: (result: Result<Playlist, Failure>, title: string) => {
-		result.isSuccess()
-			? resultSnackbar.showSnackbar(`${title} を削除しました。`)
-			: resultSnackbar.showSnackbar(
-					`${title} の削除に失敗しました。エラーコード: ${result.data.status}`,
-					false,
-				);
-	},
-
-	showSnackbar: (message: string, isSuccess = true) => {
-		enqueueSnackbar(message, { variant: isSuccess ? "success" : "error" });
-	},
+const showSnackbar = (message: string, isSuccess = true) => {
+	enqueueSnackbar(message, { variant: isSuccess ? "success" : "error" });
 };
-
-interface ResultSnackbarOptions<isMerge extends boolean> {
-	title: isMerge extends true ? string[] : string;
-	status: number;
-}

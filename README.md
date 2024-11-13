@@ -1,8 +1,3 @@
-> [!IMPORTANT]
-> The current UI of this application is available only in Japanese.  
-> Since there are no complex operations at this time, we believe it can still be used even without understanding Japanese.  
-> We welcome PRs for localization support!
-
 <h2 align="center">PlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
 
@@ -20,7 +15,7 @@
 - [x] Delete playlists
 - [x] Shuffle playlist items
 - [x] Merge playlists
-- [ ] Localization
+- [x] Localization (English & Japanese)
 - [ ] Extract specific artist's song from playlists
 - [ ] Sort playlist items by artist name or song title
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)

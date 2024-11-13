@@ -1,0 +1,37 @@
+{
+    "appbar": {
+        "sign-in-with-google": "Sign in with Google",
+        "sign-out": "Sign out"
+    },
+    "task-progress": {
+        "coping-playlist": "Coping {{title}} ...",
+        "created-playlist": "Created {{title}} !",
+        "coping-playlist-item": "Coping {{title}} ...",
+        "copied-playlist-item": "Copied {{title}} !",
+        "failed-to-copy-playlist": "Failed to copy {{title}}. ErrorCode: {{code}}",
+        "succeed-to-copy-playlist": "Succeed to copy {{title}} !",
+        "shuffling-playlist": "Shuffling {{title}} ...",
+        "moving-playlist-item": "Moving {{title}} from {{old}} to {{new}} ...",
+        "moved-playlist-item": "Moved {{title}} from {{old}} to {{new}} !",
+        "failed-to-shuffle-playlist": "Failed to shuffle {{title}}. ErrorCode: {{code}}",
+        "succeed-to-shuffle-playlist": "Succeed to shuffle {{title}} !",
+        "creating-new-playlist": "Creating a new playlist ...",
+        "failed-to-merge-playlist": "Failed to merge {{title}}. ErrorCode: {{code}}",
+        "succeed-to-merge-playlist": "Succeed to merge {{title}} !",
+        "failed-to-delete-playlist": "Failed to delete {{title}}. ErrorCode: {{code}}",
+        "succeed-to-delete-playlist": "Succeed to delete {{title}}"
+    },
+    "dialog": {
+        "delete-title": "Delete Confirmation",
+        "deleting-items": "Deleting the following items:",
+        "warning-cannot-undo": "This action CAN NOT UNDO. Are you sure you want to proceed?"
+    },
+    "button": {
+        "copy": "Copy",
+        "shuffle": "Shuffle",
+        "merge": "Merge",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "submit": "Submit"
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "appbar": {
+        "sign-in-with-google": "Google でサインイン",
+        "sign-out": "サインアウト"
+    },
+    "task-progress": {
+        "coping-playlist": "{{title}} をコピーしています...",
+        "created-playlist": "{{title}} を作成しました！",
+        "coping-playlist-item": "{{title}} をコピーしています...",
+        "copied-playlist-item": "{{title}} をコピーしました！",
+        "failed-to-copy-playlist": "{{title}} のコピーに失敗しました。エラーコード: {{code}}",
+        "succeed-to-copy-playlist": "{{title}} のコピーに成功しました！",
+        "shuffling-playlist": "{{title}} をシャッフル中...",
+        "moving-playlist-item": "{{title}} を {{old}} から {{new}} へ移動中...",
+        "moved-playlist-item": "{{title}} を {{old}} から {{new}} へ移動しました！",
+        "failed-to-shuffle-playlist": "{{title}} のシャッフルに失敗しました。エラーコード: {{code}}",
+        "succeed-to-shuffle-playlist": "{{title}} のシャッフルに成功しました！",
+        "creating-new-playlist": "新しいプレイリストを作成中...",
+        "failed-to-merge-playlist": "{{title}} の結合に失敗しました。エラーコード: {{code}}",
+        "succeed-to-merge-playlist": "{{title}} の結合に成功しました！",
+        "failed-to-delete-playlist": "{{title}} の削除に失敗しました。エラーコード: {{code}}",
+        "succeed-to-delete-playlist": "{{title}} の削除に成功しました！"
+    },
+    "dialog": {
+        "delete-title": "削除の確認",
+        "deleting-items": "以下の項目を削除します:",
+        "warning-cannot-undo": "この操作は取り消すことができません。本当に続行しますか？"
+    },
+    "button": {
+        "copy": "コピー",
+        "shuffle": "シャッフル",
+        "merge": "結合",
+        "delete": "削除",
+        "cancel": "キャンセル",
+        "submit": "決定"
+    }
+}

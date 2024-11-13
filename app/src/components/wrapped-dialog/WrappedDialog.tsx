@@ -1,4 +1,5 @@
 "use client";
+import { useT } from "@/hooks";
 import { Warning as WarningIcon } from "@mui/icons-material";
 import {
 	Box,
@@ -22,6 +23,8 @@ export const WrappedDialog = ({
 	content,
 	isWarning = false,
 }: Readonly<WrappedDialogProps>) => {
+	const { t } = useT();
+
 	return (
 		<Dialog open={open} onClose={onClose}>
 			<DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
@@ -34,7 +37,9 @@ export const WrappedDialog = ({
 				{isWarning ? (
 					<>
 						<Box sx={{ mb: 2 }}>
-							<DialogContentText>以下の項目を削除します: </DialogContentText>
+							<DialogContentText>
+								{t("dialog.deleting-items")}
+							</DialogContentText>
 							<Typography
 								variant="subtitle1"
 								color="error"
@@ -44,7 +49,7 @@ export const WrappedDialog = ({
 							</Typography>
 						</Box>
 						<DialogContentText color="warning.main">
-							この操作は取り消すことができません。本当に続行しますか？
+							{t("dialog.warning-cannot-undo")}
 						</DialogContentText>
 					</>
 				) : (
@@ -54,7 +59,7 @@ export const WrappedDialog = ({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose}>キャンセル</Button>
+				<Button onClick={onClose}>{t("button.cancel")}</Button>
 				{isWarning ? (
 					<Button
 						onClick={onConfirm}
@@ -62,11 +67,11 @@ export const WrappedDialog = ({
 						startIcon={<WarningIcon />}
 						variant="contained"
 					>
-						決定
+						{t("button.submit")}
 					</Button>
 				) : (
 					<Button onClick={onConfirm} variant="contained">
-						決定
+						{t("button.submit")}
 					</Button>
 				)}
 			</DialogActions>
