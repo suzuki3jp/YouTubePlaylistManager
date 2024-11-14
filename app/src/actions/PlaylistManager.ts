@@ -1,5 +1,5 @@
 import type { PlaylistPrivacy } from "@playlistmanager/base-adapter";
-import { Failure, type Result, Success } from "@playlistmanager/result";
+import { Err, Ok, type Result } from "@playlistmanager/result";
 import { addPlaylist } from "./add-playlist";
 import { addPlaylistItem } from "./add-playlist-item";
 import { deletePlaylist } from "./delete-playlist";
@@ -9,6 +9,7 @@ import type { Failure as FailureData } from "./result";
 import type { FullPlaylist, Playlist, PlaylistItem } from "./typings";
 import { updatePlaylistItemPosition } from "./update-playlist-item-position";
 
+// TODO: 409 コンフリクトが起こったときはリクエストを再試行する
 // TODO: failure の時操作のどのフェーズで失敗したかを含めることで、どこまでは操作が行われているかUIに表示する
 export class PlaylistManager {
 	constructor(private token: string) {}
@@ -22,7 +23,7 @@ export class PlaylistManager {
 	}: CopyOptions): Promise<Result<FullPlaylist, FailureData>> {
 		// コピー対象の完全なプレイリストを取得
 		const target = await getFullPlaylist({ id, token: this.token });
-		if (target.status !== 200) return new Failure(target);
+		if (target.status !== 200) return Err(target);
 		const oldPlaylist = target.data;
 
 		// 新しいプレイリストを作成する
@@ -32,7 +33,7 @@ export class PlaylistManager {
 			privacy,
 			token: this.token,
 		});
-		if (newTarget.status !== 200) return new Failure(newTarget);
+		if (newTarget.status !== 200) return Err(newTarget);
 		const newPlaylist: FullPlaylist = { ...newTarget.data, items: [] };
 		onAddedPlaylist?.(newPlaylist);
 
@@ -45,13 +46,13 @@ export class PlaylistManager {
 				resourceId: item.videoId,
 				token: this.token,
 			});
-			if (addedItem.status !== 200) return new Failure(addedItem);
+			if (addedItem.status !== 200) return Err(addedItem);
 
 			newPlaylist.items.push(addedItem.data);
 			onAddedPlaylistItem?.(addedItem.data, index, oldPlaylist.items.length);
 		}
 
-		return new Success(newPlaylist);
+		return Ok(newPlaylist);
 	}
 
 	public async merge({
@@ -65,7 +66,7 @@ export class PlaylistManager {
 		const oldPlaylists: FullPlaylist[] = [];
 		for (const id of ids) {
 			const playlist = await getFullPlaylist({ id, token: this.token });
-			if (playlist.status !== 200) return new Failure(playlist);
+			if (playlist.status !== 200) return Err(playlist);
 			oldPlaylists.push(playlist.data);
 		}
 
@@ -77,7 +78,7 @@ export class PlaylistManager {
 			privacy,
 			token: this.token,
 		});
-		if (newPlaylistResult.status !== 200) return new Failure(newPlaylistResult);
+		if (newPlaylistResult.status !== 200) return Err(newPlaylistResult);
 		const newPlaylist: FullPlaylist = { ...newPlaylistResult.data, items: [] };
 		onAddedPlaylist?.(newPlaylist);
 
@@ -90,7 +91,7 @@ export class PlaylistManager {
 				resourceId: item.videoId,
 				token: this.token,
 			});
-			if (addedItem.status !== 200) return new Failure(addedItem);
+			if (addedItem.status !== 200) return Err(addedItem);
 			newPlaylist.items.push(addedItem.data);
 			onAddedPlaylistItem?.(
 				addedItem.data,
@@ -99,7 +100,7 @@ export class PlaylistManager {
 			);
 		}
 
-		return new Success(newPlaylist);
+		return Ok(newPlaylist);
 	}
 
 	public async shuffle({
@@ -115,8 +116,7 @@ export class PlaylistManager {
 			id: playlistId,
 			token: this.token,
 		});
-		if (getFullPlaylistResult.status !== 200)
-			return new Failure(getFullPlaylistResult);
+		if (getFullPlaylistResult.status !== 200) return Err(getFullPlaylistResult);
 		const fullPlaylist = getFullPlaylistResult.data;
 
 		// ratio から何個のプレイリストアイテムを移動するかを算出
@@ -143,7 +143,7 @@ export class PlaylistManager {
 				newIndex: targetItemNewIndex,
 				token: this.token,
 			});
-			if (updatedItem.status !== 200) return new Failure(updatedItem);
+			if (updatedItem.status !== 200) return Err(updatedItem);
 			onUpdatedPlaylistItemPosition?.(
 				updatedItem.data,
 				targetItemIndex,
@@ -153,21 +153,17 @@ export class PlaylistManager {
 			);
 		}
 
-		return new Success(fullPlaylist);
+		return Ok(fullPlaylist);
 	}
 
 	public async delete(id: string): Promise<Result<Playlist, FailureData>> {
 		const result = await deletePlaylist({ id, token: this.token });
-		return result.status === 200
-			? new Success(result.data)
-			: new Failure(result);
+		return result.status === 200 ? Ok(result.data) : Err(result);
 	}
 
 	public async getPlaylists(): Promise<Result<Playlist[], FailureData>> {
 		const result = await getPlaylists({ token: this.token });
-		return result.status === 200
-			? new Success(result.data)
-			: new Failure(result);
+		return result.status === 200 ? Ok(result.data) : Err(result);
 	}
 
 	private validateRatio(ratio: number): boolean {
