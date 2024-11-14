@@ -13,6 +13,7 @@ This document is also available in:
 - Shuffle playlist items
 - Merge playlists
 - Delete playlists
+- i18n support (English & Japanese)
 
 ## Roadmap
 - [x] Copy playlists
