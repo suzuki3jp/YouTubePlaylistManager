@@ -4,7 +4,7 @@ import {
 	Playlist,
 	PlaylistItem,
 } from "@playlistmanager/base-adapter";
-import { Failure, type Result, Success } from "@playlistmanager/result";
+import { Err, Ok, type Result } from "@playlistmanager/result";
 import type { GaxiosError } from "gaxios";
 import type { youtube_v3 } from "googleapis";
 import {
@@ -36,9 +36,9 @@ export class YoutubeAdapter extends BaseAdapter {
 				nextPageToken = res.nextPageToken;
 			} while (nextPageToken);
 
-			return new Success(playlists);
+			return Ok(playlists);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -75,9 +75,9 @@ export class YoutubeAdapter extends BaseAdapter {
 				thumbnailUrl: playlist.getThumbnailUrl,
 				items,
 			});
-			return new Success(obj);
+			return Ok(obj);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -94,9 +94,9 @@ export class YoutubeAdapter extends BaseAdapter {
 			if (!res.items) throw this.makeError("UNKNOWN_ERROR");
 			const items = this.convertToPlaylist(res.items);
 
-			return new Success(items[0]);
+			return Ok(items[0]);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -108,9 +108,9 @@ export class YoutubeAdapter extends BaseAdapter {
 		try {
 			const res = await this.client.addPlaylist(title, status, accessToken);
 			const playlist = this.convertToPlaylist([res])[0];
-			return new Success(playlist);
+			return Ok(playlist);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -130,9 +130,9 @@ export class YoutubeAdapter extends BaseAdapter {
 				accessToken,
 			);
 			const playlistItem = this.convertToPlaylistItem([res])[0];
-			return new Success(playlistItem);
+			return Ok(playlistItem);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -148,10 +148,10 @@ export class YoutubeAdapter extends BaseAdapter {
 				playlist.data.getId,
 				accessToken,
 			);
-			if (res === 204) return new Success(playlist.data);
+			if (res === 204) return Ok(playlist.data);
 			throw this.makeError("UNKNOWN_ERROR");
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 
@@ -167,9 +167,9 @@ export class YoutubeAdapter extends BaseAdapter {
 				accessToken,
 			);
 			const item = this.convertToPlaylistItem([res]);
-			return new Success(item[0]);
+			return Ok(item[0]);
 		} catch (error) {
-			return new Failure(this.handleError(error));
+			return Err(this.handleError(error));
 		}
 	}
 

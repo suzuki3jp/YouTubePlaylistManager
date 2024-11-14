@@ -1,5 +1,4 @@
-export type Result<S, E> = Success<S, E> | Failure<S, E>;
-
+export type Result<S, E> = Success<S, unknown> | Failure<unknown, E>;
 /**
  * 成功を表すクラス
  */
@@ -59,3 +58,6 @@ export class Failure<S, E> {
 		return true;
 	}
 }
+
+export const Ok = <T>(data: T) => new Success(data);
+export const Err = <T>(data: T) => new Failure(data);

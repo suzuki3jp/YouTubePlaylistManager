@@ -1,4 +1,4 @@
-import { Failure, type Result, Success } from "@playlistmanager/result";
+import { Err, Ok, type Result } from "@playlistmanager/result";
 
 export const getEnv = (keys: string[]): Result<string[], EnvError> => {
 	let e: EnvError | null = null;
@@ -11,7 +11,7 @@ export const getEnv = (keys: string[]): Result<string[], EnvError> => {
 		if (env) r.push(env);
 	}
 
-	return e !== null ? new Failure(e) : new Success(r);
+	return e !== null ? Err(e) : Ok(r);
 };
 
 export class EnvError extends Error {
