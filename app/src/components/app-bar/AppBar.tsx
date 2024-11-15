@@ -1,17 +1,16 @@
-"use client";
 import {
 	Grid2 as Grid,
 	AppBar as MuiAppBar,
 	Toolbar,
 	Typography,
 } from "@mui/material";
-import { useSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import { GoogleSignOutButton } from "./GoogleSignOutButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
-export const AppBar = () => {
-	const { data } = useSession();
+export const AppBar = async () => {
+	const session = await getServerSession();
 
 	return (
 		<MuiAppBar
@@ -26,7 +25,7 @@ export const AppBar = () => {
 				</Typography>
 				<Grid container spacing={2}>
 					<LanguageSwitcher />
-					{data ? <GoogleSignOutButton /> : <GoogleSignInButton />}
+					{session ? <GoogleSignOutButton /> : <GoogleSignInButton />}
 				</Grid>
 			</Toolbar>
 		</MuiAppBar>

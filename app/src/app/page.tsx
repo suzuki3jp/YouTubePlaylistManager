@@ -1,10 +1,17 @@
 "use client";
-import { LayoutProvider, PlaylistManager } from "@/components";
+import { PlaylistManager, SnackbarProvider } from "@/components";
+import { darkTheme } from "@/themes";
+import { ThemeProvider } from "@mui/material";
+import { SessionProvider } from "next-auth/react";
 
 export default function Home() {
 	return (
-		<LayoutProvider>
-			<PlaylistManager />
-		</LayoutProvider>
+		<ThemeProvider theme={darkTheme}>
+			<SessionProvider>
+				<SnackbarProvider>
+					<PlaylistManager />
+				</SnackbarProvider>
+			</SessionProvider>
+		</ThemeProvider>
 	);
 }
