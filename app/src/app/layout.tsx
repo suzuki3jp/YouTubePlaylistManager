@@ -1,5 +1,3 @@
-import { AppBar, SnackbarProvider, ThemeProvider } from "@/components";
-import { DEFAULT_LANGUAGE } from "@/locales/settings";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,16 +10,5 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
-		<html lang={DEFAULT_LANGUAGE}>
-			<body>
-				<SnackbarProvider>
-					<ThemeProvider>
-						<AppBar />
-						{children}
-					</ThemeProvider>
-				</SnackbarProvider>
-			</body>
-		</html>
-	);
+	return children;
 }

@@ -1,6 +1,10 @@
 "use client";
-import { PlaylistManager } from "@/components";
+import { LayoutProvider, PlaylistManager } from "@/components";
 
 export default function Home() {
-	return <PlaylistManager />;
+	return (
+		<LayoutProvider>
+			<PlaylistManager />
+		</LayoutProvider>
+	);
 }
