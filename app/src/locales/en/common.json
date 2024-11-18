@@ -22,7 +22,7 @@
         "failed-to-merge-playlist": "Failed to merge {{title}}. ErrorCode: {{code}}",
         "succeed-to-merge-playlist": "Succeed to merge {{title}} !",
         "failed-to-delete-playlist": "Failed to delete {{title}}. ErrorCode: {{code}}",
-        "succeed-to-delete-playlist": "Succeed to delete {{title}}"
+        "succeed-to-delete-playlist": "Succeed to delete {{title}} !"
     },
     "dialog": {
         "delete-title": "Delete Confirmation",
