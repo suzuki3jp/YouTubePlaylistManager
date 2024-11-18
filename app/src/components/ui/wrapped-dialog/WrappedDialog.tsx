@@ -43,12 +43,12 @@ export const WrappedDialog = ({
 							<Typography
 								variant="subtitle1"
 								color="error"
-								sx={{ mt: 1, whiteSpace: "pre-line" }}
+								sx={{ mt: 1, whiteSpace: "pre-line", fontWeight: "bold" }}
 							>
 								{content}
 							</Typography>
 						</Box>
-						<DialogContentText color="warning.main">
+						<DialogContentText color="warning.main" sx={{ fontWeight: "bold" }}>
 							{t("dialog.warning-cannot-undo")}
 						</DialogContentText>
 					</>

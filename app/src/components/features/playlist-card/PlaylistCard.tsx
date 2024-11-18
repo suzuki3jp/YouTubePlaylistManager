@@ -43,7 +43,12 @@ export const PlaylistCard = ({
 					}}
 				>
 					{isSelected && <CheckIcon sx={{ marginRight: "2%" }} />}
-					<CardHeader title={playlist.title} />
+					<CardHeader
+						title={playlist.title}
+						titleTypographyProps={{
+							fontWeight: 600,
+						}}
+					/>
 				</div>
 				<div style={{ position: "relative", paddingTop: "56.25%" }}>
 					<CardMedia

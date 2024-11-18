@@ -8,7 +8,7 @@ export const NonUpperButton = ({
 	...props
 }: Readonly<ButtonProps>) => {
 	return (
-		<Button {...props} sx={{ textTransform: "none" }}>
+		<Button {...props} sx={{ textTransform: "none", fontWeight: "bold" }}>
 			{children}
 		</Button>
 	);
