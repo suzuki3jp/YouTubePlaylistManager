@@ -3,19 +3,7 @@ import { createTheme } from "@mui/material";
 
 export const darkTheme = createTheme({
 	typography: {
-		fontFamily: [
-			"-apple-system",
-			"BlinkMacSystemFont",
-			'"Segoe UI"',
-			"Roboto",
-			'"Hiragino Sans"',
-			'"Hiragino Kaku Gothic ProN"',
-			'"Noto Sans JP"',
-			'"Yu Gothic"',
-			"YuGothic",
-			"Meiryo",
-			"sans-serif",
-		].join(","),
+		fontFamily: ["Roboto", "Arial", "sans-serif", "Segoe UI"].join(","),
 	},
 	palette: {
 		mode: "dark",
