@@ -166,6 +166,13 @@ export class PlaylistManager {
 		return result.status === 200 ? Ok(result.data) : Err(result);
 	}
 
+	public async getFullPlaylist(
+		id: string,
+	): Promise<Result<FullPlaylist, FailureData>> {
+		const result = await getFullPlaylist({ id, token: this.token });
+		return result.status === 200 ? Ok(result.data) : Err(result);
+	}
+
 	private validateRatio(ratio: number): boolean {
 		return !!(0 <= ratio && 1 >= ratio);
 	}

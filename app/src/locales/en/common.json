@@ -34,7 +34,9 @@
         "shuffle": "Shuffle",
         "merge": "Merge",
         "delete": "Delete",
+        "browse": "Browse",
         "cancel": "Cancel",
         "confirm": "Confirm"
-    }
+    },
+    "search-placeholder": "Search..."
 }

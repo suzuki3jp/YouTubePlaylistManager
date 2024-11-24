@@ -13,6 +13,7 @@ This document is also available in:
 - Shuffle playlist items
 - Merge playlists
 - Delete playlists
+- Search playlist items 
 - i18n support (English & Japanese)
 
 ## Roadmap
@@ -21,6 +22,7 @@ This document is also available in:
 - [x] Shuffle playlist items
 - [x] Merge playlists
 - [x] Localization (English & Japanese)
+- [x] Search playlist items 
 - [ ] Extract specific artist's song from playlists
 - [ ] Sort playlist items by artist name or song title
 - [ ] Multi platforms support (Youtube, Spotify, Amazon music ...)

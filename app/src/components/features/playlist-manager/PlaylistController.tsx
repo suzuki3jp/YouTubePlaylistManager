@@ -8,6 +8,7 @@ import {
 import { NonUpperButton, WrappedDialog } from "@/components";
 import { useT } from "@/hooks";
 import {
+	Search as BrowseIcon,
 	ContentCopy as CopyIcon,
 	Delete as DeleteIcon,
 	CallMerge as MergeIcon,
@@ -15,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import { Grid2 as Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
 import { useState } from "react";
 import type { SetTaskFunc } from "./PlaylistManager";
@@ -27,6 +29,8 @@ export const PlaylistController = ({
 	const { t } = useT();
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+	const oldQuery = useSearchParams();
+	const router = useRouter();
 	if (!data?.accessToken) return <></>;
 	const manager = new PlaylistManager(data.accessToken);
 
@@ -214,6 +218,14 @@ export const PlaylistController = ({
 
 	const onDeleteButtonClick = async () => setIsDeleteOpen(true);
 
+	const onBrowseButtonClick = async () => {
+		const newQuery = new URLSearchParams(oldQuery);
+		const targetIds = selectedItems.slice(0, 3).map((p) => p.id);
+		newQuery.set("id", targetIds.join(","));
+
+		router.push(`?${newQuery.toString()}`);
+	};
+
 	return selectedItems.length === 0 ? (
 		<></>
 	) : (
@@ -252,6 +264,15 @@ export const PlaylistController = ({
 					onClick={onDeleteButtonClick}
 				>
 					{t("button.delete")}
+				</NonUpperButton>
+			</Grid>
+			<Grid>
+				<NonUpperButton
+					variant="contained"
+					startIcon={<BrowseIcon />}
+					onClick={onBrowseButtonClick}
+				>
+					{t("button.browse")}
 				</NonUpperButton>
 			</Grid>
 

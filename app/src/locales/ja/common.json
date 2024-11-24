@@ -34,7 +34,9 @@
         "shuffle": "シャッフル",
         "merge": "結合",
         "delete": "削除",
+        "browse": "ブラウズ",
         "cancel": "キャンセル",
         "confirm": "決定"
-    }
+    },
+    "search-placeholder": "検索..."
 }
