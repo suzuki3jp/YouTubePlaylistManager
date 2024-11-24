@@ -1,10 +1,6 @@
-import {
-	Grid2 as Grid,
-	AppBar as MuiAppBar,
-	Toolbar,
-	Typography,
-} from "@mui/material";
+import { Grid2 as Grid, AppBar as MuiAppBar, Toolbar } from "@mui/material";
 import { getServerSession } from "next-auth";
+import { AppName } from "./AppName";
 import { GoogleSignInButton } from "./GoogleSignInButton";
 import { GoogleSignOutButton } from "./GoogleSignOutButton";
 import { LanguageSwitcher } from "./LanguageSwitcher";
@@ -33,19 +29,11 @@ export const AppBar = async () => {
 						xs: "auto",
 						sm: "64px",
 					},
+					display: "flex",
+					justifyContent: "space-between",
 				}}
 			>
-				<Typography
-					variant="h6"
-					component="div"
-					sx={{
-						flexGrow: { sm: 1 },
-						textAlign: { xs: "center", sm: "left" },
-						width: { xs: "100%", sm: "auto" },
-					}}
-				>
-					PlaylistManager
-				</Typography>
+				<AppName />
 
 				<Grid container spacing={2}>
 					<LanguageSwitcher />
