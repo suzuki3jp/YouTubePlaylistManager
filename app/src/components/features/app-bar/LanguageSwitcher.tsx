@@ -8,7 +8,7 @@ import {
 	Select,
 	type SelectChangeEvent,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 export const LanguageSwitcher = () => {
@@ -18,6 +18,7 @@ export const LanguageSwitcher = () => {
 		langs[l] = t(`appbar.${l}`);
 	}
 
+	const oldParams = useSearchParams();
 	const router = useRouter();
 	const [currentLang, setCurrentLang] = useState(lang);
 	const handleChange = (event: SelectChangeEvent<string>) => {
@@ -27,7 +28,7 @@ export const LanguageSwitcher = () => {
 		if (!newLang) return;
 		setCurrentLang(newLang);
 
-		const params = new URLSearchParams();
+		const params = new URLSearchParams(oldParams);
 		params.set(QUERY_NAME, newLang);
 		router.push(`?${params.toString()}`);
 	};
