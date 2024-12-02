@@ -9,5 +9,13 @@ export const getOptions = (lang: string = DEFAULT_LANGUAGE) => {
 		lng: lang,
 		fallbackLng: DEFAULT_LANGUAGE,
 		supportedLngs: AVAILABLE_LANGUAGES,
+		ns: ["common"],
 	};
+};
+
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export const getSafeLang = (lang: any) => {
+	return typeof lang === "string" && AVAILABLE_LANGUAGES.includes(lang)
+		? lang
+		: DEFAULT_LANGUAGE;
 };
