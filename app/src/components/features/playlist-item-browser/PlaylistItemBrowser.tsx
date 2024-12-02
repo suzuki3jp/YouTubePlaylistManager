@@ -6,7 +6,6 @@ import { useCallback, useEffect, useState } from "react";
 import { FullPlaylistCard } from "../full-playlist-card";
 
 export const PlaylistItemBrowser = ({ ids }: { ids: string[] }) => {
-	console.log(ids);
 	const { data } = useSession();
 	const [playlistIds, setPlaylistIds] = useState<string[]>(ids);
 	const [playlists, setPlaylists] = useState<FullPlaylist[]>([]);
@@ -22,7 +21,6 @@ export const PlaylistItemBrowser = ({ ids }: { ids: string[] }) => {
 
 		const isAllFaliure = newPlaylistsResult.every((r) => r.isFailure());
 		if (isAllFaliure) return signOut();
-		console.log(newPlaylistsResult);
 		const newPlaylists = newPlaylistsResult
 			.filter((r) => r.isSuccess())
 			.map((s) => s.data);
