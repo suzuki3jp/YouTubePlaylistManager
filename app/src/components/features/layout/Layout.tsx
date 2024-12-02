@@ -3,7 +3,7 @@ import { Footer } from "@/components/features/footer";
 import { QUERY_NAME, getSafeLang } from "@/locales/settings";
 import { darkTheme } from "@/themes";
 import type { PageProps } from "@/types";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-approuter";
 
 export const Layout = async ({
@@ -30,6 +30,7 @@ export const Layout = async ({
 			>
 				<AppRouterCacheProvider>
 					<ThemeProvider theme={darkTheme}>
+						<CssBaseline />
 						<AppBar />
 						{children}
 						<Footer searchParams={searchParams} />

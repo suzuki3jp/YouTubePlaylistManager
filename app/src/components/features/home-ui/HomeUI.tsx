@@ -5,7 +5,7 @@ import {
 	SnackbarProvider,
 } from "@/components";
 import { darkTheme } from "@/themes";
-import { ThemeProvider } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { SessionProvider } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
@@ -17,6 +17,7 @@ export const HomeUI = () => {
 		<ThemeProvider theme={darkTheme}>
 			<SessionProvider>
 				<SnackbarProvider>
+					<CssBaseline />
 					{id ? (
 						<PlaylistItemBrowser ids={id.split(",")} />
 					) : (
