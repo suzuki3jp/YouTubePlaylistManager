@@ -1,4 +1,5 @@
 import { AppBar } from "@/components";
+import { Footer } from "@/components/features/footer";
 import { QUERY_NAME, getSafeLang } from "@/locales/settings";
 import { darkTheme } from "@/themes";
 import type { PageProps } from "@/types";
@@ -17,12 +18,21 @@ export const Layout = async ({
 	const resolvedLang = getSafeLang(lang);
 
 	return (
-		<html lang={resolvedLang}>
-			<body style={{ margin: "0 0 0 0", backgroundColor: "black" }}>
+		<html lang={resolvedLang} style={{ height: "100%" }}>
+			<body
+				style={{
+					margin: "0 0 0 0",
+					backgroundColor: "black",
+					height: "100%",
+					display: "flex",
+					flexDirection: "column",
+				}}
+			>
 				<AppRouterCacheProvider>
 					<ThemeProvider theme={darkTheme}>
 						<AppBar />
 						{children}
+						<Footer searchParams={searchParams} />
 					</ThemeProvider>
 				</AppRouterCacheProvider>
 			</body>

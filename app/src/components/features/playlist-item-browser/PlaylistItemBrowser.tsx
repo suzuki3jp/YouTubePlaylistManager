@@ -34,7 +34,7 @@ export const PlaylistItemBrowser = ({ ids }: { ids: string[] }) => {
 	}, [refreshPlaylists]);
 
 	return (
-		<Grid container marginTop="1%">
+		<Grid container my="0.5%">
 			<Grid size={2} />
 			<Grid size={8} container spacing={2}>
 				{playlists.map((fp) => (

@@ -61,7 +61,7 @@ export const PlaylistManager = () => {
 
 	return (
 		<>
-			<Grid container marginTop="1%">
+			<Grid container my="0.5%">
 				<Grid size={2} />
 				<Grid size={8} spacing={2} container>
 					<OperationProgress tasks={progressTasks} />

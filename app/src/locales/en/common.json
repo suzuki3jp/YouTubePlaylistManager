@@ -1,10 +1,16 @@
 {
+    "metadata": {
+        "author": "suzuki3jp"
+    },
     "appbar": {
         "sign-in-with-google": "Sign in with Google",
         "sign-out": "Sign out",
         "language": "Language",
         "ja": "Japanese / 日本語",
         "en": "English / English"
+    },
+    "footer": {
+        "home": "Home"
     },
     "task-progress": {
         "copying-playlist": "Copying {{title}} ...",
