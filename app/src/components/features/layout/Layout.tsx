@@ -1,10 +1,7 @@
-import { AppBar } from "@/components";
+import { AppBar, ServerProvidersProvider } from "@/components";
 import { Footer } from "@/components/features/footer";
 import { QUERY_NAME, getSafeLang } from "@/locales/settings";
-import { darkTheme } from "@/themes";
 import type { PageProps } from "@/types";
-import { CssBaseline, ThemeProvider } from "@mui/material";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-approuter";
 import type React from "react";
 import type { PropsWithChildren } from "react";
 
@@ -26,14 +23,11 @@ export const Layout: React.FC<LayoutProps> = async ({
 					flexDirection: "column",
 				}}
 			>
-				<AppRouterCacheProvider>
-					<ThemeProvider theme={darkTheme}>
-						<CssBaseline />
-						<AppBar />
-						{children}
-						<Footer searchParams={searchParams} />
-					</ThemeProvider>
-				</AppRouterCacheProvider>
+				<ServerProvidersProvider>
+					<AppBar />
+					{children}
+					<Footer searchParams={searchParams} />
+				</ServerProvidersProvider>
 			</body>
 		</html>
 	);
