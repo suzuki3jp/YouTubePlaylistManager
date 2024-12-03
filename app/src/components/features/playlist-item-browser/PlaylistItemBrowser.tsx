@@ -36,7 +36,7 @@ export const PlaylistItemBrowser: React.FC<PlaylistItemBrowserProps> = ({
 
 	return (
 		<CenteredLayout
-			mainGridProps={{ my: "0.5%" }}
+			mainGridProps={{ mt: "0.5%" }}
 			centerGridProps={{ spacing: 2 }}
 			centerGridSize={8}
 		>
