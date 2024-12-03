@@ -1,5 +1,5 @@
-import type { PlaylistPrivacy } from "@playlistmanager/base-adapter";
-import { Err, Ok, type Result } from "@playlistmanager/result";
+import type { PlaylistPrivacy } from "@ytpm/base-adapter";
+import { Err, Ok, type Result } from "@ytpm/result";
 import { addPlaylist } from "./add-playlist";
 import { addPlaylistItem } from "./add-playlist-item";
 import { deletePlaylist } from "./delete-playlist";

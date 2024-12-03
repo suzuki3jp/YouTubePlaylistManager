@@ -1,4 +1,4 @@
-<h2 align="center">PlaylistManager</h2>
+<h2 align="center">YouTubePlaylistManager</h2>
 <div align="center">Youtube (music) playlist manager</div>
 
 This document is also available in:

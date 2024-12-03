@@ -2,8 +2,8 @@ import type {
 	FullPlaylist as FullPlaylistClass,
 	Playlist as PlaylistClass,
 	PlaylistItem as PlaylistItemClass,
-} from "@playlistmanager/base-adapter";
-import type { YoutubeAdapterErrorCodes } from "@playlistmanager/youtube-adapter";
+} from "@ytpm/base-adapter";
+import type { YoutubeAdapterErrorCodes } from "@ytpm/youtube-adapter";
 
 export type YoutubeErrorCodes =
 	(typeof YoutubeAdapterErrorCodes)[keyof typeof YoutubeAdapterErrorCodes]["code"];
@@ -15,7 +15,7 @@ export interface Playlist {
 }
 
 /**
- * `@playlistmanager/base-adapter` の `Playlist` クラスからプレーンオブジェクトに変換
+ * `@ytpm/base-adapter` の `Playlist` クラスからプレーンオブジェクトに変換
  */
 export const convertToPlaylistFromClass = (data: PlaylistClass): Playlist => ({
 	id: data.getId,
@@ -26,7 +26,7 @@ export const convertToPlaylistFromClass = (data: PlaylistClass): Playlist => ({
 export type FullPlaylist = { items: PlaylistItem[] } & Playlist;
 
 /**
- * `@playlistmanager/base-adapter` の `FullPlaylist` クラスからプレーンオブジェクトに変換
+ * `@ytpm/base-adapter` の `FullPlaylist` クラスからプレーンオブジェクトに変換
  */
 export const convertToFullPlaylistFromClass = (
 	data: FullPlaylistClass,
@@ -47,7 +47,7 @@ export interface PlaylistItem {
 }
 
 /**
- * `@playlistmanager/base-adapter` の `PlaylistItem` クラスからプレーンオブジェクトに変換
+ * `@ytpm/base-adapter` の `PlaylistItem` クラスからプレーンオブジェクトに変換
  */
 export const convertToPlaylistItemFromClass = (
 	data: PlaylistItemClass,

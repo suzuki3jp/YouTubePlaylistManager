@@ -1,7 +1,7 @@
 "use server";
 import { type Result, fail, ok } from "@/actions/result";
 import { type Playlist, convertToPlaylistFromClass } from "@/actions/typings";
-import { YoutubeAdapter } from "@playlistmanager/youtube-adapter";
+import { YoutubeAdapter } from "@ytpm/youtube-adapter";
 
 /**
  * プレイリストを削除する

@@ -1,4 +1,4 @@
-import type { PlaylistPrivacy } from "@playlistmanager/base-adapter";
+import type { PlaylistPrivacy } from "@ytpm/base-adapter";
 import { google, type youtube_v3 } from "googleapis";
 
 export class YoutubeApiClient {

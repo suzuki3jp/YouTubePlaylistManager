@@ -1,5 +1,5 @@
 {
-  "name": "@playlistmanager/youtube-adapter",
+  "name": "@ytpm/youtube-adapter",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,8 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@playlistmanager/base-adapter": "workspace:*",
-    "@playlistmanager/result": "workspace:*",
+    "@ytpm/base-adapter": "workspace:*",
+    "@ytpm/result": "workspace:*",
     "gaxios": "^6.7.1",
     "googleapis": "^144.0.0"
   },

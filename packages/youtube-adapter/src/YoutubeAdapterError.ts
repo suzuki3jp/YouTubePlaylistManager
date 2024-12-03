@@ -1,4 +1,4 @@
-import { BaseAdapterError } from "@playlistmanager/base-adapter";
+import { BaseAdapterError } from "@ytpm/base-adapter";
 
 export class YoutubeAdapterError extends BaseAdapterError {
 	constructor(

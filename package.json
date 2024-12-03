@@ -1,5 +1,5 @@
 {
-	"name": "@playlistmanager/root",
+	"name": "@ytpm/root",
 	"version": "0.0.1",
 	"description": "Multi platform playlist manager",
 	"private": "true",

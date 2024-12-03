@@ -1,4 +1,4 @@
-import type { Result } from "@playlistmanager/result";
+import type { Result } from "@ytpm/result";
 import type { BaseAdapterError } from "./BaseAdapterError";
 import type {
 	FullPlaylist,

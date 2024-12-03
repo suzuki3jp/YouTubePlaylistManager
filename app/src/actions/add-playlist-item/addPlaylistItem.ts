@@ -4,7 +4,7 @@ import {
 	type PlaylistItem,
 	convertToPlaylistItemFromClass,
 } from "@/actions/typings";
-import { YoutubeAdapter } from "@playlistmanager/youtube-adapter";
+import { YoutubeAdapter } from "@ytpm/youtube-adapter";
 
 /**
  * 既存のプレイリストにアイテムを追加する

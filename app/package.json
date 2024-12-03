@@ -1,5 +1,5 @@
 {
-  "name": "@playlistmanager/app",
+  "name": "@ytpm/app",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -15,9 +15,9 @@
     "@mui/icons-material": "6.1.6",
     "@mui/material": "6.1.6",
     "@mui/material-nextjs": "6.1.6",
-    "@playlistmanager/base-adapter": "workspace:*",
-    "@playlistmanager/result": "workspace:*",
-    "@playlistmanager/youtube-adapter": "workspace:*",
+    "@ytpm/base-adapter": "workspace:*",
+    "@ytpm/result": "workspace:*",
+    "@ytpm/youtube-adapter": "workspace:*",
     "dotenv": "^16.4.5",
     "i18next": "^23.16.5",
     "i18next-resources-to-backend": "^1.2.1",

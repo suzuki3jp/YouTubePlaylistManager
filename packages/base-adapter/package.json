@@ -1,5 +1,5 @@
 {
-  "name": "@playlistmanager/base-adapter",
+  "name": "@ytpm/base-adapter",
   "version": "0.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -8,7 +8,7 @@
     "dev": "tsup src/index.ts --format esm,cjs --dts --watch"
   },
   "dependencies": {
-    "@playlistmanager/result": "workspace:*"
+    "@ytpm/result": "workspace:*"
   },
   "devDependencies": {
     "tsup": "^8.3.0"
