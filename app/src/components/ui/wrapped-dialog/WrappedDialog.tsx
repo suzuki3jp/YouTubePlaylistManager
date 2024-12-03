@@ -14,15 +14,16 @@ import {
 	Typography,
 } from "@mui/material";
 import type { ReactNode } from "react";
+import type React from "react";
 
-export const WrappedDialog = ({
+export const WrappedDialog: React.FC<WrappedDialogProps> = ({
 	open,
 	onClose,
 	onConfirm,
 	title,
 	content,
 	isWarning = false,
-}: Readonly<WrappedDialogProps>) => {
+}) => {
 	const { t } = useT();
 
 	return (
@@ -79,11 +80,11 @@ export const WrappedDialog = ({
 	);
 };
 
-export interface WrappedDialogProps {
+export type WrappedDialogProps = Readonly<{
 	open: DialogProps["open"];
 	onClose: () => void;
 	onConfirm: ButtonProps["onClick"];
 	title: ReactNode;
 	content: ReactNode;
 	isWarning?: boolean;
-}
+}>;

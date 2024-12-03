@@ -6,12 +6,13 @@ import {
 	LinearProgress,
 	Typography,
 } from "@mui/material";
+import type React from "react";
 
-export const ProgressBar = ({
+export const ProgressBar: React.FC<ProgressBarProps> = ({
 	message,
 	completed,
 	total,
-}: ProgressBarProps) => {
+}) => {
 	return (
 		<Grid container size={12}>
 			<Grid size={12}>
@@ -41,8 +42,8 @@ export const ProgressBar = ({
 	);
 };
 
-export interface ProgressBarProps {
+export type ProgressBarProps = Readonly<{
 	message: string;
 	completed: number;
 	total: number;
-}
+}>;

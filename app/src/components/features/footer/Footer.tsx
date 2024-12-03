@@ -1,9 +1,9 @@
 import { useServerT } from "@/hooks";
 import type { PageProps } from "@/types";
 import { Box, Container, Grid2 as Grid, Link, Typography } from "@mui/material";
-import React from "react";
+import type React from "react";
 
-export const Footer = async ({ searchParams }: PageProps) => {
+export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 	const { t } = await useServerT(searchParams);
 
 	return (
@@ -44,3 +44,5 @@ export const Footer = async ({ searchParams }: PageProps) => {
 		</Box>
 	);
 };
+
+export type FooterProps = Readonly<PageProps>;

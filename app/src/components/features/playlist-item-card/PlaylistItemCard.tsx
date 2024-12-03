@@ -1,8 +1,9 @@
 "use client";
 import type { PlaylistItem } from "@/actions";
 import { Card, CardHeader, CardMedia, Typography } from "@mui/material";
+import type React from "react";
 
-export const PlaylistItemCard = ({ item }: PlaylistItemCardPrpps) => {
+export const PlaylistItemCard: React.FC<PlaylistItemCardPrpps> = ({ item }) => {
 	return (
 		<Card
 			sx={{
@@ -28,6 +29,6 @@ export const PlaylistItemCard = ({ item }: PlaylistItemCardPrpps) => {
 	);
 };
 
-export interface PlaylistItemCardPrpps {
+export type PlaylistItemCardPrpps = Readonly<{
 	item: PlaylistItem;
-}
+}>;

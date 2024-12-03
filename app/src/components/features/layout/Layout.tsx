@@ -5,15 +5,13 @@ import { darkTheme } from "@/themes";
 import type { PageProps } from "@/types";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-approuter";
+import type React from "react";
+import type { PropsWithChildren } from "react";
 
-export const Layout = async ({
+export const Layout: React.FC<LayoutProps> = async ({
 	children,
 	searchParams,
-}: Readonly<
-	{
-		children: React.ReactNode;
-	} & PageProps
->) => {
+}) => {
 	const lang = (await searchParams)[QUERY_NAME];
 	const resolvedLang = getSafeLang(lang);
 
@@ -40,3 +38,5 @@ export const Layout = async ({
 		</html>
 	);
 };
+
+export type LayoutProps = Readonly<PropsWithChildren<PageProps>>;

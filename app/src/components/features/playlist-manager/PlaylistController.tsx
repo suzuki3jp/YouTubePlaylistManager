@@ -18,14 +18,15 @@ import { Grid2 as Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { enqueueSnackbar } from "notistack";
+import type React from "react";
 import { useState } from "react";
 import type { SetTaskFunc } from "./PlaylistManager";
 
-export const PlaylistController = ({
+export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 	selectedItems,
 	setTask,
 	refreshPlaylists,
-}: Readonly<PlaylistControllerProps>) => {
+}) => {
 	const { t } = useT();
 	const { data } = useSession();
 	const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -308,11 +309,12 @@ export const PlaylistController = ({
 	);
 };
 
-export interface PlaylistControllerProps {
+export type PlaylistControllerProps = Readonly<{
 	selectedItems: Playlist[];
 	setTask: SetTaskFunc;
 	refreshPlaylists: () => void;
-}
+}>;
+
 const showSnackbar = (message: string, isSuccess = true) => {
 	enqueueSnackbar(message, { variant: isSuccess ? "success" : "error" });
 };

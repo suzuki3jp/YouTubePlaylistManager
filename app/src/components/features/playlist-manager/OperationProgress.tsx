@@ -1,8 +1,11 @@
 "use client";
 import { ProgressBar } from "@/components";
 import { Grid2 as Grid } from "@mui/material";
+import type React from "react";
 
-export const OperationProgress = ({ tasks }: OperationProgressProps) => {
+export const OperationProgress: React.FC<OperationProgressProps> = ({
+	tasks,
+}) => {
 	const taskArray = Array.from(tasks.entries());
 	if (taskArray.length === 0) return <></>;
 
@@ -26,6 +29,6 @@ export interface OperationProgressData {
 	total: number;
 }
 
-export interface OperationProgressProps {
+export type OperationProgressProps = Readonly<{
 	tasks: Map<string, OperationProgressData>;
-}
+}>;

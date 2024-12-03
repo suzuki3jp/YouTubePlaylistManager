@@ -12,10 +12,14 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material";
+import type React from "react";
 import { useState } from "react";
 import { PlaylistItemCard } from "../playlist-item-card";
 
-export const FullPlaylistCard = ({ playlist, size }: FullPlaylistCardProps) => {
+export const FullPlaylistCard: React.FC<FullPlaylistCardProps> = ({
+	playlist,
+	size,
+}) => {
 	const [searchText, setSearchText] = useState("");
 	const { t } = useT();
 
@@ -77,7 +81,7 @@ export const FullPlaylistCard = ({ playlist, size }: FullPlaylistCardProps) => {
 	);
 };
 
-export interface FullPlaylistCardProps {
+export type FullPlaylistCardProps = Readonly<{
 	playlist: FullPlaylist;
 	size: GridProps["size"];
-}
+}>;

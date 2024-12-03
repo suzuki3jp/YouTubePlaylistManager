@@ -2,10 +2,13 @@
 import { type FullPlaylist, PlaylistManager as PM } from "@/actions";
 import { Grid2 as Grid } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
+import type React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { FullPlaylistCard } from "../full-playlist-card";
 
-export const PlaylistItemBrowser = ({ ids }: { ids: string[] }) => {
+export const PlaylistItemBrowser: React.FC<PlaylistItemBrowserProps> = ({
+	ids,
+}) => {
 	const { data } = useSession();
 	const [playlistIds, setPlaylistIds] = useState<string[]>(ids);
 	const [playlists, setPlaylists] = useState<FullPlaylist[]>([]);
@@ -48,6 +51,6 @@ export const PlaylistItemBrowser = ({ ids }: { ids: string[] }) => {
 	);
 };
 
-export interface PlaylistItemBrowserProps {
+export type PlaylistItemBrowserProps = Readonly<{
 	ids: string[];
-}
+}>;

@@ -1,13 +1,12 @@
 "use client";
 import { SnackbarProvider as NotistackProvider } from "notistack";
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
+import type React from "react";
 
-export const SnackbarProvider = ({
+export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
 	children,
-}: Readonly<SnackbarProviderProps>) => {
+}) => {
 	return <NotistackProvider>{children}</NotistackProvider>;
 };
 
-export interface SnackbarProviderProps {
-	children: ReactNode;
-}
+export type SnackbarProviderProps = Readonly<PropsWithChildren>;

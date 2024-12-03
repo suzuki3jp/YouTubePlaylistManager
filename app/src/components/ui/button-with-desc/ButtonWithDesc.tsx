@@ -4,16 +4,17 @@ import {
 	Tooltip,
 	type TooltipProps,
 } from "@mui/material";
-import type { ReactNode } from "react";
+import type { PropsWithChildren } from "react";
+import type React from "react";
 
-export const ButtonWithDesc = ({
+export const ButtonWithDesc: React.FC<ButtonWithDescProps> = ({
 	children,
 	title,
 	arrow,
 	enterDelay,
 	leaveDelay,
 	onClick,
-}: Readonly<ButtonWithDescProps>) => {
+}) => {
 	return (
 		<Tooltip
 			title={title}
@@ -26,11 +27,12 @@ export const ButtonWithDesc = ({
 	);
 };
 
-export interface ButtonWithDescProps {
-	children: ReactNode;
-	title?: TooltipProps["title"];
-	arrow?: boolean;
-	enterDelay?: TooltipProps["enterDelay"];
-	leaveDelay?: TooltipProps["leaveDelay"];
-	onClick?: IconButtonProps["onClick"];
-}
+export type ButtonWithDescProps = Readonly<
+	PropsWithChildren<{
+		title?: TooltipProps["title"];
+		arrow?: boolean;
+		enterDelay?: TooltipProps["enterDelay"];
+		leaveDelay?: TooltipProps["leaveDelay"];
+		onClick?: IconButtonProps["onClick"];
+	}>
+>;

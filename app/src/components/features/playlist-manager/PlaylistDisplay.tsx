@@ -2,12 +2,13 @@
 import type { Playlist } from "@/actions";
 import { PlaylistCard } from "@/components";
 import { Grid2 as Grid } from "@mui/material";
+import type React from "react";
 
-export const PlaylistDisplay = ({
+export const PlaylistDisplay: React.FC<PlaylistDisplayProps> = ({
 	playlists,
 	selectedPlaylist,
 	toggleSelected,
-}: Readonly<PlaylistDisplayProps>) => {
+}) => {
 	return (
 		<Grid container spacing={2} size={12}>
 			{playlists.map((v) => (
@@ -24,8 +25,8 @@ export const PlaylistDisplay = ({
 	);
 };
 
-export interface PlaylistDisplayProps {
+export type PlaylistDisplayProps = Readonly<{
 	playlists: Playlist[];
 	selectedPlaylist: Playlist[];
 	toggleSelected: (playlist: Playlist) => void;
-}
+}>;
