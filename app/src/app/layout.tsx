@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "PlaylistManager",
+	title: "YouTube Playlist Manager",
 	description: "Managing playlists",
 };
 

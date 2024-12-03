@@ -18,8 +18,8 @@ export const AppName = () => {
 			sx={{ flexShrink: 0, p: "1% 1% 1% 1%", borderRadius: 2 }}
 			onClick={onClick}
 		>
-			<Typography variant="h6" component="div">
-				PlaylistManager
+			<Typography variant="h6" component="div" fontWeight={"bold"}>
+				YouTubePlaylistManager
 			</Typography>
 		</ButtonBase>
 	);
