@@ -1,6 +1,6 @@
 "use client";
 import { type FullPlaylist, PlaylistManager as PM } from "@/actions";
-import { Grid2 as Grid } from "@mui/material";
+import { CenteredLayout } from "@/components";
 import { signOut, useSession } from "next-auth/react";
 import type React from "react";
 import { useCallback, useEffect, useState } from "react";
@@ -35,19 +35,19 @@ export const PlaylistItemBrowser: React.FC<PlaylistItemBrowserProps> = ({
 	}, [refreshPlaylists]);
 
 	return (
-		<Grid container my="0.5%">
-			<Grid size={2} />
-			<Grid size={8} container spacing={2}>
-				{playlists.map((fp) => (
-					<FullPlaylistCard
-						key={fp.id}
-						playlist={fp}
-						size={{ xs: 12, lg: 12 / playlists.length }}
-					/>
-				))}
-			</Grid>
-			<Grid size={2} />
-		</Grid>
+		<CenteredLayout
+			mainGridProps={{ my: "0.5%" }}
+			centerGridProps={{ spacing: 2 }}
+			centerGridSize={8}
+		>
+			{playlists.map((fp) => (
+				<FullPlaylistCard
+					key={fp.id}
+					playlist={fp}
+					size={{ xs: 12, lg: 12 / playlists.length }}
+				/>
+			))}
+		</CenteredLayout>
 	);
 };
 
