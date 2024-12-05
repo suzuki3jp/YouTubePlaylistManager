@@ -17,7 +17,12 @@ export const SectionWithTitle: React.FC<SectionWithTitleProps> = ({
 				{title}
 			</Typography>
 			{subtitle && (
-				<Typography variant="subtitle1" color="text.secondary" gutterBottom>
+				<Typography
+					variant="subtitle1"
+					color="text.secondary"
+					textAlign="center"
+					gutterBottom
+				>
 					{subtitle}
 				</Typography>
 			)}
