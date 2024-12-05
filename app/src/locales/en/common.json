@@ -49,5 +49,32 @@
     "playlist-item-browser": {
         "title": "Playlist Item Browser",
         "description": "You can browse your playlist items here"
+    },
+    "about-section": {
+        "title": "About YouTube Playlist Manager",
+        "description": "Everything you need to know about YouTube Playlist Manager",
+        "what-is-youtube-playlist-manager": {
+            "title": "What is YouTube Playlist Manager",
+            "content": "YouTube Playlist Manager is a web application that allows you to manage your YouTube playlists. You can copy, shuffle, merge, and delete your playlists and playlist items."
+        },
+        "how-to-use": {
+            "title": "How to Use",
+            "content": "Simply sign in with your Google account, and you can start managing your playlists after you select playlists you want to manage."
+        },
+        "disclimer": {
+            "content": "The YouTube Playlist Manager is developed by <1>{{dev}}</1>. The application is not affiliated with YouTube or Google. The application uses YouTube Data API v3. See more details on <2>Terms and Privacy Section</2>."
+        }
+    },
+    "terms-and-privacy": {
+        "title": "Terms and Privacy",
+        "content": {
+            "first": "The YouTube Playlist Manager uses YouTube API Services. By using the application, you agree to the <1>YouTube's Terms of Service</1> and <2>Google's Privacy Policy</2>.",
+            "second": "The application is not affiliated with YouTube or Google. We do not collect, refresh or store any YouTube API data on our servers. The application uses YouTube Data API v3 to manage your playlists.",
+            "third": "We accept no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk."
+        },
+        "how-to-revoke": {
+            "title": "How to Revoke",
+            "content": "By clicking the 'Sign out' button, you can immediately revoke the permissions you granted us to access your YouTube account. You can also revoke access by visiting <1>myaccount.google.com/connections<1>"
+        }
     }
 }

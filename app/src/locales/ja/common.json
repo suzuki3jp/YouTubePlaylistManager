@@ -49,5 +49,32 @@
     "playlist-item-browser": {
         "title": "Playlist Item Browser",
         "description": "プレイリストのアイテムを閲覧できます"
+    },
+    "about-section": {
+        "title": "YouTube Playlist Manager について",
+        "description": "YouTube Playlist Manager について知るべきことのすべて",
+        "what-is-youtube-playlist-manager": {
+            "title": "YouTube Playlist Manager とは",
+            "content": "YouTube Playlist Manager は、YouTube プレイリストを管理できる Web アプリケーションです。プレイリストやプレイリストのアイテムをコピー、シャッフル、結合、削除できます。"
+        },
+        "how-to-use": {
+            "title": "使い方",
+            "content": "サインイン ボタンをクリックし、操作を行いたいプレイリストを選択したらそれらのプレイリストを管理し始めることができます。"
+        },
+        "disclimer": {
+            "content": "YouTube Playlist Manager は <1>{{dev}}</1> によって開発されており、YouTube や Google とは提携されていません。このアプリケーションは YouTube Data API v3 を使用しています。<2>利用規約とプライバシーセクション</2> で詳しい情報を確認することができます。"
+        }
+    },
+    "terms-and-privacy": {
+        "title": "利用規約とプライバシー",
+        "content": {
+            "first": "YouTube Playlist Manager は YouTube API を使用しています。このアプリケーションを使用することであなたは <1>YouTube 利用規約</1> と <2>Google プライバシーポリシー</2> に同意したことになります。",
+            "second": "このアプリケーションは YouTube や Google とは提携されていません。私たちはいかなる YouTube API データも集めず、再取得せず、保存しません。",
+            "third": "このアプリケーションの使用によって生じるいかなる損害、損失、または結果についても、私たちは一切の責任および賠償責任を負いません。本アプリケーションの使用は、すべて自己責任で行ってください。"
+        },
+        "how-to-revoke": {
+            "title": "アクセスを取り消す",
+            "content": "'サインアウト' ボタンを押すことであなたは即座に私たちへの YouTube アカウントのアクセス権の取り消しを行うことができます。また、<1>myaccount.google.com/connections</1> からでもアクセスを取り消すことができます。"
+        }
     }
 }

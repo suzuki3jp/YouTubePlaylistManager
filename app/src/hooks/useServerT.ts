@@ -24,6 +24,7 @@ export const useServerT = async (query: PageProps["searchParams"]) => {
 
 	return {
 		t: i18nInstance.t,
+		i18n: i18nInstance,
 		lng: i18nInstance.language,
 	};
 };
