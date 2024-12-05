@@ -1,8 +1,8 @@
 "use server";
 import { type Result, fail, ok } from "@/actions/result";
 import { type Playlist, convertToPlaylistFromClass } from "@/actions/typings";
-import type { PlaylistPrivacy } from "@ytpm/base-adapter";
-import { YoutubeAdapter } from "@ytpm/youtube-adapter";
+import type { PlaylistPrivacy } from "@/lib/base-adapter";
+import { YoutubeAdapter } from "@/lib/youtube-adapter";
 
 /**
  * 新しいプレイリストを追加

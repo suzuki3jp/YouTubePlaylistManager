@@ -4,7 +4,7 @@ import {
 	type PlaylistItem,
 	convertToPlaylistItemFromClass,
 } from "@/actions/typings";
-import { YoutubeAdapter } from "@ytpm/youtube-adapter";
+import { YoutubeAdapter } from "@/lib/youtube-adapter";
 
 /**
  * プレイリストアイテムのポジションを変更する

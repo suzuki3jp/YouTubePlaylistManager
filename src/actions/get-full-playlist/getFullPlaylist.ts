@@ -4,7 +4,7 @@ import {
 	type FullPlaylist,
 	convertToFullPlaylistFromClass,
 } from "@/actions/typings";
-import { YoutubeAdapter } from "@ytpm/youtube-adapter";
+import { YoutubeAdapter } from "@/lib/youtube-adapter";
 
 /**
  * アイテムを含む完全なプレイリストを取得する

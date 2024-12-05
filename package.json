@@ -1,20 +1,38 @@
 {
-	"name": "@ytpm/root",
-	"version": "0.0.1",
-	"description": "Multi platform playlist manager",
-	"private": "true",
-	"author": "suzuki3jp <suzuki3.info@gmail.com>",
-	"license": "MIT",
-	"scripts": {
-		"build": "turbo run build",
-		"dev": "turbo run dev",
-		"lint": "turbo run lint",
-		"clean": "turbo run clean"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "^1.9.4",
-		"turbo": "latest",
-		"typescript": "^5.0.0"
-	},
-	"packageManager": "pnpm@9.5.0"
+  "name": "ytpm",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/cache": "^11.13.1",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "6.1.6",
+    "@mui/material": "6.1.6",
+    "@mui/material-nextjs": "6.1.6",
+    "dotenv": "^16.4.5",
+    "googleapis": "^144.0.0",
+    "i18next": "^23.16.5",
+    "i18next-resources-to-backend": "^1.2.1",
+    "next": "15.0.1",
+    "next-auth": "4.24.9",
+    "notistack": "^3.0.1",
+    "react": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react-i18next": "^15.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "gaxios": "^6.7.1",
+    "typescript": "^5"
+  },
+  "packageManager": "pnpm@9.5.0"
 }

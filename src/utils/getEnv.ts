@@ -1,4 +1,4 @@
-import { Err, Ok, type Result } from "@ytpm/result";
+import { Err, Ok, type Result } from "@/lib/result";
 
 export const getEnv = (keys: string[]): Result<string[], EnvError> => {
 	let e: EnvError | null = null;

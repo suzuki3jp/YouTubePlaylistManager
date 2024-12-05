@@ -3,8 +3,8 @@ import {
 	FullPlaylist,
 	Playlist,
 	PlaylistItem,
-} from "@ytpm/base-adapter";
-import { Err, Ok, type Result } from "@ytpm/result";
+} from "@/lib/base-adapter";
+import { Err, Ok, type Result } from "@/lib/result";
 import type { GaxiosError } from "gaxios";
 import type { youtube_v3 } from "googleapis";
 import {

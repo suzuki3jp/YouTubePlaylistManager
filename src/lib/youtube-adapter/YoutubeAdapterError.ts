@@ -1,4 +1,4 @@
-import { BaseAdapterError } from "@ytpm/base-adapter";
+import { BaseAdapterError } from "@/lib/base-adapter";
 
 export class YoutubeAdapterError extends BaseAdapterError {
 	constructor(
