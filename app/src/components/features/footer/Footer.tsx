@@ -1,3 +1,4 @@
+import { AUTHOR_NAME } from "@/constants";
 import { useServerT } from "@/hooks";
 import type { PageProps } from "@/types";
 import { Box, Container, Grid2 as Grid, Link, Typography } from "@mui/material";
@@ -36,7 +37,7 @@ export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 					</Grid>
 					<Grid size={12}>
 						<Typography variant="body2" color="text.secondary" align="center">
-							© {new Date().getFullYear()} {t("metadata.author")}
+							© {new Date().getFullYear()} {AUTHOR_NAME}
 						</Typography>
 					</Grid>
 				</Grid>
