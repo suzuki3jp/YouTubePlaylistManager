@@ -44,5 +44,13 @@
         "cancel": "Cancel",
         "confirm": "Confirm"
     },
-    "search-placeholder": "Search..."
+    "search-placeholder": "Search...",
+    "playlist-manager": {
+        "title": "Playlist Manager",
+        "description": "You can manage your playlists here"
+    },
+    "playlist-item-browser": {
+        "title": "Playlist Item Browser",
+        "description": "You can browse your playlist items here"
+    }
 }
