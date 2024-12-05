@@ -13,11 +13,15 @@ export const CenteredLayout: React.FC<CenteredLayoutProps> = ({
 
 	return (
 		<Grid container {...mainGridProps}>
-			<Grid size={sideGridSize} />
-			<Grid size={centerGridSize} container {...centerGridProps}>
+			<Grid size={{ xs: 1, sm: sideGridSize }} />
+			<Grid
+				size={{ xs: 10, sm: centerGridSize }}
+				container
+				{...centerGridProps}
+			>
 				{children}
 			</Grid>
-			<Grid size={sideGridSize} />
+			<Grid size={{ xs: 1, sm: sideGridSize }} />
 		</Grid>
 	);
 };
