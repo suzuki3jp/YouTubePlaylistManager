@@ -1,7 +1,8 @@
+import { Link } from "@/components";
 import { AUTHOR_NAME } from "@/constants";
 import { useServerT } from "@/hooks";
 import type { PageProps } from "@/types";
-import { Box, Container, Grid2 as Grid, Link, Typography } from "@mui/material";
+import { Box, Container, Grid2 as Grid, Typography } from "@mui/material";
 import type React from "react";
 
 export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
@@ -21,18 +22,7 @@ export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 				<Grid container spacing={2} justifyContent="center">
 					<Grid size={12}>
 						<Box sx={{ display: "flex", justifyContent: "center" }}>
-							<Link
-								href="/"
-								color="text.secondary"
-								sx={{
-									mx: 1,
-									"&:hover": {
-										color: "primary.main",
-									},
-								}}
-							>
-								{t("footer.home")}
-							</Link>
+							<Link href="/">{t("footer.home")}</Link>
 						</Box>
 					</Grid>
 					<Grid size={12}>
