@@ -1,4 +1,5 @@
 import {
+	CenteredLayout,
 	ClientProvidersProvider,
 	Layout,
 	PlaylistItemBrowser,
@@ -6,6 +7,7 @@ import {
 	SectionWithTitle,
 } from "@/components";
 import type { PageProps } from "@/types";
+import { Box, Typography } from "@mui/material";
 import { getServerSession } from "next-auth";
 
 export default async function Home({ searchParams }: PageProps) {
@@ -15,18 +17,26 @@ export default async function Home({ searchParams }: PageProps) {
 
 	return (
 		<Layout searchParams={searchParams}>
-			<ClientProvidersProvider>
-				{session ? (
-					<SectionWithTitle
-						title={ids ? "Playlist item browser" : "PlaylistManager"}
-						sx={{
-							my: "1%",
-						}}
-					>
-						{ids ? <PlaylistItemBrowser ids={ids} /> : <PlaylistManager />}
-					</SectionWithTitle>
-				) : null}
-			</ClientProvidersProvider>
+			<CenteredLayout
+				mainGridProps={{ mt: "0.5%" }}
+				centerGridProps={{ spacing: 2 }}
+				centerGridSize={8}
+			>
+				<ClientProvidersProvider>
+					{session ? (
+						<SectionWithTitle
+							title={ids ? "Playlist item browser" : "PlaylistManager"}
+							sx={{
+								my: "1%",
+							}}
+						>
+							<Box mt={"1%"}>
+								{ids ? <PlaylistItemBrowser ids={ids} /> : <PlaylistManager />}
+							</Box>
+						</SectionWithTitle>
+					) : null}
+				</ClientProvidersProvider>
+			</CenteredLayout>
 		</Layout>
 	);
 }

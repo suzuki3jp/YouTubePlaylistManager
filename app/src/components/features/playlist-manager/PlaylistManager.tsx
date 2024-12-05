@@ -1,6 +1,6 @@
 "use client";
 import { PlaylistManager as PM, type Playlist, type UUID } from "@/actions";
-import { CenteredLayout } from "@/components";
+import { Grid2 as Grid } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -60,11 +60,7 @@ export const PlaylistManager = () => {
 	}, [refreshPlaylists]);
 
 	return (
-		<CenteredLayout
-			mainGridProps={{ mt: "0.5%" }}
-			centerGridProps={{ spacing: 2 }}
-			centerGridSize={8}
-		>
+		<Grid container spacing={2}>
 			<OperationProgress tasks={progressTasks} />
 			<PlaylistController
 				selectedItems={selectedPlaylists}
@@ -76,7 +72,7 @@ export const PlaylistManager = () => {
 				selectedPlaylist={selectedPlaylists}
 				toggleSelected={toggleSelected}
 			/>
-		</CenteredLayout>
+		</Grid>
 	);
 };
 

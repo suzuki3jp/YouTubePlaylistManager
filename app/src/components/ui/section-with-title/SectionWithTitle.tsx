@@ -12,8 +12,8 @@ export const SectionWithTitle: React.FC<SectionWithTitleProps> = ({
 	sx,
 }) => {
 	return (
-		<Box textAlign={"center"} sx={sx}>
-			<Typography variant="h4" fontWeight={"bold"}>
+		<Box sx={{ width: "100%", ...sx }}>
+			<Typography variant="h4" fontWeight={"bold"} textAlign={"center"}>
 				{title}
 			</Typography>
 			{subtitle && (
