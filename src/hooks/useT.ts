@@ -1,10 +1,5 @@
 "use client";
-import {
-	AVAILABLE_LANGUAGES,
-	DEFAULT_LANGUAGE,
-	QUERY_NAME,
-	getOptions,
-} from "@/locales/settings";
+import { QUERY_NAME, getOptions, getSafeLang } from "@/locales/settings";
 import i18next from "i18next";
 import resourceToBackend from "i18next-resources-to-backend";
 import { useSearchParams } from "next/navigation";
@@ -23,8 +18,10 @@ i18next
 
 export const useT = () => {
 	const query = useSearchParams();
-	let lang = query.get(QUERY_NAME) || DEFAULT_LANGUAGE;
-	lang = AVAILABLE_LANGUAGES.includes(lang) ? lang : DEFAULT_LANGUAGE;
+	const lang = getSafeLang(query.get(QUERY_NAME));
+
+	// この `common` はネームスペース名です。今回は `common.json` なので `common` を設定
+	// jsonファイルを増やし、ネームスペースを利用したい場合、`useT` に引数を設定しましょう
 	const { t, i18n } = useTranslation("common");
 
 	useEffect(() => {
