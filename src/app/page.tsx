@@ -130,6 +130,9 @@ export default async function Home({ searchParams }: PageProps) {
 							<Typography gutterBottom sx={{ mb: "1%" }}>
 								{t("terms-and-privacy.content.third")}
 							</Typography>
+							<Typography gutterBottom sx={{ mb: "1%" }}>
+								{t("terms-and-privacy.content.forth")}
+							</Typography>
 						</Grid>
 						<Grid>
 							<Typography fontWeight={"bold"} fontSize={20} gutterBottom>

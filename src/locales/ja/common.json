@@ -51,7 +51,7 @@
         "description": "プレイリストのアイテムを閲覧できます"
     },
     "about-section": {
-        "title": "YouTube Playlist Manager について",
+        "title": "YouTube Playlist Manager (YTPM) について",
         "description": "YouTube Playlist Manager について知るべきことのすべて",
         "what-is-youtube-playlist-manager": {
             "title": "YouTube Playlist Manager とは",
@@ -70,7 +70,8 @@
         "content": {
             "first": "YouTube Playlist Manager は YouTube API を使用しています。このアプリケーションを使用することであなたは <1>YouTube 利用規約</1> と <2>Google プライバシーポリシー</2> に同意したことになります。",
             "second": "このアプリケーションは YouTube や Google とは提携されていません。私たちはいかなる YouTube API データも集めず、再取得せず、保存しません。",
-            "third": "このアプリケーションの使用によって生じるいかなる損害、損失、または結果についても、私たちは一切の責任および賠償責任を負いません。本アプリケーションの使用は、すべて自己責任で行ってください。"
+            "third": "このアプリケーションは YouTube API サービスを使用して、プレイリストやプレイリスのアイテムの一覧を取得し、またそれらを追加、削除、更新します。それらの操作を組み合わせてプレイリストのコピーやシャッフル、結合、削除を行います。",
+            "forth": "このアプリケーションの使用によって生じるいかなる損害、損失、または結果についても、私たちは一切の責任および賠償責任を負いません。本アプリケーションの使用は、すべて自己責任で行ってください。"
         },
         "how-to-revoke": {
             "title": "アクセスを取り消す",

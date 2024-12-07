@@ -51,7 +51,7 @@
         "description": "You can browse your playlist items here"
     },
     "about-section": {
-        "title": "About YouTube Playlist Manager",
+        "title": "About YouTube Playlist Manager (YTPM) ",
         "description": "Everything you need to know about YouTube Playlist Manager",
         "what-is-youtube-playlist-manager": {
             "title": "What is YouTube Playlist Manager",
@@ -70,7 +70,8 @@
         "content": {
             "first": "The YouTube Playlist Manager uses YouTube API Services. By using the application, you agree to the <1>YouTube's Terms of Service</1> and <2>Google's Privacy Policy</2>.",
             "second": "The application is not affiliated with YouTube or Google. We do not collect, refresh or store any YouTube API data on our servers. The application uses YouTube Data API v3 to manage your playlists.",
-            "third": "We accept no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk."
+            "third": "The application uses the YouTube API service to fetch playlists and playlist items, as well as to add, delete, and update them. These operations are combined to perform actions such as copying, shuffling, merging, and deleting playlists.",
+            "forth": "We accept no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk."
         },
         "how-to-revoke": {
             "title": "How to Revoke",
