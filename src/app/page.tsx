@@ -90,8 +90,6 @@ export default async function Home({ searchParams }: PageProps) {
 							<Grid>
 								<Typography gutterBottom>
 									<TransWithoutContext
-										i18n={i18n}
-										t={t}
 										i18nKey={"about-section.disclimer.content"}
 										values={{ dev: AUTHOR_NAME }}
 										components={{
@@ -119,8 +117,6 @@ export default async function Home({ searchParams }: PageProps) {
 						<Grid container spacing={3}>
 							<Typography gutterBottom sx={{ mb: "1%" }}>
 								<TransWithoutContext
-									i18n={i18n}
-									t={t}
 									i18nKey={"terms-and-privacy.content.first"}
 									components={{
 										1: <Link href={YOUTUBE_TOS} />,
@@ -141,8 +137,6 @@ export default async function Home({ searchParams }: PageProps) {
 							</Typography>
 							<Typography gutterBottom>
 								<TransWithoutContext
-									i18n={i18n}
-									t={t}
 									i18nKey={"terms-and-privacy.how-to-revoke.content"}
 									components={{ 1: <Link href={GOOGLE_CONNECTIONS} /> }}
 								/>
