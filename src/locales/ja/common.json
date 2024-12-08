@@ -7,7 +7,8 @@
         "en": "English / English"
     },
     "footer": {
-        "home": "ホーム"
+        "home": "ホーム",
+        "terms-and-privacy": "利用規約とプライバシー"
     },
     "task-progress": {
         "copying-playlist": "{{title}} をコピーしています...",

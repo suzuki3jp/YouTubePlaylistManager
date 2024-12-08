@@ -21,9 +21,14 @@ export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 			<Container maxWidth="sm">
 				<Grid container spacing={2} justifyContent="center">
 					<Grid size={12}>
-						<Box sx={{ display: "flex", justifyContent: "center" }}>
+						<Grid
+							container
+							spacing={1}
+							sx={{ display: "flex", justifyContent: "center" }}
+						>
 							<Link href="/">{t("footer.home")}</Link>
-						</Box>
+							<Link href="/">{t("footer.terms-and-privacy")}</Link>
+						</Grid>
 					</Grid>
 					<Grid
 						container

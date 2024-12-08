@@ -7,7 +7,8 @@
         "en": "English / English"
     },
     "footer": {
-        "home": "Home"
+        "home": "Home",
+        "terms-and-privacy": "Terms and Privacy"
     },
     "task-progress": {
         "copying-playlist": "Copying {{title}} ...",
