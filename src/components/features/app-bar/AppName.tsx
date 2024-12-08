@@ -19,7 +19,7 @@ export const AppName = () => {
 			onClick={onClick}
 		>
 			<Typography variant="h6" component="div" fontWeight={"bold"}>
-				YouTubePlaylistManager
+				Playlist Manager For YouTube
 			</Typography>
 		</ButtonBase>
 	);

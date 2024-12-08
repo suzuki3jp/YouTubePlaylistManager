@@ -1,10 +1,10 @@
-<h2 align="center">YouTubePlaylistManager</h2>
-<div align="center">Youtube (music) プレイリストマネージャー</div>
+<h2 align="center">Playlist Manager For YouTube</h2>
+<div align="center">YouTube (music) プレイリストマネージャー</div>
 
 ![PlaylistManagerDemo](./assets/demo2.gif)
 
 ## 機能
-- WebGUI から Youtube プレイリストを管理する
+- WebGUI から YouTube プレイリストを管理する
 - プレイリストをコピー
 - プレイリストのアイテムをシャッフル
 - プレイリスト同士を結合
@@ -21,7 +21,7 @@
 - [x] プレイリストのアイテムを検索する
 - [ ] プレイリストから特定の歌手名で抽出する
 - [ ] プレイリストのアイテムを歌手名や曲名でソートする
-- [ ] マルチプラットフォーム対応 (Youtube, Spotify, Amazon music ...)
+- [ ] マルチプラットフォーム対応 (YouTube, Spotify, Amazon music ...)
 
 ## 使用方法
 このアプリケーションをクローンして実行するには、[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/), [pnpm](https://pnpm.io/) がインストールされている必要があります。
@@ -47,7 +47,7 @@ $ pnpm dev
 
 ## Disclaimer
 
-PlaylistManager is an independently developed application that utilizes the YouTube Data API to streamline playlist management through features such as copying, shuffling, merging, and deleting playlists.
+Playlist Manager For YouTube is an independently developed application that utilizes the YouTube Data API to streamline playlist management through features such as copying, shuffling, merging, and deleting playlists.
 
 This application is not affiliated with, endorsed by, or in any way officially connected to YouTube or Google. All product and company names are trademarks™ or registered® trademarks of their respective holders.
 
