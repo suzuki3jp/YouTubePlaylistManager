@@ -62,7 +62,7 @@
             "content": "サインイン ボタンをクリックし、操作を行いたいプレイリストを選択したらそれらのプレイリストを管理し始めることができます。"
         },
         "disclimer": {
-            "content": "Playlist Manager For YouTube は <1>{{dev}}</1> によって開発されており、YouTube や Google とは提携されていません。このアプリケーションは YouTube Data API v3 を使用しています。<2>利用規約とプライバシーセクション</2> で詳しい情報を確認することができます。"
+            "content": "Playlist Manager For YouTube は <1>{{dev}}</1> によって開発されており、YouTube や Google とは提携されていません。このアプリケーションは YouTube Data API v3 を使用しています。<2>利用規約とプライバシー</2> で詳しい情報を確認することができます。"
         }
     },
     "terms-and-privacy": {

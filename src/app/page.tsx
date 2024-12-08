@@ -94,56 +94,11 @@ export default async function Home({ searchParams }: PageProps) {
 										values={{ dev: AUTHOR_NAME }}
 										components={{
 											1: <Link href={AUTHOR_GITHUB} />,
-											2: <Link href={"/#terms-and-privacy"} />,
+											2: <Link href={"/terms-and-privacy"} />,
 										}}
 									/>
 								</Typography>
 							</Grid>
-						</Grid>
-					</CenteredLayout>
-				</SectionWithTitle>
-
-				<SectionWithTitle
-					title={t("terms-and-privacy.title")}
-					titleSx={{ mb: "2%", mt: "2%" }}
-					id={"terms-and-privacy"}
-				>
-					<CenteredLayout
-						centerGridSize={10}
-						centerGridProps={{
-							direction: "column",
-						}}
-					>
-						<Grid container spacing={3}>
-							<Typography gutterBottom sx={{ mb: "1%" }}>
-								<TransWithoutContext
-									i18nKey={"terms-and-privacy.content.first"}
-									components={{
-										1: <Link href={YOUTUBE_TOS} />,
-										2: <Link href={GOOGLE_PRIVACY_POLICY} />,
-									}}
-								/>
-							</Typography>
-							<Typography gutterBottom sx={{ mb: "1%" }}>
-								{t("terms-and-privacy.content.second")}
-							</Typography>
-							<Typography gutterBottom sx={{ mb: "1%" }}>
-								{t("terms-and-privacy.content.third")}
-							</Typography>
-							<Typography gutterBottom sx={{ mb: "1%" }}>
-								{t("terms-and-privacy.content.forth")}
-							</Typography>
-						</Grid>
-						<Grid>
-							<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
-								{t("terms-and-privacy.how-to-revoke.title")}
-							</Typography>
-							<Typography gutterBottom>
-								<TransWithoutContext
-									i18nKey={"terms-and-privacy.how-to-revoke.content"}
-									components={{ 1: <Link href={GOOGLE_CONNECTIONS} /> }}
-								/>
-							</Typography>
 						</Grid>
 					</CenteredLayout>
 				</SectionWithTitle>

@@ -62,7 +62,7 @@
             "content": "Simply sign in with your Google account, and you can start managing your playlists after you select playlists you want to manage."
         },
         "disclimer": {
-            "content": "The Playlist Manager For YouTube is developed by <1>{{dev}}</1>. The application is not affiliated with YouTube or Google. The application uses YouTube Data API v3. See more details on <2>Terms and Privacy Section</2>."
+            "content": "The Playlist Manager For YouTube is developed by <1>{{dev}}</1>. The application is not affiliated with YouTube or Google. The application uses YouTube Data API v3. See more details on <2>Terms and Privacy</2>."
         }
     },
     "terms-and-privacy": {
