@@ -11,8 +11,9 @@ export const AppName = () => {
 		const newParams = new URLSearchParams();
 		const lang = oldParams.get(QUERY_NAME) ?? DEFAULT_LANGUAGE;
 		newParams.set(QUERY_NAME, lang);
-		router.push(`?${newParams.toString()}`);
+		router.push(`/?${newParams.toString()}`);
 	};
+
 	return (
 		<ButtonBase
 			sx={{ flexShrink: 0, p: "1% 1% 1% 1%", borderRadius: 2 }}
