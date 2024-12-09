@@ -1,5 +1,7 @@
 import type { PlaylistPrivacy } from "@/lib/base-adapter";
 import { Err, Ok, type Result } from "@/lib/result";
+import { sleep } from "@/utils";
+import { ContentPasteOffSharp } from "@mui/icons-material";
 import { addPlaylist } from "./add-playlist";
 import { addPlaylistItem } from "./add-playlist-item";
 import { deletePlaylist } from "./delete-playlist";
@@ -22,13 +24,16 @@ export class PlaylistManager {
 		onAddingPlaylistItem,
 	}: CopyOptions): Promise<Result<FullPlaylist, FailureData>> {
 		// コピー対象の完全なプレイリストを取得
-		const target = await getFullPlaylist({ id, token: this.token });
+		const target = await this.callApiWithRetry(getFullPlaylist, {
+			id,
+			token: this.token,
+		});
 		if (target.status !== 200) return Err(target);
 		const oldPlaylist = target.data;
 
 		// 新しいプレイリストを作成する
 		const newTitle = `${oldPlaylist.title} - Copied`;
-		const newTarget = await addPlaylist({
+		const newTarget = await this.callApiWithRetry(addPlaylist, {
 			title: newTitle,
 			privacy,
 			token: this.token,
@@ -41,7 +46,7 @@ export class PlaylistManager {
 		for (let index = 0; index < oldPlaylist.items.length; index++) {
 			const item = oldPlaylist.items[index];
 			onAddingPlaylistItem?.(item);
-			const addedItem = await addPlaylistItem({
+			const addedItem = await this.callApiWithRetry(addPlaylistItem, {
 				playlistId: newPlaylist.id,
 				resourceId: item.videoId,
 				token: this.token,
@@ -65,7 +70,10 @@ export class PlaylistManager {
 		// ターゲットの完全なプレイリストを取得する
 		const oldPlaylists: FullPlaylist[] = [];
 		for (const id of ids) {
-			const playlist = await getFullPlaylist({ id, token: this.token });
+			const playlist = await this.callApiWithRetry(getFullPlaylist, {
+				id,
+				token: this.token,
+			});
 			if (playlist.status !== 200) return Err(playlist);
 			oldPlaylists.push(playlist.data);
 		}
@@ -73,7 +81,7 @@ export class PlaylistManager {
 		// 入力されたプレイリストのタイトルを新しいプレイリストのタイトルに変換し、新しいプレイリストを作成する
 		// 新しいプレイリストのタイトルフォーマット: "playlist1 & playlist2 & playlist3 ... & playlistN"
 		const title = oldPlaylists.map((p) => p.title).join(" & ");
-		const newPlaylistResult = await addPlaylist({
+		const newPlaylistResult = await this.callApiWithRetry(addPlaylist, {
 			title,
 			privacy,
 			token: this.token,
@@ -86,7 +94,7 @@ export class PlaylistManager {
 		const queueItems: PlaylistItem[] = oldPlaylists.flatMap((p) => p.items);
 		for (const item of queueItems) {
 			onAddingPlaylistItem?.(item);
-			const addedItem = await addPlaylistItem({
+			const addedItem = await this.callApiWithRetry(addPlaylistItem, {
 				playlistId: newPlaylist.id,
 				resourceId: item.videoId,
 				token: this.token,
@@ -112,7 +120,7 @@ export class PlaylistManager {
 		if (!this.validateRatio(ratio)) throw new Error("Invalid ratio");
 
 		// 対象の完全なプレイリストを取得
-		const getFullPlaylistResult = await getFullPlaylist({
+		const getFullPlaylistResult = await this.callApiWithRetry(getFullPlaylist, {
 			id: playlistId,
 			token: this.token,
 		});
@@ -136,13 +144,16 @@ export class PlaylistManager {
 				targetItemNewIndex,
 			);
 
-			const updatedItem = await updatePlaylistItemPosition({
-				itemId: targetItem.id,
-				playlistId: fullPlaylist.id,
-				resourceId: targetItem.videoId,
-				newIndex: targetItemNewIndex,
-				token: this.token,
-			});
+			const updatedItem = await this.callApiWithRetry(
+				updatePlaylistItemPosition,
+				{
+					itemId: targetItem.id,
+					playlistId: fullPlaylist.id,
+					resourceId: targetItem.videoId,
+					newIndex: targetItemNewIndex,
+					token: this.token,
+				},
+			);
 			if (updatedItem.status !== 200) return Err(updatedItem);
 			onUpdatedPlaylistItemPosition?.(
 				updatedItem.data,
@@ -157,20 +168,47 @@ export class PlaylistManager {
 	}
 
 	public async delete(id: string): Promise<Result<Playlist, FailureData>> {
-		const result = await deletePlaylist({ id, token: this.token });
+		const result = await this.callApiWithRetry(deletePlaylist, {
+			id,
+			token: this.token,
+		});
 		return result.status === 200 ? Ok(result.data) : Err(result);
 	}
 
 	public async getPlaylists(): Promise<Result<Playlist[], FailureData>> {
-		const result = await getPlaylists({ token: this.token });
+		const result = await this.callApiWithRetry(getPlaylists, {
+			token: this.token,
+		});
 		return result.status === 200 ? Ok(result.data) : Err(result);
 	}
 
 	public async getFullPlaylist(
 		id: string,
 	): Promise<Result<FullPlaylist, FailureData>> {
-		const result = await getFullPlaylist({ id, token: this.token });
+		const result = await this.callApiWithRetry(getFullPlaylist, {
+			id,
+			token: this.token,
+		});
 		return result.status === 200 ? Ok(result.data) : Err(result);
+	}
+
+	private async callApiWithRetry<T extends ApiCallFunction>(
+		func: T,
+		...params: Parameters<T>
+	) {
+		const MAX_RETRY = 3;
+		let retry = 0;
+		let result: Awaited<ReturnType<T>>;
+
+		do {
+			// @ts-expect-error
+			result = await func(...params);
+			if (result.status === 200) break;
+			console.log(result.status);
+			await sleep(1000);
+			retry++;
+		} while (retry < MAX_RETRY);
+		return result;
 	}
 
 	private validateRatio(ratio: number): boolean {
@@ -189,6 +227,14 @@ export class PlaylistManager {
 		return Math.floor(Math.random() * (maxInt - minInt + 1)) + minInt;
 	}
 }
+
+export type ApiCallFunction =
+	| typeof getFullPlaylist
+	| typeof getPlaylists
+	| typeof addPlaylist
+	| typeof addPlaylistItem
+	| typeof updatePlaylistItemPosition
+	| typeof deletePlaylist;
 
 export interface CopyOptions {
 	id: string;
