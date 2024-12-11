@@ -204,7 +204,6 @@ export class PlaylistManager {
 			// @ts-expect-error
 			result = await func(...params);
 			if (result.status === 200) break;
-			console.log(result.status);
 			await sleep(1000);
 			retry++;
 		} while (retry < MAX_RETRY);

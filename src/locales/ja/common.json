@@ -45,7 +45,8 @@
     "search-placeholder": "検索...",
     "playlist-manager": {
         "title": "Playlist Manager",
-        "description": "プレイリストを管理できます"
+        "description": "プレイリストを管理できます",
+        "not-found": "プレイリストが見つかりません。新しいプレイリストを作成するか、ページを更新してください。"
     },
     "playlist-item-browser": {
         "title": "Playlist Item Browser",

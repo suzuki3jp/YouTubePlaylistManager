@@ -1,6 +1,7 @@
 "use client";
 import { PlaylistManager as PM, type Playlist, type UUID } from "@/actions";
-import { Grid2 as Grid } from "@mui/material";
+import { useT } from "@/hooks";
+import { Grid2 as Grid, Typography } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 import {
@@ -11,8 +12,10 @@ import { PlaylistController } from "./PlaylistController";
 import { PlaylistDisplay } from "./PlaylistDisplay";
 
 export const PlaylistManager = () => {
+	const { t } = useT();
 	const { data } = useSession();
 	const [playlists, setPlaylists] = useState<Playlist[]>([]);
+	const [isLoading, setIsLoading] = useState(true);
 	const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
 	const [progressTasks, setProgressTasks] = useState<
 		Map<UUID, OperationProgressData>
@@ -50,6 +53,9 @@ export const PlaylistManager = () => {
 		if (p.isSuccess()) {
 			setPlaylists(p.data);
 			setSelectedPlaylists([]);
+		} else if (p.data.status === 404) {
+			setPlaylists([]);
+			setSelectedPlaylists([]);
 		} else {
 			signOut();
 		}
@@ -57,21 +63,28 @@ export const PlaylistManager = () => {
 
 	useEffect(() => {
 		refreshPlaylists();
+		setIsLoading(false);
 	}, [refreshPlaylists]);
 
 	return (
 		<Grid container spacing={2}>
-			<OperationProgress tasks={progressTasks} />
-			<PlaylistController
-				selectedItems={selectedPlaylists}
-				setTask={setTask}
-				refreshPlaylists={refreshPlaylists}
-			/>
-			<PlaylistDisplay
-				playlists={playlists}
-				selectedPlaylist={selectedPlaylists}
-				toggleSelected={toggleSelected}
-			/>
+			{!isLoading && playlists.length === 0 ? (
+				<Typography variant="h4">{t("playlist-manager.not-found")}</Typography> // TODO: More styling
+			) : (
+				<>
+					<OperationProgress tasks={progressTasks} />
+					<PlaylistController
+						selectedItems={selectedPlaylists}
+						setTask={setTask}
+						refreshPlaylists={refreshPlaylists}
+					/>
+					<PlaylistDisplay
+						playlists={playlists}
+						selectedPlaylist={selectedPlaylists}
+						toggleSelected={toggleSelected}
+					/>
+				</>
+			)}
 		</Grid>
 	);
 };
