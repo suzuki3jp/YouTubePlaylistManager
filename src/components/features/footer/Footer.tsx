@@ -27,7 +27,9 @@ export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 							sx={{ display: "flex", justifyContent: "center" }}
 						>
 							<Link href="/">{t("footer.home")}</Link>
-							<Link href="/">{t("footer.terms-and-privacy")}</Link>
+							<Link href="/terms-and-privacy">
+								{t("footer.terms-and-privacy")}
+							</Link>
 						</Grid>
 					</Grid>
 					<Grid
