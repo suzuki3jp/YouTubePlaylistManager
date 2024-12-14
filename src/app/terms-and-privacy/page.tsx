@@ -49,6 +49,12 @@ export default async function TermsAndPrivacy({ searchParams }: PageProps) {
 								<Typography gutterBottom sx={{ mb: "1%" }}>
 									{t("terms-and-privacy.content.forth")}
 								</Typography>
+								<Typography gutterBottom sx={{ mb: "1%" }}>
+									{t("terms-and-privacy.content.fifth")}
+								</Typography>
+								<Typography gutterBottom sx={{ mb: "1%" }}>
+									{t("terms-and-privacy.content.sixth")}
+								</Typography>
 							</Grid>
 							<Grid>
 								<Typography fontWeight={"bold"} fontSize={20} gutterBottom>

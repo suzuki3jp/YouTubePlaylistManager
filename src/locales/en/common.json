@@ -73,7 +73,9 @@
             "first": "The Playlist Manager For YouTube uses YouTube API Services. By using the application, you agree to the <1>YouTube's Terms of Service</1> and <2>Google's Privacy Policy</2>.",
             "second": "The application is not affiliated with YouTube or Google. We do not collect, refresh or store any YouTube API data on our servers. The application uses YouTube Data API v3 to manage your playlists.",
             "third": "The application uses the YouTube API service to fetch playlists and playlist items, as well as to add, delete, and update them. These operations are combined to perform actions such as copying, shuffling, merging, and deleting playlists.",
-            "forth": "We accept no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk."
+            "forth": "We accept no responsibility or liability for any damages, losses, or consequences that may arise from the use of this application. Use of this application is entirely at your own risk.",
+            "fifth": "The Google account credentials you used to log in are utilized for the YouTube Data API related to YouTube playlists. These credentials are not stored on our servers but are saved as cookies in your browser. Additionally, any Google user data received from the YouTube Data API is not stored on our servers and is only used in the responses sent to your browser.",
+            "sixth": "Sensitive information from your Google account (such as the access token) is encrypted and stored as a cookie in your browser. Each time you perform an action, this sensitive information is used to make requests to the YouTube Data API and execute the operation. Your sensitive information is not stored on our servers."
         },
         "how-to-revoke": {
             "title": "How to Revoke",
