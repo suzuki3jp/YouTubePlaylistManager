@@ -15,7 +15,7 @@ export const PlaylistManager = () => {
 	const { t } = useT();
 	const { data } = useSession();
 	const [playlists, setPlaylists] = useState<Playlist[]>([]);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isPlaylistsNotFound, setIsPlaylistNotFound] = useState(false);
 	const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
 	const [progressTasks, setProgressTasks] = useState<
 		Map<UUID, OperationProgressData>
@@ -53,9 +53,11 @@ export const PlaylistManager = () => {
 		if (p.isSuccess()) {
 			setPlaylists(p.data);
 			setSelectedPlaylists([]);
+			setIsPlaylistNotFound(false);
 		} else if (p.data.status === 404) {
 			setPlaylists([]);
 			setSelectedPlaylists([]);
+			setIsPlaylistNotFound(true);
 		} else {
 			signOut();
 		}
@@ -63,12 +65,11 @@ export const PlaylistManager = () => {
 
 	useEffect(() => {
 		refreshPlaylists();
-		setIsLoading(false);
 	}, [refreshPlaylists]);
 
 	return (
 		<Grid container spacing={2}>
-			{!isLoading && playlists.length === 0 ? (
+			{isPlaylistsNotFound ? (
 				<Typography variant="h4">{t("playlist-manager.not-found")}</Typography> // TODO: More styling
 			) : (
 				<>
