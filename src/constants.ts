@@ -9,6 +9,12 @@ export const AUTHOR_NAME = "suzuki3jp";
 export const AUTHOR_GITHUB = "https://github.com/suzuki3jp";
 
 /**
+ * The URL of the source code repository.
+ */
+export const SOURCE_CODE_GITHUB =
+	"https://github.com/suzuki3jp/youtubeplaylistmanager";
+
+/**
  * The URL of the Google Permissions page.
  * Used in the Terms and Privacy section.
  */

@@ -1,4 +1,11 @@
-import { Grid2 as Grid, AppBar as MuiAppBar, Toolbar } from "@mui/material";
+import { SOURCE_CODE_GITHUB } from "@/constants";
+import { GitHub as GithubIcon } from "@mui/icons-material";
+import {
+	Grid2 as Grid,
+	IconButton,
+	AppBar as MuiAppBar,
+	Toolbar,
+} from "@mui/material";
 import { getServerSession } from "next-auth";
 import { AppName } from "./AppName";
 import { GoogleSignInButton } from "./GoogleSignInButton";
@@ -38,6 +45,14 @@ export const AppBar = async () => {
 				<Grid container spacing={2}>
 					<LanguageSwitcher />
 					{session ? <GoogleSignOutButton /> : <GoogleSignInButton />}
+					<IconButton
+						aria-label="GitHub"
+						href={SOURCE_CODE_GITHUB}
+						color="inherit"
+						sx={{ "@media (max-width: 455px)": { display: "none" } }}
+					>
+						<GithubIcon />
+					</IconButton>
 				</Grid>
 			</Toolbar>
 		</MuiAppBar>
