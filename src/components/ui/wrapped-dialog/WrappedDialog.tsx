@@ -23,6 +23,8 @@ export const WrappedDialog: React.FC<WrappedDialogProps> = ({
 	title,
 	content,
 	isWarning = false,
+	cancelText,
+	confirmText,
 }) => {
 	const { t } = useT();
 
@@ -60,7 +62,7 @@ export const WrappedDialog: React.FC<WrappedDialogProps> = ({
 				)}
 			</DialogContent>
 			<DialogActions>
-				<Button onClick={onClose}>{t("button.cancel")}</Button>
+				<Button onClick={onClose}>{cancelText ?? t("button.cancel")}</Button>
 				{isWarning ? (
 					<Button
 						onClick={onConfirm}
@@ -68,11 +70,11 @@ export const WrappedDialog: React.FC<WrappedDialogProps> = ({
 						startIcon={<WarningIcon />}
 						variant="contained"
 					>
-						{t("button.confirm")}
+						{confirmText ?? t("button.confirm")}
 					</Button>
 				) : (
 					<Button onClick={onConfirm} variant="contained">
-						{t("button.confirm")}
+						{confirmText ?? t("button.confirm")}
 					</Button>
 				)}
 			</DialogActions>
@@ -87,4 +89,6 @@ export type WrappedDialogProps = Readonly<{
 	title: ReactNode;
 	content: ReactNode;
 	isWarning?: boolean;
+	cancelText?: string;
+	confirmText?: string;
 }>;

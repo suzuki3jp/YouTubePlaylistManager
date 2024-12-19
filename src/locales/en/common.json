@@ -31,7 +31,9 @@
     "dialog": {
         "delete-title": "Delete Confirmation",
         "deleting-items": "Deleting the following items:",
-        "warning-cannot-undo": "This action CAN NOT UNDO. Are you sure you want to proceed?"
+        "warning-cannot-undo": "This action CAN NOT UNDO. Are you sure you want to proceed?",
+        "agreement-title": "Agreement to Terms and Privacy",
+        "agreement-content": "Do you agree to the <1>Terms and Privacy</1> after reading them?"
     },
     "button": {
         "copy": "Copy",
@@ -40,7 +42,9 @@
         "delete": "Delete",
         "browse": "Browse",
         "cancel": "Cancel",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "agree": "Yes, I agree.",
+        "disagree": "No, I disagree."
     },
     "search-placeholder": "Search...",
     "playlist-manager": {

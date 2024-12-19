@@ -31,7 +31,9 @@
     "dialog": {
         "delete-title": "削除の確認",
         "deleting-items": "以下の項目を削除します:",
-        "warning-cannot-undo": "この操作は取り消すことができません。本当に続行しますか？"
+        "warning-cannot-undo": "この操作は取り消すことができません。本当に続行しますか？",
+        "agreement-title": "利用規約とプライバシーの同意",
+        "agreement-content": "あなたは <1>利用規約とプライバシー</1> を読み、同意しますか？"
     },
     "button": {
         "copy": "コピー",
@@ -40,7 +42,9 @@
         "delete": "削除",
         "browse": "ブラウズ",
         "cancel": "キャンセル",
-        "confirm": "決定"
+        "confirm": "決定",
+        "agree": "同意する",
+        "disagree": "同意しない"
     },
     "search-placeholder": "検索...",
     "playlist-manager": {
