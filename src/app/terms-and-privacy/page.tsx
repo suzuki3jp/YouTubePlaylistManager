@@ -21,6 +21,10 @@ export default async function TermsAndPrivacy({ searchParams }: PageProps) {
 			>
 				<SectionWithTitle
 					title={t("terms-and-privacy.title")}
+					subtitle={
+						t("terms-and-privacy.effective-date") +
+						t("terms-and-privacy.effective-date-value")
+					}
 					titleSx={{ mb: "2%" }}
 				>
 					<CenteredLayout
@@ -32,40 +36,92 @@ export default async function TermsAndPrivacy({ searchParams }: PageProps) {
 						<Grid container spacing={3}>
 							<Grid container spacing={3}>
 								<Typography gutterBottom sx={{ mb: "1%" }}>
-									<TransWithoutContext
-										i18nKey={"terms-and-privacy.content.first"}
-										components={{
-											1: <Link href={YOUTUBE_TOS} />,
-											2: <Link href={GOOGLE_PRIVACY_POLICY} />,
-										}}
-									/>
+									{t("terms-and-privacy.definition")}
 								</Typography>
-								<Typography gutterBottom sx={{ mb: "1%" }}>
-									{t("terms-and-privacy.content.second")}
-								</Typography>
-								<Typography gutterBottom sx={{ mb: "1%" }}>
-									{t("terms-and-privacy.content.third")}
-								</Typography>
-								<Typography gutterBottom sx={{ mb: "1%" }}>
-									{t("terms-and-privacy.content.forth")}
-								</Typography>
-								<Typography gutterBottom sx={{ mb: "1%" }}>
-									{t("terms-and-privacy.content.fifth")}
-								</Typography>
-								<Typography gutterBottom sx={{ mb: "1%" }}>
-									{t("terms-and-privacy.content.sixth")}
-								</Typography>
-							</Grid>
-							<Grid>
-								<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
-									{t("terms-and-privacy.how-to-revoke.title")}
-								</Typography>
-								<Typography gutterBottom>
-									<TransWithoutContext
-										i18nKey={"terms-and-privacy.how-to-revoke.content"}
-										components={{ 1: <Link href={GOOGLE_CONNECTIONS} /> }}
-									/>
-								</Typography>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.acceptance-of-terms.title")}
+									</Typography>
+									<Typography gutterBottom>
+										<TransWithoutContext
+											i18nKey={"terms-and-privacy.acceptance-of-terms.content"}
+											components={{
+												1: <Link href={YOUTUBE_TOS} />,
+												2: <Link href={GOOGLE_PRIVACY_POLICY} />,
+											}}
+										/>
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.limitation-of-liability.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.limitation-of-liability.content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.youtube-data-api.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.youtube-data-api.content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.how-to-revoke.title")}
+									</Typography>
+									<Typography gutterBottom>
+										<TransWithoutContext
+											i18nKey={"terms-and-privacy.how-to-revoke.content"}
+											components={{ 1: <Link href={GOOGLE_CONNECTIONS} /> }}
+										/>
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.security-of-data.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.security-of-data.content")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.security-of-data.second-content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.disclosures-of-data.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.disclosures-of-data.content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.google-analytics.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.google-analytics.content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.update-and-changes.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.update-and-changes.content")}
+									</Typography>
+								</Grid>
+								<Grid>
+									<Typography fontWeight={"bold"} fontSize={20} gutterBottom>
+										{t("terms-and-privacy.governing-law.title")}
+									</Typography>
+									<Typography gutterBottom>
+										{t("terms-and-privacy.governing-law.content")}
+									</Typography>
+								</Grid>
 							</Grid>
 						</Grid>
 					</CenteredLayout>
