@@ -36,4 +36,4 @@ export const GOOGLE_CONNECTIONS = "https://myaccount.google.com/connections";
 /**
  * The current version of the application.
  */
-export const VERSION = `v${process.env.npm_package_version}`;
+export const VERSION = `v${process.env.RELEASE}`;
