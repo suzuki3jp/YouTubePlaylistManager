@@ -32,3 +32,8 @@ export const GOOGLE_PRIVACY_POLICY = "https://policies.google.com/privacy";
  * Used in the Terms and Privacy section.
  */
 export const GOOGLE_CONNECTIONS = "https://myaccount.google.com/connections";
+
+/**
+ * The current version of the application.
+ */
+export const VERSION = `v${process.env.npm_package_version}`;

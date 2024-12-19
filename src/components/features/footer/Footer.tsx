@@ -1,5 +1,5 @@
 import { Link } from "@/components";
-import { AUTHOR_GITHUB, AUTHOR_NAME } from "@/constants";
+import { AUTHOR_GITHUB, AUTHOR_NAME, VERSION } from "@/constants";
 import { useServerT } from "@/hooks";
 import type { PageProps } from "@/types";
 import { Box, Container, Grid2 as Grid, Typography } from "@mui/material";
@@ -40,7 +40,7 @@ export const Footer: React.FC<FooterProps> = async ({ searchParams }) => {
 						}}
 					>
 						<Typography variant="body2" color="text.secondary" align="center">
-							© {new Date().getFullYear()}
+							{VERSION} © {new Date().getFullYear()}
 							<Link
 								href={AUTHOR_GITHUB}
 								sx={{ ml: "5px", top: "-1px", position: "relative" }} // TODO: Hardcoded top value Because <p> and <a> have different line base height
