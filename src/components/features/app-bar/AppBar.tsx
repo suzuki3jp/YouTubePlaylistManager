@@ -20,21 +20,21 @@ export const AppBar = async () => {
 			position="static"
 			sx={{
 				bgcolor: "grey.900",
-				paddingRight: { xs: 0, md: "20%" },
-				paddingLeft: { xs: 0, md: "20%" },
+				paddingRight: { xs: 0, lg: "19%" },
+				paddingLeft: { xs: 0, lg: "19%" },
 			}}
 		>
 			<Toolbar
 				sx={{
-					flexDirection: { xs: "column", sm: "row" },
-					gap: { xs: 2, sm: 0 },
+					flexDirection: { xs: "column", md: "row" },
+					gap: { xs: 2, md: 0 },
 					padding: {
 						xs: 2,
-						sm: "0 24px",
+						md: "0 24px",
 					},
 					minHeight: {
 						xs: "auto",
-						sm: "64px",
+						md: "64px",
 					},
 					display: "flex",
 					justifyContent: "space-between",
@@ -42,7 +42,7 @@ export const AppBar = async () => {
 			>
 				<AppName />
 
-				<Grid container spacing={2}>
+				<Grid container spacing={2} justifyContent="center">
 					<LanguageSwitcher />
 					{session ? <GoogleSignOutButton /> : <GoogleSignInButton />}
 					<IconButton
