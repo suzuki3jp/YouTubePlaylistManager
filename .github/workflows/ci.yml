@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Setup nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      - name: Install dependencies
+        uses: ./.github/workflows/scripts/pnpmInstall
+        with:
+          devDeps: true
+      - name: Run build
+        run: pnpm run build
+
+  biome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      
+      - name: Setup nodejs
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+      
+      - name: Install dependencies
+        uses: ./.github/workflows/scripts/pnpmInstall
+        with:
+          devDeps: true
+
+      - name: Run lint and format by Biome
+        run: pnpm biome check ./src
+        

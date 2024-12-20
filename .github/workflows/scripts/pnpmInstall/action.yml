@@ -1,0 +1,22 @@
+name: "pnpm install"
+description: "Set up pnpm and Run pnpm install"
+inputs:
+  devDeps:
+    description: Install production dependencies and development dependencies.
+    required: false
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - name: Set up pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
+    - name: Install only production dependencies.
+      if: ${{ inputs.devDeps == 'false'}}
+      shell: bash
+      run: pnpm install --frozen-lockfile --prod
+    - name: Install production dependencies and development dependencies.
+      if: ${{ inputs.devDeps == 'true'}}
+      shell: bash
+      run: pnpm install --frozen-lockfile
