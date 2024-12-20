@@ -5,7 +5,7 @@ import {
 	type UUID,
 	generateUUID,
 } from "@/actions";
-import { NonUpperButton, WrappedDialog } from "@/components";
+import { NonUpperButton, WarningDialog } from "@/components";
 import { useT } from "@/hooks";
 import {
 	Search as BrowseIcon,
@@ -280,7 +280,7 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 			{/**
 			 * DeleteDialog
 			 */}
-			<WrappedDialog
+			<WarningDialog
 				open={isDeleteOpen}
 				onClose={() => setIsDeleteOpen(false)}
 				onConfirm={async () => {
@@ -303,7 +303,6 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 				}}
 				title={t("dialog.delete-title")}
 				content={selectedItems.map((p) => p.title).join("\n")}
-				isWarning
 			/>
 		</Grid>
 	);
