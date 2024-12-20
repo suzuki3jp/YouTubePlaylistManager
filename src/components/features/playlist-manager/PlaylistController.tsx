@@ -76,7 +76,7 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 			});
 
 			const result = await manager.copy({
-				id: playlist.id,
+				sourceId: playlist.id,
 				privacy: "unlisted",
 				onAddedPlaylist: (p) => {
 					updateTask({
@@ -131,7 +131,7 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 			});
 
 			const result = await manager.shuffle({
-				playlistId: playlist.id,
+				targetId: playlist.id,
 				ratio: 0.4,
 				onUpdatingPlaylistItemPosition: (i, oldI, newI) => {
 					updateTask({
@@ -181,7 +181,7 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 		});
 
 		const result = await manager.merge({
-			ids: selectedItems.map((p) => p.id),
+			sourceIds: selectedItems.map((p) => p.id),
 			onAddedPlaylist: (p) => {
 				updateTask({
 					taskId,
