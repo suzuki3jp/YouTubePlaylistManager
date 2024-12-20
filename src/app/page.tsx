@@ -7,13 +7,7 @@ import {
 	PlaylistManager,
 	SectionWithTitle,
 } from "@/components";
-import {
-	AUTHOR_GITHUB,
-	AUTHOR_NAME,
-	GOOGLE_CONNECTIONS,
-	GOOGLE_PRIVACY_POLICY,
-	YOUTUBE_TOS,
-} from "@/constants";
+import { AUTHOR_GITHUB, AUTHOR_NAME } from "@/constants";
 import { useServerT } from "@/hooks";
 import type { PageProps } from "@/types";
 import { Box, Grid2 as Grid, Typography } from "@mui/material";
@@ -24,7 +18,7 @@ export default async function Home({ searchParams }: PageProps) {
 	const session = await getServerSession();
 	const id = (await searchParams).id;
 	const ids = typeof id === "string" ? id.split(",") : id;
-	const { t, i18n } = await useServerT(searchParams);
+	const { t } = await useServerT(searchParams);
 
 	return (
 		<Layout searchParams={searchParams}>
