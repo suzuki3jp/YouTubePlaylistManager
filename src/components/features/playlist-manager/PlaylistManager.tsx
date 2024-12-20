@@ -96,3 +96,10 @@ export type SetTaskFunc = (
 		prev: OperationProgressData | undefined,
 	) => OperationProgressData | null,
 ) => void;
+
+export type UpdateTaskFunc = (options: {
+	taskId: UUID;
+	message?: string;
+	completed?: number;
+	total?: number;
+}) => void;
