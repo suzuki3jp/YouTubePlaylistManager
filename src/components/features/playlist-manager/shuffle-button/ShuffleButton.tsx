@@ -1,6 +1,10 @@
 "use client";
-import { type Playlist, PlaylistManager, generateUUID } from "@/actions";
-import { NonUpperButton, type UpdateTaskFunc } from "@/components";
+import { PlaylistManager, generateUUID } from "@/actions";
+import {
+	NonUpperButton,
+	type PlaylistState,
+	type UpdateTaskFunc,
+} from "@/components";
 import { useT } from "@/hooks";
 import { Shuffle as ShuffleIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -13,7 +17,7 @@ import { showSnackbar } from "../PlaylistController";
  * @returns
  */
 export const ShuffleButton: React.FC<ShuffleButtonProps> = ({
-	selectedItems,
+	playlists,
 	updateTask,
 	refreshPlaylists,
 }) => {
@@ -24,53 +28,56 @@ export const ShuffleButton: React.FC<ShuffleButtonProps> = ({
 	const manager = new PlaylistManager(data.accessToken);
 
 	const handleOnClick = async () => {
-		const shuffleTasks = selectedItems.map(async (playlist) => {
-			const taskId = await generateUUID();
-			updateTask({
-				taskId,
-				message: t("task-progress.shuffling-playlist", {
-					title: playlist.title,
-				}),
-			});
-
-			const result = await manager.shuffle({
-				targetId: playlist.id,
-				ratio: 0.4,
-				onUpdatingPlaylistItemPosition: (i, oldI, newI) => {
-					updateTask({
-						taskId,
-						message: t("task-progress.moving-playlist-item", {
-							title: i.title,
-							old: oldI,
-							new: newI,
-						}),
-					});
-				},
-				onUpdatedPlaylistItemPosition: (i, oldI, newI, c, total) => {
-					updateTask({
-						taskId,
-						message: t("task-progress.moved-playlist-item", {
-							title: i.title,
-							old: oldI,
-							new: newI,
-						}),
-						completed: c,
-						total,
-					});
-				},
-			});
-
-			updateTask({ taskId });
-			const message = result.isSuccess()
-				? t("task-progress.succeed-to-shuffle-playlist", {
+		const shuffleTasks = playlists
+			.filter((ps) => ps.selected)
+			.map(async (ps) => {
+				const playlist = ps.data;
+				const taskId = await generateUUID();
+				updateTask({
+					taskId,
+					message: t("task-progress.shuffling-playlist", {
 						title: playlist.title,
-					})
-				: t("task-progress.failed-to-shuffle-playlist", {
-						title: playlist.title,
-						code: result.data.status,
-					});
-			showSnackbar(message, result.isSuccess());
-		});
+					}),
+				});
+
+				const result = await manager.shuffle({
+					targetId: playlist.id,
+					ratio: 0.4,
+					onUpdatingPlaylistItemPosition: (i, oldI, newI) => {
+						updateTask({
+							taskId,
+							message: t("task-progress.moving-playlist-item", {
+								title: i.title,
+								old: oldI,
+								new: newI,
+							}),
+						});
+					},
+					onUpdatedPlaylistItemPosition: (i, oldI, newI, c, total) => {
+						updateTask({
+							taskId,
+							message: t("task-progress.moved-playlist-item", {
+								title: i.title,
+								old: oldI,
+								new: newI,
+							}),
+							completed: c,
+							total,
+						});
+					},
+				});
+
+				updateTask({ taskId });
+				const message = result.isSuccess()
+					? t("task-progress.succeed-to-shuffle-playlist", {
+							title: playlist.title,
+						})
+					: t("task-progress.failed-to-shuffle-playlist", {
+							title: playlist.title,
+							code: result.data.status,
+						});
+				showSnackbar(message, result.isSuccess());
+			});
 
 		await Promise.all(shuffleTasks);
 		refreshPlaylists();
@@ -88,7 +95,7 @@ export const ShuffleButton: React.FC<ShuffleButtonProps> = ({
 };
 
 export type ShuffleButtonProps = Readonly<{
-	selectedItems: Playlist[];
+	playlists: PlaylistState[];
 	updateTask: UpdateTaskFunc;
 	refreshPlaylists: () => void;
 }>;

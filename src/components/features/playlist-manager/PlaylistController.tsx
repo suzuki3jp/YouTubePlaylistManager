@@ -1,10 +1,13 @@
 "use client";
-import type { Playlist } from "@/actions";
 import { Grid2 as Grid } from "@mui/material";
 import { useSession } from "next-auth/react";
 import { enqueueSnackbar } from "notistack";
 import type React from "react";
-import type { SetTaskFunc, UpdateTaskFunc } from "./PlaylistManager";
+import type {
+	PlaylistState,
+	SetTaskFunc,
+	UpdateTaskFunc,
+} from "./PlaylistManager";
 import { BrowseButton } from "./browse-button";
 import { CopyButton } from "./copy-button";
 import { DeleteButton } from "./delete-button";
@@ -12,7 +15,7 @@ import { MergeButton } from "./merge-button";
 import { ShuffleButton } from "./shuffle-button";
 
 export const PlaylistController: React.FC<PlaylistControllerProps> = ({
-	selectedItems,
+	playlists,
 	setTask,
 	refreshPlaylists,
 }) => {
@@ -46,46 +49,46 @@ export const PlaylistController: React.FC<PlaylistControllerProps> = ({
 		}
 	};
 
-	return selectedItems.length === 0 ? (
+	return playlists.filter((ps) => ps.selected).length === 0 ? (
 		<></>
 	) : (
 		<Grid container spacing={1} size={12}>
 			<Grid>
 				<CopyButton
-					selectedItems={selectedItems}
+					playlists={playlists}
 					updateTask={updateTask}
 					refreshPlaylists={refreshPlaylists}
 				/>
 			</Grid>
 			<Grid>
 				<ShuffleButton
-					selectedItems={selectedItems}
+					playlists={playlists}
 					updateTask={updateTask}
 					refreshPlaylists={refreshPlaylists}
 				/>
 			</Grid>
 			<Grid>
 				<MergeButton
-					selectedItems={selectedItems}
+					playlists={playlists}
 					updateTask={updateTask}
 					refreshPlaylists={refreshPlaylists}
 				/>
 			</Grid>
 			<Grid>
 				<DeleteButton
-					selectedItems={selectedItems}
+					playlists={playlists}
 					refreshPlaylists={refreshPlaylists}
 				/>
 			</Grid>
 			<Grid>
-				<BrowseButton selectedItems={selectedItems} />
+				<BrowseButton playlists={playlists} />
 			</Grid>
 		</Grid>
 	);
 };
 
 export type PlaylistControllerProps = Readonly<{
-	selectedItems: Playlist[];
+	playlists: PlaylistState[];
 	setTask: SetTaskFunc;
 	refreshPlaylists: () => void;
 }>;

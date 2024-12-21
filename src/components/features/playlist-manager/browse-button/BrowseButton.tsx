@@ -1,6 +1,5 @@
 "use client";
-import type { Playlist } from "@/actions";
-import { NonUpperButton } from "@/components";
+import { NonUpperButton, type PlaylistState } from "@/components";
 import { useT } from "@/hooks";
 import { Search as BrowseIcon } from "@mui/icons-material";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,9 +10,7 @@ import type React from "react";
  * @param param0
  * @returns
  */
-export const BrowseButton: React.FC<BrowseButtonProps> = ({
-	selectedItems,
-}) => {
+export const BrowseButton: React.FC<BrowseButtonProps> = ({ playlists }) => {
 	const { t } = useT();
 
 	const oldQuery = useSearchParams();
@@ -21,7 +18,10 @@ export const BrowseButton: React.FC<BrowseButtonProps> = ({
 
 	const handleOnClick = async () => {
 		const newQuery = new URLSearchParams(oldQuery);
-		const targetIds = selectedItems.slice(0, 3).map((p) => p.id);
+		const targetIds = playlists
+			.filter((ps) => ps.selected)
+			.slice(0, 3)
+			.map((ps) => ps.data.id);
 		newQuery.set("id", targetIds.join(","));
 
 		router.push(`?${newQuery.toString()}`);
@@ -39,5 +39,5 @@ export const BrowseButton: React.FC<BrowseButtonProps> = ({
 };
 
 export type BrowseButtonProps = Readonly<{
-	selectedItems: Playlist[];
+	playlists: PlaylistState[];
 }>;

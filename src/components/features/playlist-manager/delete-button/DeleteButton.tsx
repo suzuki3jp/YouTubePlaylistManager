@@ -1,6 +1,10 @@
 "use client";
-import { type Playlist, PlaylistManager } from "@/actions";
-import { NonUpperButton, WarningDialog } from "@/components";
+import { PlaylistManager } from "@/actions";
+import {
+	NonUpperButton,
+	type PlaylistState,
+	WarningDialog,
+} from "@/components";
 import { useT } from "@/hooks";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -14,7 +18,7 @@ import { showSnackbar } from "../PlaylistController";
  * @returns
  */
 export const DeleteButton: React.FC<DeleteButtonProps> = ({
-	selectedItems,
+	playlists,
 	refreshPlaylists,
 }) => {
 	const { t } = useT();
@@ -28,18 +32,21 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({
 
 	const handleOnClickConfirm = async () => {
 		setIsDeleteOpen(false);
-		const deleteTasks = selectedItems.map(async (playlist) => {
-			const result = await manager.delete(playlist.id);
-			const message = result.isSuccess()
-				? t("task-progress.succeed-to-delete-playlist", {
-						title: playlist.title,
-					})
-				: t("task-progress.failed-to-delete-playlist", {
-						title: playlist.title,
-						code: result.data.status,
-					});
-			showSnackbar(message);
-		});
+		const deleteTasks = playlists
+			.filter((ps) => ps.selected)
+			.map(async (ps) => {
+				const playlist = ps.data;
+				const result = await manager.delete(playlist.id);
+				const message = result.isSuccess()
+					? t("task-progress.succeed-to-delete-playlist", {
+							title: playlist.title,
+						})
+					: t("task-progress.failed-to-delete-playlist", {
+							title: playlist.title,
+							code: result.data.status,
+						});
+				showSnackbar(message);
+			});
 
 		await Promise.all(deleteTasks);
 		refreshPlaylists();
@@ -59,13 +66,16 @@ export const DeleteButton: React.FC<DeleteButtonProps> = ({
 				onClose={() => setIsDeleteOpen(false)}
 				onConfirm={handleOnClickConfirm}
 				title={t("dialog.delete-title")}
-				content={selectedItems.map((p) => p.title).join("\n")}
+				content={playlists
+					.filter((ps) => ps.selected)
+					.map((ps) => ps.data.title)
+					.join("\n")}
 			/>
 		</>
 	);
 };
 
 export type DeleteButtonProps = Readonly<{
-	selectedItems: Playlist[];
+	playlists: PlaylistState[];
 	refreshPlaylists: () => void;
 }>;

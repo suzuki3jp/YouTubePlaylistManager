@@ -1,6 +1,10 @@
 "use client";
-import { type Playlist, PlaylistManager, generateUUID } from "@/actions";
-import { NonUpperButton, type UpdateTaskFunc } from "@/components";
+import { PlaylistManager, generateUUID } from "@/actions";
+import {
+	NonUpperButton,
+	type PlaylistState,
+	type UpdateTaskFunc,
+} from "@/components";
 import { useT } from "@/hooks";
 import { CallMerge as MergeIcon } from "@mui/icons-material";
 import { useSession } from "next-auth/react";
@@ -13,7 +17,7 @@ import { showSnackbar } from "../PlaylistController";
  * @returns
  */
 export const MergeButton: React.FC<MergeButtonProps> = ({
-	selectedItems,
+	playlists,
 	updateTask,
 	refreshPlaylists,
 }) => {
@@ -31,7 +35,7 @@ export const MergeButton: React.FC<MergeButtonProps> = ({
 		});
 
 		const result = await manager.merge({
-			sourceIds: selectedItems.map((p) => p.id),
+			sourceIds: playlists.filter((ps) => ps.selected).map((ps) => ps.data.id),
 			onAddedPlaylist: (p) => {
 				updateTask({
 					taskId,
@@ -57,10 +61,16 @@ export const MergeButton: React.FC<MergeButtonProps> = ({
 		updateTask({ taskId });
 		const message = result.isSuccess()
 			? t("task-progress.succeed-to-merge-playlist", {
-					title: selectedItems.map((p) => p.title).join(", "),
+					title: playlists
+						.filter((ps) => ps.selected)
+						.map((ps) => ps.data.title)
+						.join(", "),
 				})
 			: t("task-progress.failed-to-merge-playlist", {
-					title: selectedItems.map((p) => p.title).join(", "),
+					title: playlists
+						.filter((ps) => ps.selected)
+						.map((ps) => ps.data.title)
+						.join(", "),
 					code: result.data.status,
 				});
 		showSnackbar(message, result.isSuccess());
@@ -79,7 +89,7 @@ export const MergeButton: React.FC<MergeButtonProps> = ({
 };
 
 export type MergeButtonProps = Readonly<{
-	selectedItems: Playlist[];
+	playlists: PlaylistState[];
 	updateTask: UpdateTaskFunc;
 	refreshPlaylists: () => void;
 }>;
