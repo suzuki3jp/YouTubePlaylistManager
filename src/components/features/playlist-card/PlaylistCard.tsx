@@ -1,11 +1,11 @@
 "use client";
 import type { Playlist } from "@/actions";
+import type { PlaylistState } from "@/components";
 import { CheckCircle as CheckIcon } from "@mui/icons-material";
 import { ButtonBase, Card, CardHeader, CardMedia } from "@mui/material";
 
 export const PlaylistCard = ({
 	playlist,
-	isSelected,
 	toggleSelected,
 }: Readonly<PlaylistCardProps>) => {
 	return (
@@ -14,12 +14,14 @@ export const PlaylistCard = ({
 				width: "100%",
 				display: "block",
 			}}
-			onClick={() => toggleSelected(playlist)}
+			onClick={() => toggleSelected(playlist.data)}
 		>
 			<Card
 				sx={{
-					bgcolor: isSelected ? "rgba(45, 128, 255, 0.15)" : "grey.900",
-					border: isSelected ? "2px solid #2d80ff" : "2px solid transparent",
+					bgcolor: playlist.selected ? "rgba(45, 128, 255, 0.15)" : "grey.900",
+					border: playlist.selected
+						? "2px solid #2d80ff"
+						: "2px solid transparent",
 					borderRadius: 4,
 					p: 2,
 					"& .MuiCardHeader-root": {
@@ -29,7 +31,7 @@ export const PlaylistCard = ({
 						p: 0,
 					},
 					"&:hover": {
-						bgcolor: isSelected
+						bgcolor: playlist.selected
 							? "rgba(45, 128, 255, 0.2)"
 							: "rgba(45, 45, 45, 0.9)",
 					},
@@ -42,9 +44,9 @@ export const PlaylistCard = ({
 						marginBottom: "2%",
 					}}
 				>
-					{isSelected && <CheckIcon sx={{ marginRight: "2%" }} />}
+					{playlist.selected && <CheckIcon sx={{ marginRight: "2%" }} />}
 					<CardHeader
-						title={playlist.title}
+						title={playlist.data.title}
 						titleTypographyProps={{
 							fontWeight: 600,
 						}}
@@ -52,7 +54,7 @@ export const PlaylistCard = ({
 				</div>
 				<div style={{ position: "relative", paddingTop: "56.25%" }}>
 					<CardMedia
-						image={playlist.thumbnail}
+						image={playlist.data.thumbnail}
 						component={"img"}
 						draggable={false}
 						sx={{
@@ -72,7 +74,6 @@ export const PlaylistCard = ({
 };
 
 export interface PlaylistCardProps {
-	playlist: Playlist;
-	isSelected: boolean;
+	playlist: PlaylistState;
 	toggleSelected: (playlist: Playlist) => void;
 }

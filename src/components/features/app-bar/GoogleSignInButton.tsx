@@ -1,5 +1,5 @@
 "use client";
-import { Link, NonUpperButton, WrappedDialog } from "@/components";
+import { Dialog, Link, NonUpperButton } from "@/components";
 import { useT } from "@/hooks";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import { signIn } from "next-auth/react";
@@ -19,22 +19,21 @@ export const GoogleSignInButton = () => {
 			>
 				{t("appbar.sign-in-with-google")}
 			</NonUpperButton>
-			<WrappedDialog
+			<Dialog
 				open={isSigninOpen}
 				onClose={() => setIsSigninOpen(false)}
 				onConfirm={async () => await signIn("google")}
 				title={t("dialog.agreement-title")}
-				content={
-					<TransWithoutContext
-						i18nKey={"dialog.agreement-content"}
-						components={{
-							1: <Link href={"/terms-and-privacy"} />,
-						}}
-					/>
-				}
 				cancelText={t("button.disagree")}
 				confirmText={t("button.agree")}
-			/>
+			>
+				<TransWithoutContext
+					i18nKey={"dialog.agreement-content"}
+					components={{
+						1: <Link href={"/terms-and-privacy"} />,
+					}}
+				/>
+			</Dialog>
 		</>
 	);
 };

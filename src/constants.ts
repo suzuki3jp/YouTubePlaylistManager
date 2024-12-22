@@ -43,3 +43,9 @@ export const GOOGLE_CONNECTIONS = "https://myaccount.google.com/connections";
  * The current version of the application.
  */
 export const VERSION = `v${process.env.RELEASE}`;
+
+/**
+ * The default value of the target playlist ID.
+ * Used in the MergeButton, CopyButton component in PlaylistController.
+ */
+export const DEFAULT = "default";

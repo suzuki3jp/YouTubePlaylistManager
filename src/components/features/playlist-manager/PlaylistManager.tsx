@@ -14,9 +14,8 @@ import { PlaylistDisplay } from "./PlaylistDisplay";
 export const PlaylistManager = () => {
 	const { t } = useT();
 	const { data } = useSession();
-	const [playlists, setPlaylists] = useState<Playlist[]>([]);
+	const [playlists, setPlaylists] = useState<PlaylistState[]>([]);
 	const [isPlaylistsNotFound, setIsPlaylistNotFound] = useState(false);
-	const [selectedPlaylists, setSelectedPlaylists] = useState<Playlist[]>([]);
 	const [progressTasks, setProgressTasks] = useState<
 		Map<UUID, OperationProgressData>
 	>(new Map());
@@ -39,24 +38,23 @@ export const PlaylistManager = () => {
 	};
 
 	const toggleSelected = (playlist: Playlist) => {
-		const exists = selectedPlaylists.some((p) => p.id === playlist.id);
-		if (exists)
-			return setSelectedPlaylists(
-				selectedPlaylists.filter((p) => p.id !== playlist.id),
-			);
-		return setSelectedPlaylists([...selectedPlaylists, playlist]);
+		setPlaylists((prev) =>
+			prev.map((p) =>
+				p.data.id === playlist.id ? { data: p.data, selected: !p.selected } : p,
+			),
+		);
 	};
 
 	const refreshPlaylists = useCallback(async () => {
 		if (!data || !data.accessToken) return;
 		const p = await new PM(data.accessToken).getPlaylists();
 		if (p.isSuccess()) {
-			setPlaylists(p.data);
-			setSelectedPlaylists([]);
+			setPlaylists(
+				p.data.map((playlist) => ({ data: playlist, selected: false })),
+			);
 			setIsPlaylistNotFound(false);
 		} else if (p.data.status === 404) {
 			setPlaylists([]);
-			setSelectedPlaylists([]);
 			setIsPlaylistNotFound(true);
 		} else {
 			signOut();
@@ -75,13 +73,12 @@ export const PlaylistManager = () => {
 				<>
 					<OperationProgress tasks={progressTasks} />
 					<PlaylistController
-						selectedItems={selectedPlaylists}
+						playlists={playlists}
 						setTask={setTask}
 						refreshPlaylists={refreshPlaylists}
 					/>
 					<PlaylistDisplay
 						playlists={playlists}
-						selectedPlaylist={selectedPlaylists}
 						toggleSelected={toggleSelected}
 					/>
 				</>
@@ -96,3 +93,15 @@ export type SetTaskFunc = (
 		prev: OperationProgressData | undefined,
 	) => OperationProgressData | null,
 ) => void;
+
+export type UpdateTaskFunc = (options: {
+	taskId: UUID;
+	message?: string;
+	completed?: number;
+	total?: number;
+}) => void;
+
+export interface PlaylistState {
+	data: Playlist;
+	selected: boolean;
+}

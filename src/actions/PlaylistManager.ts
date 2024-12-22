@@ -1,7 +1,6 @@
 import type { PlaylistPrivacy } from "@/lib/base-adapter";
 import { Err, Ok, type Result } from "@/lib/result";
 import { sleep } from "@/utils";
-import { ContentPasteOffSharp } from "@mui/icons-material";
 import { addPlaylist } from "./add-playlist";
 import { addPlaylistItem } from "./add-playlist-item";
 import { deletePlaylist } from "./delete-playlist";
@@ -17,102 +16,145 @@ export class PlaylistManager {
 	constructor(private token: string) {}
 
 	public async copy({
-		id,
+		sourceId,
+		targetId,
+		allowDuplicates = false,
 		privacy,
 		onAddedPlaylist,
 		onAddedPlaylistItem,
 		onAddingPlaylistItem,
 	}: CopyOptions): Promise<Result<FullPlaylist, FailureData>> {
 		// コピー対象の完全なプレイリストを取得
-		const target = await this.callApiWithRetry(getFullPlaylist, {
-			id,
+		const source = await this.callApiWithRetry(getFullPlaylist, {
+			id: sourceId,
 			token: this.token,
 		});
-		if (target.status !== 200) return Err(target);
-		const oldPlaylist = target.data;
+		if (source.status !== 200) return Err(source);
+		const sourcePlaylist = source.data;
 
-		// 新しいプレイリストを作成する
-		const newTitle = `${oldPlaylist.title} - Copied`;
-		const newTarget = await this.callApiWithRetry(addPlaylist, {
-			title: newTitle,
-			privacy,
-			token: this.token,
-		});
-		if (newTarget.status !== 200) return Err(newTarget);
-		const newPlaylist: FullPlaylist = { ...newTarget.data, items: [] };
-		onAddedPlaylist?.(newPlaylist);
+		// Get the full playlist of the target.
+		// Or create a new playlist if the target does not exist.
+		const target = targetId
+			? await this.callApiWithRetry(getFullPlaylist, {
+					id: targetId,
+					token: this.token,
+				})
+			: null;
+		if (target && target.status !== 200) return Err(target);
 
-		// アイテムを追加する
-		for (let index = 0; index < oldPlaylist.items.length; index++) {
-			const item = oldPlaylist.items[index];
+		let targetPlaylist: FullPlaylist;
+
+		if (target) {
+			targetPlaylist = target.data;
+		} else {
+			const newTitle = `${sourcePlaylist.title} - Copied`;
+			const newPlaylist = await this.callApiWithRetry(addPlaylist, {
+				title: newTitle,
+				privacy,
+				token: this.token,
+			});
+			if (newPlaylist.status !== 200) return Err(newPlaylist);
+			targetPlaylist = { ...newPlaylist.data, items: [] };
+			onAddedPlaylist?.(targetPlaylist);
+		}
+
+		// Add items to the target playlist.
+		// If allowDuplicates is false, check if the item already exists in the target playlist.
+		for (let index = 0; index < sourcePlaylist.items.length; index++) {
+			const item = sourcePlaylist.items[index];
+
+			if (!this.isShouldAddItem(targetPlaylist, item, allowDuplicates)) {
+				continue;
+			}
+
 			onAddingPlaylistItem?.(item);
 			const addedItem = await this.callApiWithRetry(addPlaylistItem, {
-				playlistId: newPlaylist.id,
+				playlistId: targetPlaylist.id,
 				resourceId: item.videoId,
 				token: this.token,
 			});
 			if (addedItem.status !== 200) return Err(addedItem);
 
-			newPlaylist.items.push(addedItem.data);
-			onAddedPlaylistItem?.(addedItem.data, index, oldPlaylist.items.length);
+			targetPlaylist.items.push(addedItem.data);
+			onAddedPlaylistItem?.(addedItem.data, index, sourcePlaylist.items.length);
 		}
 
-		return Ok(newPlaylist);
+		return Ok(targetPlaylist);
 	}
 
 	public async merge({
-		ids,
+		sourceIds,
+		targetId,
+		allowDuplicates = false,
 		privacy,
 		onAddedPlaylist,
 		onAddedPlaylistItem,
 		onAddingPlaylistItem,
 	}: MergeOptions): Promise<Result<FullPlaylist, FailureData>> {
-		// ターゲットの完全なプレイリストを取得する
-		const oldPlaylists: FullPlaylist[] = [];
-		for (const id of ids) {
-			const playlist = await this.callApiWithRetry(getFullPlaylist, {
+		// Get the full playlists of the source.
+		const sourcePlaylists: FullPlaylist[] = [];
+		for (const id of sourceIds) {
+			const source = await this.callApiWithRetry(getFullPlaylist, {
 				id,
 				token: this.token,
 			});
-			if (playlist.status !== 200) return Err(playlist);
-			oldPlaylists.push(playlist.data);
+			if (source.status !== 200) return Err(source);
+			sourcePlaylists.push(source.data);
 		}
 
-		// 入力されたプレイリストのタイトルを新しいプレイリストのタイトルに変換し、新しいプレイリストを作成する
-		// 新しいプレイリストのタイトルフォーマット: "playlist1 & playlist2 & playlist3 ... & playlistN"
-		const title = oldPlaylists.map((p) => p.title).join(" & ");
-		const newPlaylistResult = await this.callApiWithRetry(addPlaylist, {
-			title,
-			privacy,
-			token: this.token,
-		});
-		if (newPlaylistResult.status !== 200) return Err(newPlaylistResult);
-		const newPlaylist: FullPlaylist = { ...newPlaylistResult.data, items: [] };
-		onAddedPlaylist?.(newPlaylist);
+		// Get the full playlist of the target.
+		// Or create a new playlist if the target does not exist.
+		const target = targetId
+			? await this.callApiWithRetry(getFullPlaylist, {
+					id: targetId,
+					token: this.token,
+				})
+			: null;
+		if (target && target.status !== 200) return Err(target);
 
-		// 新しいプレイリストにアイテムを追加
-		const queueItems: PlaylistItem[] = oldPlaylists.flatMap((p) => p.items);
-		for (const item of queueItems) {
+		let targetPlaylist: FullPlaylist;
+
+		if (target) {
+			targetPlaylist = target.data;
+		} else {
+			// Create a new playlist with the title that combines the titles of the source playlists.
+			// The title format of the new playlist: "playlist1 & playlist2 & playlist3 ... & playlistN"
+			const title = sourcePlaylists.map((p) => p.title).join(" & ");
+			const newPlaylist = await this.callApiWithRetry(addPlaylist, {
+				title,
+				privacy,
+				token: this.token,
+			});
+			if (newPlaylist.status !== 200) return Err(newPlaylist);
+			targetPlaylist = { ...newPlaylist.data, items: [] };
+			onAddedPlaylist?.(targetPlaylist);
+		}
+
+		// Add items to the target playlist.
+		// If allowDuplicates is false, check if the item already exists in the target playlist.
+		const queueItems: PlaylistItem[] = sourcePlaylists.flatMap((p) => p.items);
+		for (let index = 0; index < queueItems.length; index++) {
+			const item = queueItems[index];
+			if (!this.isShouldAddItem(targetPlaylist, item, allowDuplicates)) {
+				continue;
+			}
+
 			onAddingPlaylistItem?.(item);
 			const addedItem = await this.callApiWithRetry(addPlaylistItem, {
-				playlistId: newPlaylist.id,
+				playlistId: targetPlaylist.id,
 				resourceId: item.videoId,
 				token: this.token,
 			});
 			if (addedItem.status !== 200) return Err(addedItem);
-			newPlaylist.items.push(addedItem.data);
-			onAddedPlaylistItem?.(
-				addedItem.data,
-				newPlaylist.items.length,
-				queueItems.length,
-			);
+			targetPlaylist.items.push(addedItem.data);
+			onAddedPlaylistItem?.(addedItem.data, index, queueItems.length);
 		}
 
-		return Ok(newPlaylist);
+		return Ok(targetPlaylist);
 	}
 
 	public async shuffle({
-		playlistId,
+		targetId,
 		ratio,
 		onUpdatedPlaylistItemPosition,
 		onUpdatingPlaylistItemPosition,
@@ -120,15 +162,15 @@ export class PlaylistManager {
 		if (!this.validateRatio(ratio)) throw new Error("Invalid ratio");
 
 		// 対象の完全なプレイリストを取得
-		const getFullPlaylistResult = await this.callApiWithRetry(getFullPlaylist, {
-			id: playlistId,
+		const target = await this.callApiWithRetry(getFullPlaylist, {
+			id: targetId,
 			token: this.token,
 		});
-		if (getFullPlaylistResult.status !== 200) return Err(getFullPlaylistResult);
-		const fullPlaylist = getFullPlaylistResult.data;
+		if (target.status !== 200) return Err(target);
+		const targetPlaylist = target.data;
 
 		// ratio から何個のプレイリストアイテムを移動するかを算出
-		const itemsLength = fullPlaylist.items.length;
+		const itemsLength = targetPlaylist.items.length;
 		const itemMoveCount = Math.floor(itemsLength * ratio);
 		const itemsMaxIndex = itemsLength - 1;
 
@@ -136,7 +178,7 @@ export class PlaylistManager {
 		for (let i = 0; i < itemMoveCount; i++) {
 			const targetItemIndex = this.getRandomInt(0, itemsMaxIndex);
 			const targetItemNewIndex = this.getRandomInt(0, itemsMaxIndex);
-			const targetItem = fullPlaylist.items[targetItemIndex];
+			const targetItem = targetPlaylist.items[targetItemIndex];
 			if (!targetItem) throw new Error("Internal Error 01");
 			onUpdatingPlaylistItemPosition?.(
 				targetItem,
@@ -148,7 +190,7 @@ export class PlaylistManager {
 				updatePlaylistItemPosition,
 				{
 					itemId: targetItem.id,
-					playlistId: fullPlaylist.id,
+					playlistId: targetPlaylist.id,
 					resourceId: targetItem.videoId,
 					newIndex: targetItemNewIndex,
 					token: this.token,
@@ -164,7 +206,7 @@ export class PlaylistManager {
 			);
 		}
 
-		return Ok(fullPlaylist);
+		return Ok(targetPlaylist);
 	}
 
 	public async delete(id: string): Promise<Result<Playlist, FailureData>> {
@@ -196,7 +238,7 @@ export class PlaylistManager {
 		func: T,
 		...params: Parameters<T>
 	) {
-		const MAX_RETRY = 3;
+		const MAX_RETRY = 0;
 		let retry = 0;
 		let result: Awaited<ReturnType<T>>;
 
@@ -212,6 +254,35 @@ export class PlaylistManager {
 
 	private validateRatio(ratio: number): boolean {
 		return !!(0 <= ratio && 1 >= ratio);
+	}
+
+	/**
+	 * Whether the item exists in the playlist.
+	 * @param playlist
+	 * @param item
+	 * @returns
+	 */
+	private existsItemInPlaylist(
+		playlist: FullPlaylist,
+		item: PlaylistItem,
+	): boolean {
+		return playlist.items.some((i) => i.videoId === item.videoId);
+	}
+
+	/**
+	 * Whether to add the item to the playlist.
+	 * @param playlist
+	 * @param item
+	 * @param allowDuplicates
+	 * @returns
+	 */
+	private isShouldAddItem(
+		playlist: FullPlaylist,
+		item: PlaylistItem,
+		allowDuplicates: boolean,
+	): boolean {
+		if (allowDuplicates) return true;
+		return !this.existsItemInPlaylist(playlist, item);
 	}
 
 	/**
@@ -236,7 +307,21 @@ export type ApiCallFunction =
 	| typeof deletePlaylist;
 
 export interface CopyOptions {
-	id: string;
+	/**
+	 * The id of the playlist to be copied.
+	 */
+	sourceId: string;
+
+	/**
+	 * The id of the playlist to be copied to.
+	 */
+	targetId?: string;
+
+	/**
+	 * Whether to allow duplicates in the target playlist.
+	 */
+	allowDuplicates?: boolean;
+
 	privacy?: PlaylistPrivacy;
 	onAddedPlaylist?: OnAddedPlaylistHandler;
 	onAddingPlaylistItem?: OnAddingPlaylistItemHandler;
@@ -244,7 +329,21 @@ export interface CopyOptions {
 }
 
 export interface MergeOptions {
-	ids: string[];
+	/**
+	 * The ids of the playlists to be merged.
+	 */
+	sourceIds: string[];
+
+	/**
+	 * The id of the playlist to be merged to.
+	 */
+	targetId?: string;
+
+	/**
+	 * Whether to allow duplicates in the target playlist.
+	 */
+	allowDuplicates?: boolean;
+
 	privacy?: PlaylistPrivacy;
 	onAddedPlaylist?: OnAddedPlaylistHandler;
 	onAddingPlaylistItem?: OnAddingPlaylistItemHandler;
@@ -252,7 +351,10 @@ export interface MergeOptions {
 }
 
 export interface ShuffleOptions {
-	playlistId: string;
+	/**
+	 * The id of the playlist to be shuffled.
+	 */
+	targetId: string;
 
 	/**
 	 * プレイリストのアイテム中どのくらいの数ポジションを入れ替えるかの割合
