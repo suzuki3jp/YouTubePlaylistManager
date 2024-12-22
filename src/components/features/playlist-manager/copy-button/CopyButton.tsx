@@ -1,14 +1,21 @@
 "use client";
 import { PlaylistManager, generateUUID } from "@/actions";
 import {
+	Dialog,
 	NonUpperButton,
 	type PlaylistState,
+	SelectMenu,
+	type SelectMenuItem,
+	Switch,
 	type UpdateTaskFunc,
 } from "@/components";
+import { DEFAULT } from "@/constants";
 import { useT } from "@/hooks";
 import { ContentCopy as CopyIcon } from "@mui/icons-material";
+import { Tooltip, Typography } from "@mui/material";
 import { useSession } from "next-auth/react";
 import type React from "react";
+import { useState } from "react";
 import { showSnackbar } from "../PlaylistController";
 
 /**
@@ -22,12 +29,22 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
 	refreshPlaylists,
 }) => {
 	const { t } = useT();
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [isAllowDuplicate, setIsAllowDuplicate] = useState(false);
+	const [targetPlaylistId, setTargetPlaylistId] = useState(DEFAULT);
 
 	const { data } = useSession();
 	if (!data?.accessToken) return <></>;
 	const manager = new PlaylistManager(data.accessToken);
 
-	const handleOnClick = async () => {
+	const handleOnClickDialogOpen = () => setIsDialogOpen(true);
+
+	const handleOnClickConfirm = async () => {
+		setIsDialogOpen(false);
+		const isTargeted = targetPlaylistId !== DEFAULT;
+
+		// If the target playlist is selected, copy the selected playlists to the target playlists.
+		// Otherwise, copy the selected playlists to the new playlists.
 		const copyTasks = playlists
 			.filter((ps) => ps.selected)
 			.map(async (ps) => {
@@ -39,10 +56,11 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
 						title: playlist.title,
 					}),
 				});
-
 				const result = await manager.copy({
+					targetId: isTargeted ? targetPlaylistId : undefined,
 					sourceId: playlist.id,
 					privacy: "unlisted",
+					allowDuplicates: isAllowDuplicate,
 					onAddedPlaylist: (p) => {
 						updateTask({
 							taskId,
@@ -70,7 +88,6 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
 						});
 					},
 				});
-
 				updateTask({ taskId });
 				const message = result.isSuccess()
 					? t("task-progress.succeed-to-copy-playlist", {
@@ -82,19 +99,48 @@ export const CopyButton: React.FC<CopyButtonProps> = ({
 						});
 				showSnackbar(message, result.isSuccess());
 			});
-
 		await Promise.all(copyTasks);
 		refreshPlaylists();
 	};
 
 	return (
-		<NonUpperButton
-			variant="contained"
-			startIcon={<CopyIcon />}
-			onClick={handleOnClick}
-		>
-			{t("button.copy")}
-		</NonUpperButton>
+		<>
+			<NonUpperButton
+				variant="contained"
+				startIcon={<CopyIcon />}
+				onClick={handleOnClickDialogOpen}
+			>
+				{t("button.copy")}
+			</NonUpperButton>
+			<Dialog
+				open={isDialogOpen}
+				onClose={() => setIsDialogOpen(false)}
+				onConfirm={handleOnClickConfirm}
+				title={t("dialog.copy-title")}
+			>
+				<Tooltip title={t("dialog.copy-target-tooltip")}>
+					<Typography style={{ display: "inline-block" }}>
+						{t("dialog.copy-target")}
+					</Typography>
+				</Tooltip>
+				<SelectMenu
+					value={targetPlaylistId}
+					items={[
+						{ value: DEFAULT, label: t("dialog.create-new") },
+						...playlists.map<SelectMenuItem>((ps) => ({
+							value: ps.data.id,
+							label: ps.data.title,
+						})),
+					]}
+					onChange={(item) => setTargetPlaylistId(item.value)}
+				/>
+				<Switch
+					checked={isAllowDuplicate}
+					label={t("dialog.allow-duplicate")}
+					onChange={(_, checked) => setIsAllowDuplicate(checked)}
+				/>
+			</Dialog>
+		</>
 	);
 };
 

@@ -33,7 +33,15 @@
         "deleting-items": "Deleting the following items:",
         "warning-cannot-undo": "This action CAN NOT UNDO. Are you sure you want to proceed?",
         "agreement-title": "Agreement to Terms and Privacy",
-        "agreement-content": "Do you agree to the <1>Terms and Privacy</1> after reading them?"
+        "agreement-content": "Do you agree to the <1>Terms and Privacy</1> after reading them?",
+        "create-new": "Create a new playlist",
+        "allow-duplicate": "Allow duplicate items",
+        "copy-title": "Copy Options",
+        "copy-target": "Target Playlist *",
+        "copy-target-tooltip": "Select a playlist to copy items to. If you want to copy to a new playlist, select 'Create a new playlist'.",
+        "merge-title": "Merge Options",
+        "merge-target": "Target Playlist *",
+        "merge-target-tooltip": "Select a playlist to merge items to. If you want to merge to a new playlist, select 'Create a new playlist'."
     },
     "button": {
         "copy": "Copy",
