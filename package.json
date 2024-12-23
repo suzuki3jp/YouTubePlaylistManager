@@ -32,6 +32,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitest/coverage-v8": "^2.1.8",
     "gaxios": "^6.7.1",
     "jsdom": "^25.0.1",
     "typescript": "^5",
