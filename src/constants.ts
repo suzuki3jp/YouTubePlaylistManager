@@ -12,14 +12,14 @@ export const AUTHOR_GITHUB = "https://github.com/suzuki3jp";
  * The URL of the source code repository.
  */
 export const SOURCE_CODE_GITHUB =
-	"https://github.com/suzuki3jp/youtubeplaylistmanager";
+    "https://github.com/suzuki3jp/youtubeplaylistmanager";
 
 /**
  * The URL of the Google Permissions page.
  * Used in the Terms and Privacy section.
  */
 export const GOOGLE_PERMISSIONS_PAGE =
-	"https://myaccount.google.com/permissions";
+    "https://myaccount.google.com/permissions";
 
 /**
  * The URL of the YouTube Terms of Service page.

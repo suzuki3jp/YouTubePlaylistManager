@@ -1,43 +1,43 @@
 {
-  "name": "pmfy",
-  "version": "1.1.2",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "test": "pnpm vitest run --coverage.enabled true"
-  },
-  "dependencies": {
-    "@emotion/cache": "^11.14.0",
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "6.2.1",
-    "@mui/material": "6.2.1",
-    "@mui/material-nextjs": "6.2.1",
-    "dotenv": "^16.4.5",
-    "googleapis": "^144.0.0",
-    "i18next": "^24.2.0",
-    "i18next-resources-to-backend": "^1.2.1",
-    "next": "15.1.2",
-    "next-auth": "4.24.11",
-    "notistack": "^3.0.1",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-i18next": "^15.2.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@vitest/coverage-v8": "^2.1.8",
-    "gaxios": "^6.7.1",
-    "jsdom": "^25.0.1",
-    "typescript": "^5",
-    "vite-tsconfig-paths": "^5.1.4",
-    "vitest": "^2.1.8"
-  },
-  "packageManager": "pnpm@9.5.0"
+    "name": "pmfy",
+    "version": "1.1.2",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "test": "pnpm vitest run --coverage.enabled true"
+    },
+    "dependencies": {
+        "@emotion/cache": "^11.14.0",
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@mui/icons-material": "6.2.1",
+        "@mui/material": "6.2.1",
+        "@mui/material-nextjs": "6.2.1",
+        "dotenv": "^16.4.5",
+        "googleapis": "^144.0.0",
+        "i18next": "^24.2.0",
+        "i18next-resources-to-backend": "^1.2.1",
+        "next": "15.1.2",
+        "next-auth": "4.24.11",
+        "notistack": "^3.0.1",
+        "react": "19.0.0",
+        "react-dom": "19.0.0",
+        "react-i18next": "^15.2.0"
+    },
+    "devDependencies": {
+        "@biomejs/biome": "^1.9.4",
+        "@types/node": "^22",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "@vitest/coverage-v8": "^2.1.8",
+        "gaxios": "^6.7.1",
+        "jsdom": "^25.0.1",
+        "typescript": "^5",
+        "vite-tsconfig-paths": "^5.1.4",
+        "vitest": "^2.1.8"
+    },
+    "packageManager": "pnpm@9.5.0"
 }

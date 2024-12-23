@@ -9,18 +9,18 @@ import { YoutubeAdapter } from "@/lib/youtube-adapter";
  * @returns
  */
 export const getPlaylists = async ({
-	token,
+    token,
 }: GetPlaylistsOptions): Promise<Result<Playlist[]>> => {
-	const adapter = new YoutubeAdapter();
-	const playlists = await adapter.getPlaylists(token);
-	if (playlists.isFailure()) return fail(playlists.data.code);
+    const adapter = new YoutubeAdapter();
+    const playlists = await adapter.getPlaylists(token);
+    if (playlists.isFailure()) return fail(playlists.data.code);
 
-	const playlistsData = playlists.data.map((p) =>
-		convertToPlaylistFromClass(p),
-	);
-	return ok(playlistsData);
+    const playlistsData = playlists.data.map((p) =>
+        convertToPlaylistFromClass(p),
+    );
+    return ok(playlistsData);
 };
 
 export interface GetPlaylistsOptions {
-	token: string;
+    token: string;
 }

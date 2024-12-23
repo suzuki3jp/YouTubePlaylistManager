@@ -9,18 +9,20 @@ import { YoutubeAdapter } from "@/lib/youtube-adapter";
  * @returns
  */
 export const deletePlaylist = async ({
-	id,
-	token,
+    id,
+    token,
 }: DeletePlaylistOptions): Promise<Result<Playlist>> => {
-	const adapter = new YoutubeAdapter();
-	const deletedPlaylist = await adapter.deletePlaylist(id, token);
-	if (deletedPlaylist.isFailure()) return fail(deletedPlaylist.data.code);
+    const adapter = new YoutubeAdapter();
+    const deletedPlaylist = await adapter.deletePlaylist(id, token);
+    if (deletedPlaylist.isFailure()) return fail(deletedPlaylist.data.code);
 
-	const deletedPlaylistData = convertToPlaylistFromClass(deletedPlaylist.data);
-	return ok(deletedPlaylistData);
+    const deletedPlaylistData = convertToPlaylistFromClass(
+        deletedPlaylist.data,
+    );
+    return ok(deletedPlaylistData);
 };
 
 export interface DeletePlaylistOptions {
-	id: string;
-	token: string;
+    id: string;
+    token: string;
 }
