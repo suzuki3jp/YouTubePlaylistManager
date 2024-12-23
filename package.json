@@ -1,6 +1,6 @@
 {
   "name": "pmfy",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -9,28 +9,28 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@emotion/cache": "^11.13.1",
-    "@emotion/react": "^11.13.3",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "6.1.6",
-    "@mui/material": "6.1.6",
-    "@mui/material-nextjs": "6.1.6",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "6.2.1",
+    "@mui/material": "6.2.1",
+    "@mui/material-nextjs": "6.2.1",
     "dotenv": "^16.4.5",
     "googleapis": "^144.0.0",
-    "i18next": "^23.16.5",
+    "i18next": "^24.2.0",
     "i18next-resources-to-backend": "^1.2.1",
-    "next": "15.0.1",
-    "next-auth": "4.24.9",
+    "next": "15.1.2",
+    "next-auth": "4.24.11",
     "notistack": "^3.0.1",
-    "react": "19.0.0-rc-69d4b800-20241021",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
-    "react-i18next": "^15.1.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-i18next": "^15.2.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
     "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "gaxios": "^6.7.1",
     "typescript": "^5"
   },
