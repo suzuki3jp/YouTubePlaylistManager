@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "pnpm vitest run"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -32,7 +33,10 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "gaxios": "^6.7.1",
-    "typescript": "^5"
+    "jsdom": "^25.0.1",
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^2.1.8"
   },
   "packageManager": "pnpm@9.5.0"
 }
