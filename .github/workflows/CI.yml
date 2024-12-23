@@ -5,6 +5,9 @@ on:
     types: [opened, reopened, synchronize, ready_for_review]
   workflow_dispatch:
 
+permissions:
+  pull-requests: write
+
 jobs:
   vitest:
     if: |
