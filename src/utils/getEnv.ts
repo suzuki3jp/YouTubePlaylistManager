@@ -6,8 +6,8 @@ export const getEnv = (keys: string[]): Result<string[], EnvError> => {
 
     for (const k of keys) {
         const env = process.env[k];
-        if (!e && !env) e = new EnvError(k);
         if (e && !env) e.addKey(k);
+        if (!e && !env) e = new EnvError(k);
         if (env) r.push(env);
     }
 
