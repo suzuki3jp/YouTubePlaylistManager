@@ -6,10 +6,10 @@ export const ok = <T>(data: T): Success<T> => ({ status: 200, data });
 export type Result<T> = Success<T> | Failure;
 
 export interface Success<T> {
-	status: 200;
-	data: T;
+    status: 200;
+    data: T;
 }
 
 export interface Failure {
-	status: YoutubeErrorCodes;
+    status: YoutubeErrorCodes;
 }

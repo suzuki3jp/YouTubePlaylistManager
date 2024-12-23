@@ -5,16 +5,16 @@ import type React from "react";
 import type { PropsWithChildren } from "react";
 
 export const ServerProvidersProvider: React.FC<
-	ServerProvidersProviderProps
+    ServerProvidersProviderProps
 > = ({ children }) => {
-	return (
-		<AppRouterCacheProvider>
-			<ThemeProvider theme={darkTheme}>
-				<CssBaseline />
-				{children}
-			</ThemeProvider>
-		</AppRouterCacheProvider>
-	);
+    return (
+        <AppRouterCacheProvider>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                {children}
+            </ThemeProvider>
+        </AppRouterCacheProvider>
+    );
 };
 
 export type ServerProvidersProviderProps = Readonly<PropsWithChildren>;

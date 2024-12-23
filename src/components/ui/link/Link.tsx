@@ -8,17 +8,20 @@ import type { PropsWithChildren } from "react";
  * @returns
  */
 export const Link: React.FC<LinkProps> = ({ href, children, sx }) => {
-	return (
-		<MuiLink
-			href={href}
-			color="text.secondary"
-			sx={{ "&:hover": { color: "primary.main", cursor: "pointer" }, ...sx }}
-		>
-			{children}
-		</MuiLink>
-	);
+    return (
+        <MuiLink
+            href={href}
+            color="text.secondary"
+            sx={{
+                "&:hover": { color: "primary.main", cursor: "pointer" },
+                ...sx,
+            }}
+        >
+            {children}
+        </MuiLink>
+    );
 };
 
 export type LinkProps = Readonly<
-	PropsWithChildren<{ href: string; sx?: MuiLinkProps["sx"] }>
+    PropsWithChildren<{ href: string; sx?: MuiLinkProps["sx"] }>
 >;

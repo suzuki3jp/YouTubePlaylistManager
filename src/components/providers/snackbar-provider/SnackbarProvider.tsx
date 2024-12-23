@@ -4,9 +4,9 @@ import type { PropsWithChildren } from "react";
 import type React from "react";
 
 export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({
-	children,
+    children,
 }) => {
-	return <NotistackProvider>{children}</NotistackProvider>;
+    return <NotistackProvider>{children}</NotistackProvider>;
 };
 
 export type SnackbarProviderProps = Readonly<PropsWithChildren>;

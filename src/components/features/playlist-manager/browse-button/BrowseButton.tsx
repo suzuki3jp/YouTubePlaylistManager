@@ -11,33 +11,33 @@ import type React from "react";
  * @returns
  */
 export const BrowseButton: React.FC<BrowseButtonProps> = ({ playlists }) => {
-	const { t } = useT();
+    const { t } = useT();
 
-	const oldQuery = useSearchParams();
-	const router = useRouter();
+    const oldQuery = useSearchParams();
+    const router = useRouter();
 
-	const handleOnClick = async () => {
-		const newQuery = new URLSearchParams(oldQuery);
-		const targetIds = playlists
-			.filter((ps) => ps.selected)
-			.slice(0, 3)
-			.map((ps) => ps.data.id);
-		newQuery.set("id", targetIds.join(","));
+    const handleOnClick = async () => {
+        const newQuery = new URLSearchParams(oldQuery);
+        const targetIds = playlists
+            .filter((ps) => ps.selected)
+            .slice(0, 3)
+            .map((ps) => ps.data.id);
+        newQuery.set("id", targetIds.join(","));
 
-		router.push(`?${newQuery.toString()}`);
-	};
+        router.push(`?${newQuery.toString()}`);
+    };
 
-	return (
-		<NonUpperButton
-			variant="contained"
-			startIcon={<BrowseIcon />}
-			onClick={handleOnClick}
-		>
-			{t("button.browse")}
-		</NonUpperButton>
-	);
+    return (
+        <NonUpperButton
+            variant="contained"
+            startIcon={<BrowseIcon />}
+            onClick={handleOnClick}
+        >
+            {t("button.browse")}
+        </NonUpperButton>
+    );
 };
 
 export type BrowseButtonProps = Readonly<{
-	playlists: PlaylistState[];
+    playlists: PlaylistState[];
 }>;

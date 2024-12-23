@@ -10,20 +10,20 @@ import { YoutubeAdapter } from "@/lib/youtube-adapter";
  * @returns
  */
 export const addPlaylist = async ({
-	title,
-	privacy = "unlisted",
-	token,
+    title,
+    privacy = "unlisted",
+    token,
 }: AddPlaylistOptions): Promise<Result<Playlist>> => {
-	const adapter = new YoutubeAdapter();
-	const playlist = await adapter.addPlaylist(title, privacy, token);
-	if (playlist.isFailure()) return fail(playlist.data.code);
+    const adapter = new YoutubeAdapter();
+    const playlist = await adapter.addPlaylist(title, privacy, token);
+    if (playlist.isFailure()) return fail(playlist.data.code);
 
-	const playlistData = convertToPlaylistFromClass(playlist.data);
-	return ok(playlistData);
+    const playlistData = convertToPlaylistFromClass(playlist.data);
+    return ok(playlistData);
 };
 
 export interface AddPlaylistOptions {
-	title: string;
-	privacy?: PlaylistPrivacy;
-	token: string;
+    title: string;
+    privacy?: PlaylistPrivacy;
+    token: string;
 }
