@@ -1,15 +1,16 @@
 import {
     BaseAdapter,
     FullPlaylist,
-    Playlist,
-    PlaylistItem,
+    type Playlist,
+    type PlaylistItem,
 } from "@/lib/base-adapter";
 import { Err, Ok, type Result } from "@/lib/result";
 import type { GaxiosError } from "gaxios";
-import type { youtube_v3 } from "googleapis";
+import { convertToPlaylist, convertToPlaylistItem } from "./EntityConverter";
 import {
     YoutubeAdapterErrorCodes as ErrorCodes,
     YoutubeAdapterError,
+    makeError,
 } from "./YoutubeAdapterError";
 import { YoutubeApiClient } from "./YoutubeApiClient";
 
@@ -33,8 +34,8 @@ export class YoutubeAdapter extends BaseAdapter {
                     accessToken,
                     nextPageToken,
                 );
-                if (!res.items) throw this.makeError("UNKNOWN_ERROR");
-                const items = this.convertToPlaylist(res.items);
+                if (!res.items) throw makeError("UNKNOWN_ERROR");
+                const items = convertToPlaylist(res.items);
                 playlists = playlists.concat(items);
                 nextPageToken = res.nextPageToken;
             } while (nextPageToken);
@@ -64,9 +65,9 @@ export class YoutubeAdapter extends BaseAdapter {
                     nextPageToken,
                 );
 
-                if (!res.items) throw this.makeError("UNKNOWN_ERROR");
+                if (!res.items) throw makeError("UNKNOWN_ERROR");
 
-                const gotItems = this.convertToPlaylistItem(res.items);
+                const gotItems = convertToPlaylistItem(res.items);
                 items.push(...gotItems);
 
                 nextPageToken = res.nextPageToken ?? undefined;
@@ -94,8 +95,8 @@ export class YoutubeAdapter extends BaseAdapter {
                 accessToken,
             );
 
-            if (!res.items) throw this.makeError("UNKNOWN_ERROR");
-            const items = this.convertToPlaylist(res.items);
+            if (!res.items) throw makeError("UNKNOWN_ERROR");
+            const items = convertToPlaylist(res.items);
 
             return Ok(items[0]);
         } catch (error) {
@@ -114,7 +115,7 @@ export class YoutubeAdapter extends BaseAdapter {
                 status,
                 accessToken,
             );
-            const playlist = this.convertToPlaylist([res])[0];
+            const playlist = convertToPlaylist([res])[0];
             return Ok(playlist);
         } catch (error) {
             return Err(this.handleError(error));
@@ -136,7 +137,7 @@ export class YoutubeAdapter extends BaseAdapter {
                 position,
                 accessToken,
             );
-            const playlistItem = this.convertToPlaylistItem([res])[0];
+            const playlistItem = convertToPlaylistItem([res])[0];
             return Ok(playlistItem);
         } catch (error) {
             return Err(this.handleError(error));
@@ -156,7 +157,7 @@ export class YoutubeAdapter extends BaseAdapter {
                 accessToken,
             );
             if (res === 204) return Ok(playlist.data);
-            throw this.makeError("UNKNOWN_ERROR");
+            throw makeError("UNKNOWN_ERROR");
         } catch (error) {
             return Err(this.handleError(error));
         }
@@ -173,98 +174,11 @@ export class YoutubeAdapter extends BaseAdapter {
                 resourceId,
                 accessToken,
             );
-            const item = this.convertToPlaylistItem([res]);
+            const item = convertToPlaylistItem([res]);
             return Ok(item[0]);
         } catch (error) {
             return Err(this.handleError(error));
         }
-    }
-
-    private convertToPlaylist(res: youtube_v3.Schema$Playlist[]): Playlist[] {
-        const convertedItems: Playlist[] = [];
-
-        for (const i of res) {
-            if (
-                !i.id ||
-                !i.snippet ||
-                !i.snippet.title ||
-                !i.snippet.thumbnails
-            )
-                throw this.makeError("UNKNOWN_ERROR");
-
-            const thumbnailUrl = this.getThumbnailUrlFromAPIData(
-                i.snippet.thumbnails,
-            );
-            if (!thumbnailUrl) throw this.makeError("UNKNOWN_ERROR");
-
-            const obj = new Playlist({
-                id: i.id,
-                title: i.snippet.title,
-                thumbnailUrl,
-            });
-            convertedItems.push(obj);
-        }
-        return convertedItems;
-    }
-
-    private convertToPlaylistItem(
-        items: youtube_v3.Schema$PlaylistItem[],
-    ): PlaylistItem[] {
-        const convertedItems: PlaylistItem[] = [];
-
-        for (const i of items) {
-            if (
-                !i.id ||
-                !i.snippet ||
-                !i.snippet.title ||
-                !i.snippet.resourceId ||
-                !i.snippet.resourceId.videoId ||
-                typeof i.snippet.position !== "number" ||
-                !i.snippet.videoOwnerChannelTitle ||
-                !i.snippet.thumbnails
-            )
-                throw this.makeError("UNKNOWN_ERROR");
-
-            const thumbnailUrl = this.getThumbnailUrlFromAPIData(
-                i.snippet.thumbnails,
-            );
-            if (!thumbnailUrl) throw this.makeError("UNKNOWN_ERROR");
-
-            const obj = new PlaylistItem({
-                id: i.id,
-                title: i.snippet.title,
-                thumbnailUrl,
-                position: i.snippet.position,
-                // Youtube Music の曲などのアイテムでは "OwnerName - Topic" という形式で返されるため " - Topic" をトリミングする
-                author: i.snippet.videoOwnerChannelTitle
-                    .replace(/\s*-\s*Topic$/, "")
-                    .trim(),
-                videoId: i.snippet.resourceId.videoId,
-            });
-            convertedItems.push(obj);
-        }
-        return convertedItems;
-    }
-
-    private getThumbnailUrlFromAPIData(
-        data: youtube_v3.Schema$ThumbnailDetails,
-    ): string | undefined {
-        let url = data.default?.url;
-
-        if (data.medium?.url) {
-            url = data.medium?.url;
-        }
-        if (data.high?.url) {
-            url = data.high?.url;
-        }
-        if (data.standard?.url) {
-            url = data.standard?.url;
-        }
-        if (data.maxres?.url) {
-            url = data.maxres?.url;
-        }
-
-        return url ?? undefined;
     }
 
     private handleError(err: unknown): YoutubeAdapterError {
@@ -278,19 +192,11 @@ export class YoutubeAdapter extends BaseAdapter {
 
             for (const name of names) {
                 if (e.status === ErrorCodes[name].code) {
-                    return this.makeError(name);
+                    return makeError(name);
                 }
             }
         }
 
-        return this.makeError("UNKNOWN_ERROR");
-    }
-
-    private makeError(name: keyof typeof ErrorCodes) {
-        return new YoutubeAdapterError(
-            ErrorCodes[name].message,
-            ErrorCodes[name].code,
-            name,
-        );
+        return makeError("UNKNOWN_ERROR");
     }
 }

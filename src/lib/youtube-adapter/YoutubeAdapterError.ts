@@ -13,6 +13,19 @@ export class YoutubeAdapterError extends BaseAdapterError {
     static fromUnkwonError() {}
 }
 
+/**
+ * Make a YouTubeAdapterError instance from the given error status.
+ * @param name
+ * @returns
+ */
+export function makeError(name: ErrorStatus) {
+    return new YoutubeAdapterError(
+        YoutubeAdapterErrorCodes[name].message,
+        YoutubeAdapterErrorCodes[name].code,
+        name,
+    );
+}
+
 export const YoutubeAdapterErrorCodes = {
     UNAUTHORIZED: {
         code: 401,
