@@ -72,7 +72,7 @@ describe("convertToPlaylist", () => {
 
 describe("convertToPlaylistItem", () => {
     test("should convert the given API response to a PlaylistItem instance", () => {
-        const data: [youtube_v3.Schema$PlaylistItem, PlaylistItem][] = [
+        const data: [youtube_v3.Schema$PlaylistItem, PlaylistItem | null][] = [
             [
                 {
                     id: "foo-id",
@@ -159,6 +159,30 @@ describe("convertToPlaylistItem", () => {
                     videoId: "foo-video-id",
                     author: "foo-channel-title",
                 }),
+            ],
+            [
+                {
+                    kind: "youtube#playlistItem",
+                    etag: "XCet38iaoNCg_iYBc1N8sAKQb50",
+                    id: "UExWTERkNGRESGE3TXVmT2JfMks5YUpHa1FRSjctb3p5Ry4zRjM0MkVCRTg0MkYyQTM0",
+                    snippet: {
+                        publishedAt: "2021-10-30T13:20:19Z",
+                        channelId: "UCQn3V_Cuwq-HVtzpqMIYjHQ",
+                        title: "Private video",
+                        description: "This video is private.",
+                        thumbnails: {},
+                        channelTitle: "鈴木",
+                        playlistId: "PLVLDd4dDHa7MufOb_2K9aJGkQQJ7-ozyG",
+                        position: 19,
+                        resourceId: {
+                            kind: "youtube#video",
+                            videoId: "WSVTrNkWOoU",
+                        },
+                    },
+                    contentDetails: { videoId: "WSVTrNkWOoU" },
+                    status: { privacyStatus: "private" },
+                },
+                null,
             ],
         ];
 

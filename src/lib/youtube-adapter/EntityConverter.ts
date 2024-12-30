@@ -35,7 +35,9 @@ export function convertToPlaylist(res: youtube_v3.Schema$Playlist): Playlist {
  */
 export function convertToPlaylistItem(
     res: youtube_v3.Schema$PlaylistItem,
-): PlaylistItem {
+): PlaylistItem | null {
+    if (res.status?.privacyStatus === "private") return null;
+
     if (
         !res.id ||
         !res.snippet ||
