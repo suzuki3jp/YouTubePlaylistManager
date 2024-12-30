@@ -35,7 +35,7 @@ export class YoutubeAdapter extends BaseAdapter {
                     nextPageToken,
                 );
                 if (!res.items) throw makeError("UNKNOWN_ERROR");
-                const items = convertToPlaylist(res.items);
+                const items = res.items?.map((item) => convertToPlaylist(item));
                 playlists = playlists.concat(items);
                 nextPageToken = res.nextPageToken;
             } while (nextPageToken);
@@ -67,7 +67,9 @@ export class YoutubeAdapter extends BaseAdapter {
 
                 if (!res.items) throw makeError("UNKNOWN_ERROR");
 
-                const gotItems = convertToPlaylistItem(res.items);
+                const gotItems = res.items?.map((item) =>
+                    convertToPlaylistItem(item),
+                );
                 items.push(...gotItems);
 
                 nextPageToken = res.nextPageToken ?? undefined;
@@ -96,9 +98,9 @@ export class YoutubeAdapter extends BaseAdapter {
             );
 
             if (!res.items) throw makeError("UNKNOWN_ERROR");
-            const items = convertToPlaylist(res.items);
+            const item = convertToPlaylist(res.items[0]);
 
-            return Ok(items[0]);
+            return Ok(item);
         } catch (error) {
             return Err(this.handleError(error));
         }
@@ -115,7 +117,7 @@ export class YoutubeAdapter extends BaseAdapter {
                 status,
                 accessToken,
             );
-            const playlist = convertToPlaylist([res])[0];
+            const playlist = convertToPlaylist(res);
             return Ok(playlist);
         } catch (error) {
             return Err(this.handleError(error));
@@ -137,7 +139,7 @@ export class YoutubeAdapter extends BaseAdapter {
                 position,
                 accessToken,
             );
-            const playlistItem = convertToPlaylistItem([res])[0];
+            const playlistItem = convertToPlaylistItem(res);
             return Ok(playlistItem);
         } catch (error) {
             return Err(this.handleError(error));
@@ -174,8 +176,8 @@ export class YoutubeAdapter extends BaseAdapter {
                 resourceId,
                 accessToken,
             );
-            const item = convertToPlaylistItem([res]);
-            return Ok(item[0]);
+            const item = convertToPlaylistItem(res);
+            return Ok(item);
         } catch (error) {
             return Err(this.handleError(error));
         }

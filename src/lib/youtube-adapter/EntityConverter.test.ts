@@ -65,7 +65,7 @@ describe("convertToPlaylist", () => {
         ];
 
         for (const [apiData, expected] of data) {
-            expect(convertToPlaylist([apiData])).toStrictEqual([expected]);
+            expect(convertToPlaylist(apiData)).toStrictEqual(expected);
         }
     });
 });
@@ -163,7 +163,7 @@ describe("convertToPlaylistItem", () => {
         ];
 
         for (const [apiData, expected] of data) {
-            expect(convertToPlaylistItem([apiData])).toStrictEqual([expected]);
+            expect(convertToPlaylistItem(apiData)).toStrictEqual(expected);
         }
     });
 });

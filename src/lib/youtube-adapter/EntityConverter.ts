@@ -7,26 +7,24 @@ import { makeError } from "./YoutubeAdapterError";
  * @param res
  * @returns
  */
-export function convertToPlaylist(
-    res: youtube_v3.Schema$Playlist[],
-): Playlist[] {
-    const convertedItems: Playlist[] = [];
+export function convertToPlaylist(res: youtube_v3.Schema$Playlist): Playlist {
+    if (
+        !res.id ||
+        !res.snippet ||
+        !res.snippet.title ||
+        !res.snippet.thumbnails
+    )
+        throw makeError("UNKNOWN_ERROR");
 
-    for (const i of res) {
-        if (!i.id || !i.snippet || !i.snippet.title || !i.snippet.thumbnails)
-            throw makeError("UNKNOWN_ERROR");
+    const thumbnailUrl = getThumbnailUrlFromAPIData(res.snippet.thumbnails);
+    if (!thumbnailUrl) throw makeError("UNKNOWN_ERROR");
 
-        const thumbnailUrl = getThumbnailUrlFromAPIData(i.snippet.thumbnails);
-        if (!thumbnailUrl) throw makeError("UNKNOWN_ERROR");
-
-        const obj = new Playlist({
-            id: i.id,
-            title: i.snippet.title,
-            thumbnailUrl,
-        });
-        convertedItems.push(obj);
-    }
-    return convertedItems;
+    const obj = new Playlist({
+        id: res.id,
+        title: res.snippet.title,
+        thumbnailUrl,
+    });
+    return obj;
 }
 
 /**
@@ -36,40 +34,35 @@ export function convertToPlaylist(
  * @returns
  */
 export function convertToPlaylistItem(
-    items: youtube_v3.Schema$PlaylistItem[],
-): PlaylistItem[] {
-    const convertedItems: PlaylistItem[] = [];
+    res: youtube_v3.Schema$PlaylistItem,
+): PlaylistItem {
+    if (
+        !res.id ||
+        !res.snippet ||
+        !res.snippet.title ||
+        !res.snippet.resourceId ||
+        !res.snippet.resourceId.videoId ||
+        typeof res.snippet.position !== "number" ||
+        !res.snippet.videoOwnerChannelTitle ||
+        !res.snippet.thumbnails
+    )
+        throw makeError("UNKNOWN_ERROR");
 
-    for (const i of items) {
-        if (
-            !i.id ||
-            !i.snippet ||
-            !i.snippet.title ||
-            !i.snippet.resourceId ||
-            !i.snippet.resourceId.videoId ||
-            typeof i.snippet.position !== "number" ||
-            !i.snippet.videoOwnerChannelTitle ||
-            !i.snippet.thumbnails
-        )
-            throw makeError("UNKNOWN_ERROR");
+    const thumbnailUrl = getThumbnailUrlFromAPIData(res.snippet.thumbnails);
+    if (!thumbnailUrl) throw makeError("UNKNOWN_ERROR");
 
-        const thumbnailUrl = getThumbnailUrlFromAPIData(i.snippet.thumbnails);
-        if (!thumbnailUrl) throw makeError("UNKNOWN_ERROR");
-
-        const obj = new PlaylistItem({
-            id: i.id,
-            title: i.snippet.title,
-            thumbnailUrl,
-            position: i.snippet.position,
-            // Youtube Music の曲などのアイテムでは "OwnerName - Topic" という形式で返されるため " - Topic" をトリミングする
-            author: i.snippet.videoOwnerChannelTitle
-                .replace(/\s*-\s*Topic$/, "")
-                .trim(),
-            videoId: i.snippet.resourceId.videoId,
-        });
-        convertedItems.push(obj);
-    }
-    return convertedItems;
+    const obj = new PlaylistItem({
+        id: res.id,
+        title: res.snippet.title,
+        thumbnailUrl,
+        position: res.snippet.position,
+        // Youtube Music の曲などのアイテムでは "OwnerName - Topic" という形式で返されるため " - Topic" をトリミングする
+        author: res.snippet.videoOwnerChannelTitle
+            .replace(/\s*-\s*Topic$/, "")
+            .trim(),
+        videoId: res.snippet.resourceId.videoId,
+    });
+    return obj;
 }
 
 /**
