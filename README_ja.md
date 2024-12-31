@@ -1,4 +1,4 @@
-<h2 align="center">Playlist Manager For YouTube</h2>
+<h2 align="center">PlaylistWizard</h2>
 <div align="center">YouTube (music) プレイリストマネージャー</div>
 
 ![PlaylistManagerDemo](./assets/demo2.gif)
@@ -54,7 +54,7 @@ $ pnpm dev
 
 ## Disclaimer
 
-Playlist Manager For YouTube is an independently developed application that utilizes the YouTube Data API to streamline playlist management through features such as copying, shuffling, merging, and deleting playlists.
+PlaylistWizard is an independently developed application that utilizes the YouTube Data API to streamline playlist management through features such as copying, shuffling, merging, and deleting playlists.
 
 This application is not affiliated with, endorsed by, or in any way officially connected to YouTube or Google. All product and company names are trademarks™ or registered® trademarks of their respective holders.
 
