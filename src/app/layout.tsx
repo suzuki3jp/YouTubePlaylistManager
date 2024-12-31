@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Playlist Manager For YouTube",
+    title: "PlaylistWizard",
     description:
         "You can copy, shuffle, merge, manage, and delete Youtube (music) playlists",
 };
