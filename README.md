@@ -6,7 +6,7 @@ This document is also available in:
 - [**Japanese / 日本語**](README_ja.md)
 
 ## Online Demo
-Check out the [online demo](https://pmfy.suzuki3.jp)
+Check out the [online demo](https://playlistwizard.suzuki3.jp)
 
 ## Features
 - Manage youtube playlists from Web GUI
@@ -30,7 +30,7 @@ Check out the [online demo](https://pmfy.suzuki3.jp)
 
 ## How To Use
 ### Access to Online Demo
-See: https://pmfy.suzuki3.jp
+See: https://playlistwizard.suzuki3.jp
 
 ### Build yourself
 To clone and run this application, you'll need [Git](https://git-scm.com) and [Node.js](https://nodejs.org/en/download/), [pnpm](https://pnpm.io/) installed on your computer.  
