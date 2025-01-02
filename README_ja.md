@@ -4,7 +4,7 @@
 ![PlaylistManagerDemo](./assets/demo2.gif)
 
 ## オンラインデモ
-[オンラインデモ](https://pmfy.suzuki3.jp) をご覧ください
+[オンラインデモ](https://playlistwizard.suzuki3.jp) をご覧ください
 
 ## 機能
 - WebGUI から YouTube プレイリストを管理する
@@ -28,7 +28,7 @@
 
 ## 使用方法
 ### オンラインデモにアクセスする
-こちら: https://pmfy.suzuki3.jp
+こちら: https://playlistwizard.suzuki3.jp
 
 ### 自分でビルドする
 このアプリケーションをクローンして実行するには、[Git](https://git-scm.com), [Node.js](https://nodejs.org/en/download/), [pnpm](https://pnpm.io/) がインストールされている必要があります。
