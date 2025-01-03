@@ -240,6 +240,15 @@ export class PlaylistManager {
         return result.status === 200 ? Ok(result.data) : Err(result);
     }
 
+    /**
+     * Call the API function with retry.
+     * If the API returns a status code **200**, the result is returned.
+     * If the API returns a status code **401**, the result is returned without retrying.
+     * If the API returns a status code other than **200**, the API is retried up to MAX_RETRY times.
+     * @param func
+     * @param params
+     * @returns
+     */
     private async callApiWithRetry<T extends ApiCallFunction>(
         func: T,
         ...params: Parameters<T>
@@ -252,6 +261,7 @@ export class PlaylistManager {
             // @ts-expect-error
             result = await func(...params);
             if (result.status === 200) break;
+            if (result.status === 401) break;
             await sleep(1000);
             retry++;
         } while (retry < MAX_RETRY);
